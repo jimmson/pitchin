@@ -1,0 +1,7 @@
+**/node_modules
+.vscode
+**/acme.json
+**/*.env
+!**/*example.env
+build
+.idea

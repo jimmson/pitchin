@@ -1,0 +1,108 @@
+version: "3.3"
+services:
+  front-end:
+    container_name: front-end
+    build: ./frontend
+    restart: always
+    ports:
+      - "5000:80"
+    networks:
+      - front-end
+    environment:
+      APP_HOST: "${APP_HOST}"
+      API_HOST: back-end
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=front-end"
+      - "traefik.docker.domain=${APP_HOST}"
+      - "traefik.frontend.priority=1"
+      - "traefik.frontend.rule=Host:${APP_HOST}"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.frontend.headers.customRequestHeaders=X-Forwarded-Proto:https"
+      - "traefik.frontend.entryPoints=https"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  traefik:
+    container_name: traefik
+    image: traefik:1.7.16
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: 10m
+    command:
+      - "--api"
+      - "--logLevel=ERROR"
+      - "--traefikLog.format=json"
+      - "--accessLog.format=json"
+      - "--defaultentrypoints=http,https"
+      - "--acme"
+      - "--acme.acmelogging"
+      - "--acme.email=${ACME_EMAIL}"
+      - "--acme.entryPoint=https"
+      - "--acme.httpChallenge.entryPoint=http"
+      - "--acme.domains=${APP_HOST}"
+      - "--acme.storage=/acme/cert.json"
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    networks:
+      - front-end
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - acme:/acme
+    labels:
+      - "traefik.enable=false"
+
+  back-end:
+    container_name: back-end
+    restart: always
+    build: ./backend
+    depends_on:
+      - mongodb
+    ports:
+      - "8000:8000"
+    networks:
+      - front-end
+      - back-end
+    env_file:
+      - ${PWD}/.env
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  mongodb:
+    container_name: mongodb
+    restart: always
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - back-end
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    command:
+      - "--label-enable"
+
+volumes:
+  acme:
+  mongodb:
+networks:
+  front-end:
+  back-end:

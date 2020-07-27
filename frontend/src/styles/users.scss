@@ -1,0 +1,11 @@
+.users-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background-color: #f5f5f5;
+
+  .user {
+    font-size: 16pt;
+    padding: 8pt 0;
+  }
+}

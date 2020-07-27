@@ -1,0 +1,28 @@
+branches:
+  only:
+  - master
+language: node_js
+node_js:
+  - "12"
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: build
+      before_script:
+        - unset CI
+        - npm ci
+      script:
+        - npm run build
+        - docker build -t zelosapp/community-helpdesk:latest -t zelosapp/community-helpdesk:${TRAVIS_COMMIT::8} .
+      after_success:
+        - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USER}" --password-stdin
+        - docker push zelosapp/community-helpdesk
+    - stage: deploy
+      before_script:
+        - eval "$(ssh-agent -s)"
+        - ssh-add <(echo "$SSH_DEPLOY_KEY" | base64 --decode) > /dev/null
+        - ssh-keyscan ${APP_DOMAIN} >> ~/.ssh/known_hosts
+      script:
+        - ssh ${SSH_USER}@${APP_DOMAIN} "cd ~/${APP_FOLDER} && git pull"

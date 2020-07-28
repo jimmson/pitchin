@@ -42,6 +42,10 @@ export default function RequestWrapper(props) {
           <Formik
             initialValues={{
               phone: `+${requestOptions.phonePrefix}`,
+              date: new Date(),
+              startTime: new Date(),
+              endTime: new Date(),
+              hasDate: false,
             }}
             onSubmit={(values, form) => {
               const decoratedValues = {

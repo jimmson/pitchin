@@ -5,9 +5,13 @@ import history from "../../utils/history";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { RequestOptionsContext } from "./RequestWrapper";
-import { TextField, Button, MenuItem, Grid } from "@material-ui/core";
+import { Checkbox, TextField, Button, MenuItem, Grid } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { TimePicker, DatePicker } from "formik-material-ui-pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +27,7 @@ function Details() {
   const classes = useStyles();
 
   const { categories, areas } = useContext(RequestOptionsContext);
-  const { values, isValid, isSubmitting } = useFormikContext();
+  const { values, isValid, isSubmitting, setFieldValue } = useFormikContext();
 
   useEffect(() => {
     if (!values.request) {
@@ -60,7 +64,7 @@ function Details() {
               <FormattedMessage id="addContact.content.body" />
             </h3>
 
-            <Grid container spacing={2} direction="column" alignItems="stretch">
+            <Grid container spacing={2} direction="column">
               <Grid item>
                 <ErrorMessage name="name" />
                 <Field
@@ -100,22 +104,85 @@ function Details() {
                 </Grid>
               )}
               <Grid item>
-                <ErrorMessage name="area" />
-                <Field
-                  name="area"
-                  as={TextField}
-                  label={<FormattedMessage id="addContact.placeholders.area" />}
-                  variant="outlined"
-                  fullWidth
-                  required
-                  select
-                >
-                  {areas.map((area) => (
-                    <MenuItem value={area._id} key={area._id}>
-                      {area.name}
-                    </MenuItem>
-                  ))}
-                </Field>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <ErrorMessage name="area" />
+                    <Field
+                      name="area"
+                      as={TextField}
+                      label={
+                        <FormattedMessage id="addContact.placeholders.area" />
+                      }
+                      variant="outlined"
+                      fullWidth
+                      required
+                      select
+                    >
+                      {areas.map((area) => (
+                        <MenuItem value={area._id} key={area._id}>
+                          {area.name}
+                        </MenuItem>
+                      ))}
+                    </Field>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <ErrorMessage name="maxParticipants" />
+                    <Field
+                      name="maxParticipants"
+                      as={TextField}
+                      label={
+                        <FormattedMessage id="addContact.placeholders.participants" />
+                      }
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={1}>
+                        <Field
+                          component={Checkbox}
+                          onChange={(event) => {
+                            setFieldValue("hasDate", event.target.checked);
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={5}>
+                        <Field
+                          name="date"
+                          component={DatePicker}
+                          label={
+                            <FormattedMessage id="addContact.placeholders.date" />
+                          }
+                          disablePast
+                          disabled={!values.hasDate}
+                        />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Field
+                          name="startTime"
+                          component={TimePicker}
+                          label={
+                            <FormattedMessage id="addContact.placeholders.startTime" />
+                          }
+                          disabled={!values.hasDate}
+                        />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Field
+                          name="endTime"
+                          component={TimePicker}
+                          label={
+                            <FormattedMessage id="addContact.placeholders.endTime" />
+                          }
+                          disabled={!values.hasDate}
+                        />
+                      </Grid>
+                    </Grid>
+                  </MuiPickersUtilsProvider>
+                </Grid>
               </Grid>
             </Grid>
 

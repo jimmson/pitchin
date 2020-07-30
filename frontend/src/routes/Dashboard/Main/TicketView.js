@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl";
 import MenuItem from "@material-ui/core/MenuItem";
 import Grid from "@material-ui/core/Grid";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
 import ArrowDropDownIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import Popper from "@material-ui/core/Popper";
 import Grow from "@material-ui/core/Grow/Grow";

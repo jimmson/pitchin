@@ -43,11 +43,7 @@ function Details() {
 
   return (
     <Grid container spacing={0}>
-      <Grid item md={5} xs={12}>
-        <div className="illustration" />
-      </Grid>
-
-      <Grid item md={7} xs={12}>
+      <Grid item md={12} xs={12}>
         <Grid
           container
           spacing={0}

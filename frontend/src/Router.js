@@ -33,9 +33,6 @@ import Zelos from "./routes/Dashboard/Zelos";
 import SMS from "./routes/Dashboard/Sms";
 import LocaleTable from "./components/SettingsPage/LocaleTable";
 
-// AppLanding
-import AppLanding from "./routes/AppLanding/AppLanding";
-
 export default () => {
   return (
     <Switch>
@@ -56,7 +53,6 @@ export default () => {
           </AuthWrapper>
         )}
       />
-      <Route path="/app" component={AppLanding} />
       <Route
         path="/request"
         render={({ match: { path } }) => (

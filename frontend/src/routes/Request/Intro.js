@@ -25,7 +25,7 @@ const Intro = () => {
   return (
     <div>
       <AppToolbar />
-      <Grid container className={classes.root}>
+      <Grid container direction="column" className={classes.root}>
         <section className="wide hero">
           <Grid container spacing={2}>
             <Grid container item md={4} xs={12}>

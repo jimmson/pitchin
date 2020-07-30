@@ -6,18 +6,8 @@ import { RequestOptionsContext } from "./RequestWrapper";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme) => ({
-  flex: {
-    display: "flex",
-    justifyContent: "center",
-  },
-}));
 
 function Category() {
-  const classes = useStyles();
-
   const { categories } = useContext(RequestOptionsContext);
   const { setFieldValue } = useFormikContext();
 
@@ -43,20 +33,16 @@ function Category() {
 
   return (
     <Grid container spacing={0}>
-      <Grid item md={5} xs={12}>
-        <div className="illustration" />
-      </Grid>
-
-      <Grid item md={7} xs={12}>
+      <Grid item md={12} xs={12}>
         <Grid
           container
-          spacing={2}
+          spacing={0}
           direction="column"
           alignItems="center"
           justify="center"
           style={{ minHeight: "100%" }}
         >
-          {/* <Box m={2}> */}
+          <Box m={2}>
             <h1 className="text-alpha">
               <FormattedMessage id="selectCategory.content.header" />
             </h1>
@@ -83,7 +69,7 @@ function Category() {
                 <FormattedMessage id="selectCategory.buttons.back" />
               </Button>
             </Grid>
-          {/* </Box> */}
+          </Box>
         </Grid>
       </Grid>
     </Grid>

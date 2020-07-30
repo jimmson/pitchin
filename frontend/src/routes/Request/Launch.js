@@ -7,10 +7,7 @@ import { Grid } from "@material-ui/core";
 function Launch() {
   return (
     <Grid container spacing={0}>
-      <Grid item md={5} xs={12}>
-        <div className="illustration" />
-      </Grid>
-      <Grid item md={7} xs={12} className="right-block">
+      <Grid item md={12} xs={12} className="right-block">
         <Grid
           container
           spacing={0}

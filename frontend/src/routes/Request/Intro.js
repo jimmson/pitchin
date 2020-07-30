@@ -1,20 +1,28 @@
 import React from "react";
-import CustomButton from "../../components/CustomButton/CustomButton";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
-import { Grid } from "@material-ui/core";
-import { LangBar } from "../../components/Bar";
+// import { FormattedMessage } from "react-intl";
+import { Typography, Grid } from "@material-ui/core";
+import { LangBar, AppToolbar } from "../../components/Bar";
 import useLocale, { setLocale } from "../../hooks/useLocale";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 
+import stepOne from "../../assets/step-1-image.png";
+import stepTwo from "../../assets/step-2-image.png";
+
+import { ReactComponent as AppStore } from "../../assets/appStore.svg";
+import { ReactComponent as PlayStore } from "../../assets/playStore.svg";
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    justifyContent: "center",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
+    flexGrow: 1,
+    // display: "flex",
+    // justifyContent: "center",
+    // "& > *": {
+    //   margin: theme.spacing(1),
+    // },
+  },
+  intro: {
+    padding: "4rem",
   },
 }));
 
@@ -23,58 +31,181 @@ const Intro = () => {
   const [{ locale, locales, loading }] = useLocale();
 
   return (
-    <Grid container spacing={0}>
-      <Grid item md={5} xs={12}>
-        <div className="illustration" />
-      </Grid>
-
-      <Grid item md={7} xs={12}>
-        <Box p={2} style={{ height: "100%" }}>
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: "100%" }}
-          >
-            {!loading && (
-              <Box p={2}>
-                <LangBar
-                  locales={locales}
-                  selectLanguage={(languageCode) => setLocale(languageCode)}
-                  current={locale}
-                />
-              </Box>
-            )}
-
-            <h1 className="text-alpha">
-              <FormattedMessage id="landing.content.header" />
-            </h1>
-
-            <h3 className="text-alpha">
-              <FormattedMessage id="landing.content.body" />
-            </h3>
-
-            <div className={classes.root}>
-              <Link to="/request">
-                <CustomButton
-                  titleId="landing.buttons.request"
-                  modifier="primary"
-                />
-              </Link>
-
-              {/* <Link to="/app">
-                <CustomButton
-                  titleId="landing.buttons.offer"
-                  modifier="secondary"
-                />
-              </Link> */}
-            </div>
+    <div>
+      <AppToolbar />
+      <Grid container className={classes.root}>
+        <section className="wide hero">
+          <Grid container spacing={2}>
+            <Grid container item md={4} xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h2">PitchIn</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">
+                    Find out how you can help out
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1">
+                    NGO's need help and you what to help out. PitchIn connects
+                    the dots, giving you a ton of fun, rewarding volunteering
+                    options in your community.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1">
+                    Some you even get rewarded for.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h6">⟶ how does it work</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
-        </Box>
+        </section>
+
+        <section className="narrow">
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h2" align="center">
+                Get Started
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h4" align="center">
+                Using PitchIn is free and only takes a few steps to get started
+              </Typography>
+            </Grid>
+          </Grid>
+        </section>
+
+        <section className="narrow">
+          <Grid container spacing={4}>
+            <Grid container item alignItems="center" md={6} xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h2">Step 1</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h3">Download Zelos</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">
+                    Get Zelos through the App or Play store.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">
+                    *PitchIn use Zelos to connect you with the most important
+                    tasks in your area.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid container item alignItems="center">
+                    <Grid container spacing={2}>
+                      <Grid item>
+                        <a
+                          href="https://apps.apple.com/us/app/zelos-team-management/id1441089536"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <AppStore className="app-landing__link" />
+                        </a>
+                      </Grid>
+                      <Grid item>
+                        <a
+                          href="https://play.google.com/store/apps/details?id=com.zelos.client&hl=en"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <PlayStore className="app-landing__link" />
+                        </a>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <img src={stepOne} alt="Step One" />
+            </Grid>
+          </Grid>
+        </section>
+
+        <section className="narrow">
+          <Grid container spacing={4}>
+            <Grid item md={6} xs={12}>
+              <img src={stepTwo} alt="Step Two" />
+            </Grid>
+            <Grid container item alignItems="center" md={6} xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h2">Step 2</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h3">Find your location</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">
+                    Search for the "PitchIn" workspace in Zelos.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">
+                    Join the closest Group in your area.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">Browse tasks an PitchIn.</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </section>
+
+        <section className="wide">
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h2" align="center">
+                Need Help?
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h4" align="center">
+                Whatsapp us and we will guide you through getting started.
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h3" align="center">
+                +27 82 337 3796
+              </Typography>
+            </Grid>
+          </Grid>
+        </section>
+
+        <footer className="">
+          <Grid container justify="flex-end" spacing={2}>
+            <Grid item xs={3}>
+              <Typography variant="caption">
+                © Copyright Pitchin SA 2020
+              </Typography>
+            </Grid>
+          </Grid>
+
+          {!loading && (
+            <Box p={2}>
+              <LangBar
+                locales={locales}
+                selectLanguage={(languageCode) => setLocale(languageCode)}
+                current={locale}
+              />
+            </Box>
+          )}
+        </footer>
       </Grid>
-    </Grid>
+    </div>
   );
 };
 

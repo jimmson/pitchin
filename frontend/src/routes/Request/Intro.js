@@ -15,14 +15,6 @@ import { ReactComponent as PlayStore } from "../../assets/playStore.svg";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    // display: "flex",
-    // justifyContent: "center",
-    // "& > *": {
-    //   margin: theme.spacing(1),
-    // },
-  },
-  intro: {
-    padding: "4rem",
   },
 }));
 

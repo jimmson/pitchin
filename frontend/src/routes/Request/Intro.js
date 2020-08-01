@@ -5,7 +5,15 @@ import { LangBar, AppToolbar } from "../../components/Bar";
 import useLocale, { setLocale } from "../../hooks/useLocale";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+} from "@material-ui/core";
 
+import bullet from "../../assets/bullet.png";
 import stepOne from "../../assets/step-1-image.png";
 import stepTwo from "../../assets/step-2-image.png";
 
@@ -51,7 +59,7 @@ const Intro = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h6">⟶ how does it work</Typography>
+                  <Typography variant="h6">⟶ So, how does it work?</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -62,12 +70,13 @@ const Intro = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="h3" align="center">
-                Get Started
+                Getting started
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" align="center">
-                Using PitchIn is free and only takes a few steps to get started
+                Using PitchIn is free and only takes a few simple steps to get
+                going
               </Typography>
             </Grid>
           </Grid>
@@ -103,7 +112,7 @@ const Intro = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <AppStore className="app-landing__link" />
+                          <AppStore />
                         </a>
                       </Grid>
                       <Grid item>
@@ -112,7 +121,7 @@ const Intro = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <PlayStore className="app-landing__link" />
+                          <PlayStore />
                         </a>
                       </Grid>
                     </Grid>
@@ -140,17 +149,24 @@ const Intro = () => {
                   <Typography variant="h4">Find your location</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h6">
-                    Search for the "PitchIn" workspace in Zelos.
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h6">
-                    Join the closest Group in your area.
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h6">Browse tasks an PitchIn.</Typography>
+                  <List dense="false">
+                    {[
+                      `Search for the "PitchIn" workspace in Zelos`,
+                      `Join the closest Group in your area`,
+                      `Browse tasks and PitchIn`,
+                    ].map((text) => (
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar alt="step" src={bullet} />
+                        </ListItemAvatar>
+                        <ListItemText>
+                          <Typography component="span" variant="h6">
+                            {text}
+                          </Typography>
+                        </ListItemText>
+                      </ListItem>
+                    ))}
+                  </List>
                 </Grid>
               </Grid>
             </Grid>
@@ -166,7 +182,7 @@ const Intro = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" align="center">
-                Whatsapp us and we will guide you through getting started.
+                Whatsapp us and we'll guide you through the process
               </Typography>
             </Grid>
             <Grid item xs={12}>

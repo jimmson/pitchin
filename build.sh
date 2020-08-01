@@ -2,6 +2,16 @@
 
 set -x
 
+# Checkout latest
+git checkout master
+git pull
+
+# Build backend
+(
+    cd backend
+    npm install
+)
+
 # Build frontend
 (
     cd frontend
@@ -10,7 +20,9 @@ set -x
 )
 
 # Build backend
-(
-    cd backend
-    npm install
-)
+docker-compose build back-end
+docker-compose up -d back-end
+
+# Build frontend
+docker-compose build front-end
+docker-compose up -d front-end

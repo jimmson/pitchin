@@ -4,7 +4,7 @@ import { IntlProvider } from "react-intl";
 import Container from "@material-ui/core/Container";
 
 import Router from "./Router";
-import { isLoggedIn, LoggedInContext } from "./utils/auth";
+import { isLoggedInAdmin, LoggedInContext } from "./utils/auth";
 
 // Styles
 import { lightTheme, variables } from "./styles/theme";
@@ -17,7 +17,7 @@ import useLocale, { fetchLocales } from "./hooks/useLocale";
 // TODO: ThemeProvider throws error I suppose because when we started moving to Material UI it want the MUI theme provider. This is styled.
 
 export default () => {
-  const [isLogged, setLogged] = useState(isLoggedIn());
+  const [isLogged, setLogged] = useState(isLoggedInAdmin());
 
   const [{ locale, messages, loading }] = useLocale();
 

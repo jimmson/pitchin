@@ -93,13 +93,13 @@ const Intro = () => {
                   <Typography variant="h4">Download Zelos</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <List dense="false">
+                  <List dense={true}>
                     {[
                       `Open the App or Play store`,
                       `Search "Zelos"`,
                       `Install the Zelos Team Managment app`,
-                    ].map((text) => (
-                      <ListItem>
+                    ].map((text, index) => (
+                      <ListItem key={index}>
                         <ListItemAvatar>
                           <SvgIcon>
                             <Logo />
@@ -166,13 +166,13 @@ const Intro = () => {
                   <Typography variant="h4">Find your location</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <List dense="false">
+                  <List dense={true}>
                     {[
                       `Search for the "PitchIn" workspace in Zelos`,
                       `Join the closest Group in your area`,
                       `Browse tasks and PitchIn`,
-                    ].map((text) => (
-                      <ListItem>
+                    ].map((text, index) => (
+                      <ListItem key={index}>
                         <ListItemAvatar>
                           <SvgIcon>
                             <Logo />

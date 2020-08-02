@@ -2,7 +2,6 @@ import isEmail from "isemail";
 import React, { useContext } from "react";
 import { Formik } from "formik";
 import { login, LoggedInContext } from "../../utils/auth";
-import { FormattedMessage } from "react-intl";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
@@ -45,7 +44,7 @@ export default function Login() {
                   className="input"
                   id="email"
                   name="email"
-                  label={<FormattedMessage id="email" />}
+                  label="email"
                   variant="outlined"
                   value={props.values.email}
                   onChange={props.handleChange}
@@ -56,7 +55,7 @@ export default function Login() {
                   className="input"
                   id="password"
                   name="password"
-                  label={<FormattedMessage id="password" />}
+                  label="password"
                   variant="outlined"
                   type="password"
                   value={props.values.password}
@@ -66,7 +65,7 @@ export default function Login() {
               </div>
               <div className="action-wrapper">
                 <Button variant="contained" color="primary" type="submit">
-                  <FormattedMessage id="login" />
+                  login
                 </Button>
               </div>
             </form>

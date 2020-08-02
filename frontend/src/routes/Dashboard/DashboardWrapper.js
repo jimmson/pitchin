@@ -1,6 +1,6 @@
 import React, { useEffect, useState, createContext } from "react";
 import globalAxios from "axios";
-import { isLoggedIn } from "../../utils/auth";
+import { isLoggedInAdmin } from "../../utils/auth";
 import history from "../../utils/history";
 import axios from "../../utils/axios";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
@@ -46,7 +46,7 @@ export default function Dashboard(props) {
   }
 
   useEffect(() => {
-    if (!isLoggedIn()) {
+    if (!isLoggedInAdmin()) {
       history.replace("/auth");
     } else {
       setLoginChecked(true);

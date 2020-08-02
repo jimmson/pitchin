@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import { Formik, Form } from "formik";
 import axios from "../../utils/axios";
+import { isLoggedIn } from "../../utils/auth";
 import history from "../../utils/history";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
@@ -9,10 +10,16 @@ const defaultContext = { categories: [], areas: [] };
 export const RequestOptionsContext = createContext(defaultContext);
 
 export default function RequestWrapper(props) {
+  const [loginChecked, setLoginChecked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [requestOptions, setRequestOptions] = useState(defaultContext);
 
   useEffect(() => {
+    if (!isLoggedIn()) {
+      history.replace("/auth");
+    } else {
+      setLoginChecked(true);
+    }
     async function fetchData() {
       try {
         const {
@@ -33,7 +40,7 @@ export default function RequestWrapper(props) {
     fetchData();
   }, []);
 
-  if (!isLoaded) return <LoadingSpinner />;
+  if (!loginChecked || !isLoaded) return <LoadingSpinner />;
 
   return (
     <div className="request">

@@ -10,15 +10,15 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
-  Avatar,
+  SvgIcon,
 } from "@material-ui/core";
 
-import bullet from "../../assets/bullet.png";
 import stepOne from "../../assets/step-1-image.png";
 import stepTwo from "../../assets/step-2-image.png";
 
 import { ReactComponent as AppStore } from "../../assets/appStore.svg";
 import { ReactComponent as PlayStore } from "../../assets/playStore.svg";
+import { ReactComponent as Logo } from "../../assets/logo-icon.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,13 +93,30 @@ const Intro = () => {
                   <Typography variant="h4">Download Zelos</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h6">
-                    Get Zelos through the App or Play store.
-                  </Typography>
+                  <List dense="false">
+                    {[
+                      `Open the App or Play store`,
+                      `Search "Zelos"`,
+                      `Install the Zelos Team Managment app`,
+                    ].map((text) => (
+                      <ListItem>
+                        <ListItemAvatar>
+                          <SvgIcon>
+                            <Logo />
+                          </SvgIcon>
+                        </ListItemAvatar>
+                        <ListItemText>
+                          <Typography component="span" variant="h6">
+                            {text}
+                          </Typography>
+                        </ListItemText>
+                      </ListItem>
+                    ))}
+                  </List>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2">
-                    *PitchIn use Zelos to connect you with the most important
+                    * PitchIn use Zelos to connect you with the most important
                     tasks in your area.
                   </Typography>
                 </Grid>
@@ -157,7 +174,9 @@ const Intro = () => {
                     ].map((text) => (
                       <ListItem>
                         <ListItemAvatar>
-                          <Avatar alt="step" src={bullet} />
+                          <SvgIcon>
+                            <Logo />
+                          </SvgIcon>
                         </ListItemAvatar>
                         <ListItemText>
                           <Typography component="span" variant="h6">

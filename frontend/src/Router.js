@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 // Routes
-import Intro from "./routes/Request/Intro";
+import Intro from "./routes/Site/Intro";
 
 import Launch from "./routes/Request/Launch";
 import MoreInfo from "./routes/Request/MoreInfo";

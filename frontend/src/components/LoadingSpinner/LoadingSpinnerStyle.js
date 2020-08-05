@@ -19,8 +19,6 @@ export default createGlobalStyle`
         width: 40px;
         height: 40px;
         border:  solid 4px transparent;
-        border-top-color: ${({ theme }) => theme.primary} !important;
-        border-left-color: ${({ theme }) => theme.primary} !important;
         border-radius: 50%;}
 
 @keyframes loading-bar-spinner {

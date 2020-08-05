@@ -7,7 +7,17 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 
+import { makeStyles } from "@material-ui/core/styles";
+import { List, ListItem, ListItemText, ListSubheader } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  list: {
+    width: "100%",
+  },
+}));
+
 function Category() {
+  const classes = useStyles();
   const { categories } = useContext(RequestOptionsContext);
   const { setFieldValue } = useFormikContext();
 
@@ -17,18 +27,44 @@ function Category() {
   }
 
   const SelectorButtons = () => {
-    return categories.map((category) => (
-      <Grid item key={category._id}>
-        <Button
-          key={category._id}
-          onClick={() => select(category._id)}
-          variant="contained"
-          size="large"
-        >
-          {category.name}
-        </Button>
-      </Grid>
-    ));
+    let map = {};
+    categories.forEach((category) => {
+      map[category.organisation] = map[category.organisation] || [];
+      map[category.organisation].push({
+        _id: category._id,
+        name: category.name,
+      });
+    });
+
+    let organisations = [];
+    for (var propt in map) {
+      organisations.push({
+        name: propt,
+        categories: map[propt],
+      });
+    }
+
+    return (
+      <>
+        {organisations.map((organisation, index) => (
+          <List
+            className={classes.list}
+            key={index}
+            subheader={<ListSubheader>{organisation.name}</ListSubheader>}
+          >
+            {organisation.categories.map((categories) => (
+              <ListItem
+                key={categories._id}
+                button
+                onClick={() => select(categories._id)}
+              >
+                <ListItemText primary={categories.name} />
+              </ListItem>
+            ))}
+          </List>
+        ))}
+      </>
+    );
   };
 
   return (

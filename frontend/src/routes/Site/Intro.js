@@ -3,7 +3,7 @@ import React from "react";
 import { Typography, Grid } from "@material-ui/core";
 import { LangBar, AppToolbar } from "../../components/Bar";
 import useLocale, { setLocale } from "../../hooks/useLocale";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import {
   List,
@@ -11,6 +11,8 @@ import {
   ListItemText,
   ListItemAvatar,
   SvgIcon,
+  Container,
+  Divider,
 } from "@material-ui/core";
 
 import stepOne from "../../assets/step-1-image.png";
@@ -20,9 +22,15 @@ import { ReactComponent as AppStore } from "../../assets/appStore.svg";
 import { ReactComponent as PlayStore } from "../../assets/playStore.svg";
 import { ReactComponent as Logo } from "../../assets/logo-icon.svg";
 
+import { theme } from "../../styles/theme";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    paddingTop: "96px",
+  },
+  container: {
+    padding: "96px 16px",
   },
 }));
 
@@ -31,15 +39,17 @@ const Intro = () => {
   const [{ locale, locales, loading }] = useLocale();
 
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <AppToolbar />
       <Grid container direction="column" className={classes.root}>
-        <section className="wide hero">
+        <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
             <Grid container item md={4} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h3">PitchIn</Typography>
+                  <Typography variant="h1" color="primary">
+                    PitchIn
+                  </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h6">
@@ -59,19 +69,24 @@ const Intro = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h6">⟶ So, how does it work?</Typography>
+                  <Typography variant="h6" color="primary">
+                    ⟶ So, how does it work?
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </section>
+        </Container>
 
-        <section className="narrow">
+        <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h3" align="center">
+              <Typography variant="h3" align="center" color="primary">
                 Getting started
               </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider variant="middle" />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" align="center">
@@ -80,17 +95,21 @@ const Intro = () => {
               </Typography>
             </Grid>
           </Grid>
-        </section>
+        </Container>
 
-        <section className="narrow">
+        <Container className={classes.container} maxWidth="md">
           <Grid container spacing={4}>
             <Grid container item alignItems="center" md={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h3">Step 1</Typography>
+                  <Typography variant="h3" color="primary">
+                    Step 1
+                  </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h4">Download Zelos</Typography>
+                  <Typography variant="h4" color="primary">
+                    Download Zelos
+                  </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <List dense={true}>
@@ -116,7 +135,7 @@ const Intro = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2">
-                    * PitchIn use Zelos to connect you with the most important
+                    * PitchIn uses Zelos to connect you with the most important
                     tasks in your area.
                   </Typography>
                 </Grid>
@@ -150,9 +169,9 @@ const Intro = () => {
               <img src={stepOne} alt="Step One" />
             </Grid>
           </Grid>
-        </section>
+        </Container>
 
-        <section className="narrow">
+        <Container className={classes.container} maxWidth="md">
           <Grid container spacing={4}>
             <Grid item md={6} xs={12}>
               <img src={stepTwo} alt="Step Two" />
@@ -160,10 +179,14 @@ const Intro = () => {
             <Grid container item alignItems="center" md={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h3">Step 2</Typography>
+                  <Typography variant="h3" color="primary">
+                    Step 2
+                  </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h4">Find your location</Typography>
+                  <Typography variant="h4" color="primary">
+                    Find your location
+                  </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <List dense={true}>
@@ -190,14 +213,17 @@ const Intro = () => {
               </Grid>
             </Grid>
           </Grid>
-        </section>
+        </Container>
 
-        <section className="wide">
+        <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h3" align="center">
+              <Typography variant="h3" align="center" color="primary">
                 Need Help?
               </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider variant="middle" />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" align="center">
@@ -205,12 +231,12 @@ const Intro = () => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h4" align="center">
+              <Typography variant="h4" align="center" color="primary">
                 +27 82 337 3796
               </Typography>
             </Grid>
           </Grid>
-        </section>
+        </Container>
 
         <footer className="">
           <Grid container justify="flex-end" spacing={2}>
@@ -232,7 +258,7 @@ const Intro = () => {
           )}
         </footer>
       </Grid>
-    </div>
+    </ThemeProvider>
   );
 };
 

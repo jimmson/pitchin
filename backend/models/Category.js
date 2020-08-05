@@ -5,6 +5,7 @@ const categorySchema = new mongoose.Schema({
   name: String,
   description: String,
   needsAddress: Boolean,
+  organisation: String,
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -47,6 +48,7 @@ class Category {
             name: el.name,
             _id: el._id,
             needsAddress: el.needsAddress,
+            organisation: el.organisation,
           };
           return category;
         }

@@ -22,26 +22,24 @@ export default function ResetEmail() {
   }
 
   return (
-    <div className="auth-children">
-      <div className="auth-children-wrapper">
-        <div className="input-container">
-          <CustomInput
-            labelId="email"
-            name="email"
-            modifier="primary"
-            type="email"
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="action-wrapper">
-          <CustomButton
-            titleId="sendPasswordToEmail"
-            modifier="primary"
-            onClick={reset}
-          />
-        </div>
+    <>
+      <div className="input-container">
+        <CustomInput
+          labelId="email"
+          name="email"
+          modifier="primary"
+          type="email"
+          onChange={handleInputChange}
+        />
       </div>
-    </div>
+
+      <div className="action-wrapper">
+        <CustomButton
+          titleId="sendPasswordToEmail"
+          modifier="primary"
+          onClick={reset}
+        />
+      </div>
+    </>
   );
 }

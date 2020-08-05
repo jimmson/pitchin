@@ -32,28 +32,26 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="auth-children">
-      <div className="auth-children-wrapper">
-        <div className="input-container">
-          <TextField
-            style={{ width: "100%" }}
-            className="input"
-            id="password"
-            name="password"
-            label={<FormattedMessage id="password" />}
-            variant="outlined"
-            type="password"
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="action-wrapper">
-          <Button variant="contained" color="primary" onClick={reset}>
-            <FormattedMessage id="sendPasswordToEmail" />
-          </Button>
-        </div>
+    <>
+      <div className="input-container">
+        <TextField
+          style={{ width: "100%" }}
+          className="input"
+          id="password"
+          name="password"
+          label={<FormattedMessage id="password" />}
+          variant="outlined"
+          type="password"
+          onChange={handleInputChange}
+          required
+        />
       </div>
-    </div>
+
+      <div className="action-wrapper">
+        <Button variant="contained" color="primary" onClick={reset}>
+          <FormattedMessage id="sendPasswordToEmail" />
+        </Button>
+      </div>
+    </>
   );
 }

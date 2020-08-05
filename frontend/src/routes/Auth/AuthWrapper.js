@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Container from "@material-ui/core/Container";
 import { isLoggedInAdmin } from "../../utils/auth";
 import history from "../../utils/history";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
@@ -17,8 +18,8 @@ export default function Auth(props) {
   if (!isLoginChecked) return <LoadingSpinner />;
 
   return (
-    <div className="auth">
-      <div className="auth-wrapper">{props.children}</div>
-    </div>
+    <Container maxWidth="sm">
+      <div>{props.children}</div>
+    </Container>
   );
 }

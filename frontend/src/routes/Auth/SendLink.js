@@ -19,26 +19,24 @@ export default function SendLink(props, e) {
   }
 
   return (
-    <div className="auth-children">
-      <div className="auth-children-wrapper">
-        <div className="input-container">
-          <CustomInput
-            labelId="email"
-            name="email"
-            modifier="primary"
-            type="email"
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="action-wrapper">
-          <CustomButton
-            titleId="sendEmail"
-            modifier="primary"
-            onClick={sendLink}
-          />
-        </div>
+    <>
+      <div className="input-container">
+        <CustomInput
+          labelId="email"
+          name="email"
+          modifier="primary"
+          type="email"
+          onChange={handleInputChange}
+        />
       </div>
-    </div>
+
+      <div className="action-wrapper">
+        <CustomButton
+          titleId="sendEmail"
+          modifier="primary"
+          onClick={sendLink}
+        />
+      </div>
+    </>
   );
 }

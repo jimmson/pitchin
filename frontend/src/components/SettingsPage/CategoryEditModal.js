@@ -10,7 +10,7 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import axios from "../../utils/axios";
 import { FormattedMessage } from "react-intl";
 import DialogForm from "../../components/CustomInput/DialogForm";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { FormControlLabel, TextField, MenuItem } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormInput from "../../components/CustomInput/FormInput";
 
@@ -58,6 +58,8 @@ export const CategoryEditModal = ({
 }) => {
   const { action, selected: category } = data;
 
+  const organisations = ["Ladles of Love", "Greenpop"];
+
   const handleDelete = () => {
     deleteCategory(category);
     selectedCategoryEdited();
@@ -81,6 +83,7 @@ export const CategoryEditModal = ({
             name: category?.name || "",
             description: category?.description || "",
             needsAddress: category?.needsAddress || false,
+            organisation: category?.organisation || "",
           }}
           onSubmit={async (values, formik) => {
             try {
@@ -108,6 +111,22 @@ export const CategoryEditModal = ({
             <div className="inputContainer">
               <FormInput name="name" label={"locale.fieldName"} />
               <FormInput name="description" label={"locale.fieldDescription"} />
+              <Field
+                name="organisation"
+                as={TextField}
+                // TODO():localise.
+                label="organisation"
+                variant="outlined"
+                fullWidth
+                required
+                select
+              >
+                {organisations.map((organisation, index) => (
+                  <MenuItem value={organisation} key={index}>
+                    {organisation}
+                  </MenuItem>
+                ))}
+              </Field>
               <FormControlLabel
                 className={"mt-10"}
                 control={

@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormikContext, Field } from "formik";
 import history from "../../utils/history";
-import { TextField, Button, Grid } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
+import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,51 +36,40 @@ function Request() {
   }
 
   return (
-    <Grid container spacing={0}>
-      <Grid item md={12} xs={12}>
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-          style={{ minHeight: "100%" }}
+    <Grid container spacing={2} align="center">
+      <Grid item xs={12}>
+        <Typography variant="h4" color="primary">
+          <FormattedMessage id="writeRequest.content.header" />
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Field
+          name="request"
+          as={TextField}
+          label={<FormattedMessage id="writeRequest.content.body" />}
+          placeholder={intl.formatMessage({
+            id: "writeRequest.placeholders.request",
+          })}
+          variant="outlined"
+          multiline
+          rows="5"
+          required
+          fullWidth
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <Button type="button" onClick={back} variant="contained">
+          <FormattedMessage id="writeRequest.buttons.back" />
+        </Button>
+        <Button
+          color="primary"
+          onClick={next}
+          type="button"
+          disabled={!values.request}
+          variant="contained"
         >
-          <Box m={2}>
-            <h1 className="text-alpha">
-              <FormattedMessage id="writeRequest.content.header" />
-            </h1>
-
-            <Field
-              name="request"
-              as={TextField}
-              label={<FormattedMessage id="writeRequest.content.body" />}
-              placeholder={intl.formatMessage({
-                id: "writeRequest.placeholders.request",
-              })}
-              variant="outlined"
-              multiline
-              rows="5"
-              required
-              fullWidth
-            />
-
-            <div className={classes.root}>
-              <Button type="button" onClick={back} variant="contained">
-                <FormattedMessage id="writeRequest.buttons.back" />
-              </Button>
-              <Button
-                color="primary"
-                onClick={next}
-                type="button"
-                disabled={!values.request}
-                variant="contained"
-              >
-                <FormattedMessage id="writeRequest.buttons.next" />
-              </Button>
-            </div>
-          </Box>
-        </Grid>
+          <FormattedMessage id="writeRequest.buttons.next" />
+        </Button>
       </Grid>
     </Grid>
   );

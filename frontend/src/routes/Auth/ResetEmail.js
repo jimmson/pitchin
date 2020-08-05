@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import isEmail from "isemail";
+import { Grid, TextField } from "@material-ui/core";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import CustomInput from "../../components/CustomInput/CustomInput";
 
 export default function ResetEmail() {
   const [email, setEmail] = useState("");
@@ -22,24 +22,26 @@ export default function ResetEmail() {
   }
 
   return (
-    <>
-      <div className="input-container">
-        <CustomInput
-          labelId="email"
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <TextField
+          id="email"
           name="email"
-          modifier="primary"
+          label="email"
           type="email"
+          variant="outlined"
           onChange={handleInputChange}
+          required
+          fullWidth
         />
-      </div>
-
-      <div className="action-wrapper">
+      </Grid>
+      <Grid item xs={12}>
         <CustomButton
           titleId="sendPasswordToEmail"
           modifier="primary"
           onClick={reset}
         />
-      </div>
-    </>
+      </Grid>
+    </Grid>
   );
 }

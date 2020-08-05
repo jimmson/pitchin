@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import CustomInput from "../../components/CustomInput/CustomInput";
+import TextField from "@material-ui/core/TextField";
 import { FormattedMessage } from "react-intl";
 
 export default function TaskModal({
@@ -25,11 +25,9 @@ export default function TaskModal({
         <FormattedMessage id={`modal.${modalType}.description`} tagName="h2" />
         {showCommentField && (
           <div className="modal__comment">
-            <CustomInput
-              labelId="modal.comment"
+            <TextField
               name="comment"
-              modifier="secondary"
-              layout="textarea"
+              label={<FormattedMessage id="modal.comment" />}
               onChange={handleCommentChange}
             />
           </div>

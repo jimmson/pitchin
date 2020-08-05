@@ -65,7 +65,6 @@ export const TicketEditForm = (props) => {
         {(fProps) => (
           <form className={classes.root} onSubmit={fProps.handleSubmit}>
             <TextField
-              className="input"
               id="request"
               name="request"
               label={<FormattedMessage id="request" />}
@@ -80,7 +79,6 @@ export const TicketEditForm = (props) => {
             />
 
             <TextField
-              className="input"
               id="requesterName"
               name="name"
               label={<FormattedMessage id="requesterName" />}
@@ -93,7 +91,6 @@ export const TicketEditForm = (props) => {
             />
 
             <FormControl
-              className="input"
               variant="outlined"
               fullWidth
               error={!!fProps.errors?.category}
@@ -127,7 +124,6 @@ export const TicketEditForm = (props) => {
             </FormControl>
 
             <TextField
-              className="input"
               id="phone"
               name="phone"
               label={<FormattedMessage id="phone" />}
@@ -143,7 +139,6 @@ export const TicketEditForm = (props) => {
               getSelectedCategory(fProps.values.category) &&
               getSelectedCategory(fProps.values.category).needsAddress && (
                 <TextField
-                  className="input"
                   id="address"
                   name="address"
                   label={<FormattedMessage id="address" />}
@@ -157,7 +152,6 @@ export const TicketEditForm = (props) => {
               )}
 
             <FormControl
-              className="input"
               variant="outlined"
               fullWidth
               error={!!fProps.errors?.area}
@@ -190,7 +184,6 @@ export const TicketEditForm = (props) => {
             </FormControl>
 
             <FormControl
-              className="input"
               variant="outlined"
               fullWidth
               error={!!fProps.errors?.owner}

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useFormikContext } from "formik";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import history from "../../utils/history";
 
@@ -15,35 +15,23 @@ function Confirmed() {
   }, [isValid]);
 
   return (
-    <Grid container spacing={0}>
+    <Grid container spacing={2} align="center">
       <Grid item xs={12}>
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-          style={{ minHeight: "100vh" }}
-        >
-          <div className="request-children-wrapper">
-            <div className="text-wrapper">
-              <h1 className="text-alpha">
-                <FormattedMessage id="confirmation.content.header" />
-              </h1>
-              <h3 className="text-alpha">
-                <FormattedMessage id="confirmation.content.body" />
-              </h3>
-
-              <div className="action-wrapper">
-                <Link to="/">
-                  <Button color="primary" variant="contained">
-                    <FormattedMessage id="confirmation.buttons.home" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </Grid>
+        <Typography variant="h4" color="primary">
+          <FormattedMessage id="confirmation.content.header" />
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body1">
+          <FormattedMessage id="confirmation.content.body" />
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Link to="/">
+          <Button color="primary" variant="contained">
+            <FormattedMessage id="confirmation.buttons.home" />
+          </Button>
+        </Link>
       </Grid>
     </Grid>
   );

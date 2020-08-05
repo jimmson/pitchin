@@ -2,7 +2,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-import TextField from "@material-ui/core/TextField";
+import { TextField, Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 export default function ResetPassword() {
@@ -32,11 +32,10 @@ export default function ResetPassword() {
   }
 
   return (
-    <>
-      <div className="input-container">
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
         <TextField
-          style={{ width: "100%" }}
-          className="input"
+          fullWidth
           id="password"
           name="password"
           label={<FormattedMessage id="password" />}
@@ -45,13 +44,12 @@ export default function ResetPassword() {
           onChange={handleInputChange}
           required
         />
-      </div>
-
-      <div className="action-wrapper">
+      </Grid>
+      <Grid item xs={12}>
         <Button variant="contained" color="primary" onClick={reset}>
           <FormattedMessage id="sendPasswordToEmail" />
         </Button>
-      </div>
-    </>
+      </Grid>
+    </Grid>
   );
 }

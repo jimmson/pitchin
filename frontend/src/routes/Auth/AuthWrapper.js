@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Container from "@material-ui/core/Container";
+import { Container, Grid } from "@material-ui/core";
 import { isLoggedInAdmin } from "../../utils/auth";
 import history from "../../utils/history";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
@@ -19,7 +19,18 @@ export default function Auth(props) {
 
   return (
     <Container maxWidth="sm">
-      <div>{props.children}</div>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid container item xs={12}>
+          {props.children}
+        </Grid>
+      </Grid>
     </Container>
   );
 }

@@ -3,12 +3,16 @@ import { useFormikContext } from "formik";
 import { FormattedMessage } from "react-intl";
 import history from "../../utils/history";
 import { RequestOptionsContext } from "./RequestWrapper";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-
 import { makeStyles } from "@material-ui/core/styles";
-import { List, ListItem, ListItemText, ListSubheader } from "@material-ui/core";
+import {
+  Button,
+  Typography,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -69,45 +73,30 @@ function Category() {
   };
 
   return (
-    <Grid container spacing={0}>
-      <Grid item md={12} xs={12}>
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-          style={{ minHeight: "100%" }}
-        >
-          <Box m={2}>
-            <h1 className="text-alpha">
-              <FormattedMessage id="selectCategory.content.header" />
-            </h1>
-
-            <h3 className="text-alpha">
-              <FormattedMessage
-                id="selectCategory.content.body"
-                values={{ p: (...chunks) => <p>{chunks}</p> }}
-              />
-            </h3>
-
-            <Grid container direction="row" justify="center" spacing={2}>
-              <SelectorButtons />
-            </Grid>
-
-            <Grid container direction="row" justify="center" spacing={0}>
-              <Box pt={1}>
-                <FormattedMessage id="selectCategory.content.or" />
-              </Box>
-            </Grid>
-
-            <Grid container direction="row" justify="center" spacing={0}>
-              <Button onClick={() => history.push("/")}>
-                <FormattedMessage id="selectCategory.buttons.back" />
-              </Button>
-            </Grid>
-          </Box>
-        </Grid>
+    <Grid container spacing={2} align="center">
+      <Grid item xs={12}>
+        <Typography variant="h4" color="primary">
+          <FormattedMessage id="selectCategory.content.header" />
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body1">
+          <FormattedMessage
+            id="selectCategory.content.body"
+            values={{ p: (...chunks) => <p>{chunks}</p> }}
+          />
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <SelectorButtons />
+      </Grid>
+      <Grid item xs={12}>
+        <FormattedMessage id="selectCategory.content.or" />
+      </Grid>
+      <Grid item xs={12}>
+        <Button onClick={() => history.push("/")}>
+          <FormattedMessage id="selectCategory.buttons.back" />
+        </Button>
       </Grid>
     </Grid>
   );

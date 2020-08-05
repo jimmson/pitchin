@@ -2,7 +2,6 @@ import React, { useState, useEffect, createContext, useContext } from "react";
 import { Formik, Field, Form } from "formik";
 import isEmail from "isemail";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import CustomInput from "../../components/CustomInput/CustomInput";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { FormattedMessage } from "react-intl";
 import axios from "../../utils/axios";
@@ -26,6 +25,7 @@ import FormInput from "../../components/CustomInput/FormInput";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { TextField } from "@material-ui/core";
 
 const UsersContext = createContext({ data: [], set: () => {} });
 
@@ -249,16 +249,16 @@ const InviteUserForm = () => {
           isInitialValid={false}
         >
           <Form className="input-container">
-            <Field as={CustomInput} name="email" type="email" required />
+            <Field
+              as={TextField}
+              name="email"
+              type="email"
+              label="email"
+              required
+            />
             <Field name="admin">
               {({ field }) => (
-                <CustomInput
-                  name={field.name}
-                  labelId="admin"
-                  layout="checkbox"
-                  checked={field.value}
-                  {...field}
-                />
+                <Checkbox name={field.name} checked={field.value} {...field} />
               )}
             </Field>
             <Field>

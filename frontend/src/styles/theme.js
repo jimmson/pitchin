@@ -17,6 +17,11 @@ const green = "#72d2ab";
 
 export const theme = createMuiTheme({
   overrides: {
+    MuiTypography: {
+      h1: {
+        fontWeight: 500,
+      },
+    },
     MuiDivider: {
       root: {
         height: "0.2rem",

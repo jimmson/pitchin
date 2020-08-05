@@ -3,7 +3,7 @@ import axios from "../../utils/axios";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Field, Form, Formik } from "formik";
-import FormInput from "../../components/CustomInput/FormInput";
+import TextField from "@material-ui/core/TextField";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { FormattedMessage } from "react-intl";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -55,42 +55,53 @@ export default () => {
             }}
           >
             <Form>
-              <div className="input-container">
-                <FormInput
-                  name="subdomain"
-                  label={"locale.fieldZelosSubdomain"}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        .zelos.space
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <FormInput
-                  name="email"
-                  label={"locale.fieldZelosEmail"}
-                  type={"email"}
-                />
-                <FormInput
-                  name="password"
-                  label={"locale.fieldZelosPassword"}
-                  type={"password"}
-                />
-              </div>
-
-              <div className="category-action">
-                <Field>
-                  {({ form }) => (
-                    <CustomButton
-                      titleId="save"
-                      modifier="primary"
-                      type="submit"
-                      disabled={form.isSubmitting || !form.isValid}
-                    />
-                  )}
-                </Field>
-              </div>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    name="subdomain"
+                    label={<FormattedMessage id="locale.fieldZelosSubdomain" />}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          .zelos.space
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    name="email"
+                    label={<FormattedMessage id="locale.fieldZelosEmail" />}
+                    type={"email"}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    name="password"
+                    label={<FormattedMessage id="locale.fieldZelosPassword" />}
+                    type={"password"}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field>
+                    {({ form }) => (
+                      <CustomButton
+                        titleId="save"
+                        modifier="primary"
+                        type="submit"
+                        disabled={form.isSubmitting || !form.isValid}
+                      />
+                    )}
+                  </Field>
+                </Grid>
+              </Grid>
             </Form>
           </Formik>
         </Grid>
@@ -121,58 +132,65 @@ export default () => {
             }}
           >
             <Form>
-              <div className="input-container">
-                <FormInput
-                  name="safetyWarning"
-                  label={"safetyWarning"}
-                  multiline
-                />
-                <FormControlLabel
-                  className={"mt-10"}
-                  control={
-                    <Field name="confirmCompletion">
-                      {({ field }) => (
-                        <Checkbox
-                          color="primary"
-                          name={field.name}
-                          checked={field.value}
-                          {...field}
-                        />
-                      )}
-                    </Field>
-                  }
-                  label={<FormattedMessage id="confirmCompletion" />}
-                />
-                <FormControlLabel
-                  className={"mt-10"}
-                  control={
-                    <Field name="confirmAssignment">
-                      {({ field }) => (
-                        <Checkbox
-                          color="primary"
-                          name={field.name}
-                          checked={field.value}
-                          {...field}
-                        />
-                      )}
-                    </Field>
-                  }
-                  label={<FormattedMessage id="confirmAssignment" />}
-                />
-              </div>
-
-              <div className="category-action">
-                <Field>
-                  {({ form }) => (
-                    <CustomButton
-                      titleId="save"
-                      modifier="primary"
-                      type="submit"
-                      disabled={form.isSubmitting || !form.isValid}
-                    />
-                  )}
-                </Field>
-              </div>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    name="safetyWarning"
+                    label={<FormattedMessage id="safetyWarning" />}
+                    multiline
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    className={"mt-10"}
+                    control={
+                      <Field name="confirmCompletion">
+                        {({ field }) => (
+                          <Checkbox
+                            color="primary"
+                            name={field.name}
+                            checked={field.value}
+                            {...field}
+                          />
+                        )}
+                      </Field>
+                    }
+                    label={<FormattedMessage id="confirmCompletion" />}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    className={"mt-10"}
+                    control={
+                      <Field name="confirmAssignment">
+                        {({ field }) => (
+                          <Checkbox
+                            color="primary"
+                            name={field.name}
+                            checked={field.value}
+                            {...field}
+                          />
+                        )}
+                      </Field>
+                    }
+                    label={<FormattedMessage id="confirmAssignment" />}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field>
+                    {({ form }) => (
+                      <CustomButton
+                        titleId="save"
+                        modifier="primary"
+                        type="submit"
+                        disabled={form.isSubmitting || !form.isValid}
+                      />
+                    )}
+                  </Field>
+                </Grid>
+              </Grid>
             </Form>
           </Formik>
         </Grid>

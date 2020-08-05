@@ -8,8 +8,10 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import axios from "../../utils/axios";
-import DialogForm from "../../components/CustomInput/DialogForm";
-import FormInput from "../../components/CustomInput/FormInput";
+import { FormattedMessage } from "react-intl";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import Grid from "@material-ui/core/Grid";
 
 const styles = (theme) => ({
   root: {
@@ -56,7 +58,9 @@ export const AreaEditModal = ({ data, deleteArea, areaEdited }) => {
   };
 
   return (
-    <DialogForm
+    <Dialog
+      fullWidth
+      maxWidth={"sm"}
       onClose={() => areaEdited()}
       aria-labelledby="customized-dialog-title"
       open={true}
@@ -91,40 +95,47 @@ export const AreaEditModal = ({ data, deleteArea, areaEdited }) => {
           }}
         >
           <Form>
-            <div className="input-container">
-              <FormInput name="name" label={"locale.fieldName"} />
-            </div>
-            <div className="category-action">
-              <Field>
-                {({ form }) => (
-                  <CustomButton
-                    titleId="save"
-                    modifier="primary"
-                    type="submit"
-                    disabled={form.isSubmitting || !form.isValid}
-                  />
-                )}
-              </Field>
-              <CustomButton
-                titleId="cancel"
-                modifier="secondary"
-                type="button"
-                onClick={() => areaEdited()}
-              />
-              {action === "edit" ? (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Field
+                  as={TextField}
+                  fullWidth
+                  name="name"
+                  label={<FormattedMessage id={"locale.fieldName"} />}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field>
+                  {({ form }) => (
+                    <CustomButton
+                      titleId="save"
+                      modifier="primary"
+                      type="submit"
+                      disabled={form.isSubmitting || !form.isValid}
+                    />
+                  )}
+                </Field>
                 <CustomButton
-                  titleId="delete"
+                  titleId="cancel"
                   modifier="secondary"
                   type="button"
-                  onClick={() => handleDelete()}
+                  onClick={() => areaEdited()}
                 />
-              ) : (
-                <div />
-              )}
-            </div>
+                {action === "edit" ? (
+                  <CustomButton
+                    titleId="delete"
+                    modifier="secondary"
+                    type="button"
+                    onClick={() => handleDelete()}
+                  />
+                ) : (
+                  <div />
+                )}
+              </Grid>
+            </Grid>
           </Form>
         </Formik>
       </DialogContent>
-    </DialogForm>
+    </Dialog>
   );
 };

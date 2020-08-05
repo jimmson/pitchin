@@ -37,16 +37,21 @@ export const AppToolbar = () => {
       route: "/",
     },
   ];
+  if (isLoggedInAdmin()) {
+    buttons.push({
+      label: "Dashboard",
+      route: "/dashboard",
+    });
+  }
   if (isLoggedIn()) {
     buttons.push({
       label: "New Request",
       route: "/request",
     });
-  }
-  if (isLoggedInAdmin()) {
+  } else {
     buttons.push({
-      label: "Dashboard",
-      route: "/dashboard",
+      label: "Login",
+      route: "/auth/login",
     });
   }
 

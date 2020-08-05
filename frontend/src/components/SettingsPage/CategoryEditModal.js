@@ -9,10 +9,9 @@ import Typography from "@material-ui/core/Typography";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import axios from "../../utils/axios";
 import { FormattedMessage } from "react-intl";
-import DialogForm from "../../components/CustomInput/DialogForm";
-import { FormControlLabel, TextField, MenuItem } from "@material-ui/core";
+import { FormControlLabel, TextField, MenuItem, Grid } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
-import FormInput from "../../components/CustomInput/FormInput";
+import Dialog from "@material-ui/core/Dialog";
 
 const styles = (theme) => ({
   root: {
@@ -66,7 +65,9 @@ export const CategoryEditModal = ({
   };
 
   return (
-    <DialogForm
+    <Dialog
+      fullWidth
+      maxWidth={"sm"}
       onClose={() => selectedCategoryEdited()}
       aria-labelledby="customized-dialog-title"
       open={true}
@@ -108,74 +109,91 @@ export const CategoryEditModal = ({
           }}
         >
           <Form>
-            <div className="inputContainer">
-              <FormInput name="name" label={"locale.fieldName"} />
-              <FormInput name="description" label={"locale.fieldDescription"} />
-              <Field
-                name="organisation"
-                as={TextField}
-                // TODO():localise.
-                label="organisation"
-                variant="outlined"
-                fullWidth
-                required
-                select
-              >
-                {organisations.map((organisation, index) => (
-                  <MenuItem value={organisation} key={index}>
-                    {organisation}
-                  </MenuItem>
-                ))}
-              </Field>
-              <FormControlLabel
-                className={"mt-10"}
-                control={
-                  <Field name="needsAddress">
-                    {({ field }) => (
-                      <Checkbox
-                        color="primary"
-                        name={field.name}
-                        checked={field.value}
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                }
-                label={<FormattedMessage id="needsAddress" />}
-              />
-            </div>
-
-            <div className="category-action">
-              <Field>
-                {({ form }) => (
-                  <CustomButton
-                    titleId="save"
-                    modifier="primary"
-                    type="submit"
-                    disabled={form.isSubmitting || !form.isValid}
-                  />
-                )}
-              </Field>
-              <CustomButton
-                titleId="cancel"
-                modifier="secondary"
-                type="button"
-                onClick={() => selectedCategoryEdited()}
-              />
-              {action === "edit" ? (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Field
+                  as={TextField}
+                  fullWidth
+                  name="name"
+                  label={<FormattedMessage id="locale.fieldName" />}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  as={TextField}
+                  fullWidth
+                  name="description"
+                  label={<FormattedMessage id="locale.fieldDescription" />}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  as={TextField}
+                  name="organisation"
+                  // TODO():localise.
+                  label="organisation"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  select
+                >
+                  {organisations.map((organisation, index) => (
+                    <MenuItem value={organisation} key={index}>
+                      {organisation}
+                    </MenuItem>
+                  ))}
+                </Field>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  className={"mt-10"}
+                  control={
+                    <Field name="needsAddress">
+                      {({ field }) => (
+                        <Checkbox
+                          color="primary"
+                          name={field.name}
+                          checked={field.value}
+                          {...field}
+                        />
+                      )}
+                    </Field>
+                  }
+                  label={<FormattedMessage id="needsAddress" />}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field>
+                  {({ form }) => (
+                    <CustomButton
+                      titleId="save"
+                      modifier="primary"
+                      type="submit"
+                      disabled={form.isSubmitting || !form.isValid}
+                    />
+                  )}
+                </Field>
                 <CustomButton
-                  titleId="delete"
+                  titleId="cancel"
                   modifier="secondary"
                   type="button"
-                  onClick={() => handleDelete()}
+                  onClick={() => selectedCategoryEdited()}
                 />
-              ) : (
-                <div />
-              )}
-            </div>
+                {action === "edit" ? (
+                  <CustomButton
+                    titleId="delete"
+                    modifier="secondary"
+                    type="button"
+                    onClick={() => handleDelete()}
+                  />
+                ) : (
+                  <div />
+                )}
+              </Grid>
+            </Grid>
           </Form>
         </Formik>
       </DialogContent>
-    </DialogForm>
+    </Dialog>
   );
 };

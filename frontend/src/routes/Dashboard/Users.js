@@ -19,13 +19,12 @@ import TableBody from "@material-ui/core/TableBody";
 import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import DialogForm from "../../components/CustomInput/DialogForm";
 import DialogContent from "@material-ui/core/DialogContent";
-import FormInput from "../../components/CustomInput/FormInput";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { TextField } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
 
 const UsersContext = createContext({ data: [], set: () => {} });
 
@@ -33,7 +32,9 @@ const UserEditModal = ({ user, setSelectedUser }) => {
   const { data, set } = useContext(UsersContext);
 
   return (
-    <DialogForm
+    <Dialog
+      fullWidth
+      maxWidth={"sm"}
       onClose={() => setSelectedUser(null)}
       aria-labelledby="customized-dialog-title"
       open={true}
@@ -80,53 +81,73 @@ const UserEditModal = ({ user, setSelectedUser }) => {
           }}
         >
           <Form>
-            <div className="input-container">
-              <FormInput name="firstName" label={"locale.fieldFirstName"} />
-              <FormInput name="lastName" label={"locale.fieldLastName"} />
-              <FormInput
-                name="email"
-                label={"locale.fieldEmail"}
-                type="email"
-              />
-              <FormControlLabel
-                className={"mt-10"}
-                control={
-                  <Field name="status.admin">
-                    {({ field }) => (
-                      <Checkbox
-                        color="primary"
-                        name={field.name}
-                        checked={field.value}
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                }
-                label={<FormattedMessage id="admin" />}
-              />
-            </div>
-            <div className="category-action">
-              <Field>
-                {({ form }) => (
-                  <CustomButton
-                    titleId="save"
-                    modifier="primary"
-                    type="submit"
-                    disabled={form.isSubmitting || !form.isValid}
-                  />
-                )}
-              </Field>
-              <CustomButton
-                titleId="cancel"
-                modifier="secondary"
-                type="button"
-                onClick={() => setSelectedUser(null)}
-              />
-            </div>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Field
+                  as={TextField}
+                  fullWidth
+                  name="firstName"
+                  label={<FormattedMessage id="locale.fieldFirstName" />}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  as={TextField}
+                  fullWidth
+                  name="lastName"
+                  label={<FormattedMessage id="locale.fieldLastName" />}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  as={TextField}
+                  fullWidth
+                  name="email"
+                  label={<FormattedMessage id="locale.fieldEmail" />}
+                  type="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  className={"mt-10"}
+                  control={
+                    <Field name="status.admin">
+                      {({ field }) => (
+                        <Checkbox
+                          color="primary"
+                          name={field.name}
+                          checked={field.value}
+                          {...field}
+                        />
+                      )}
+                    </Field>
+                  }
+                  label={<FormattedMessage id="admin" />}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field>
+                  {({ form }) => (
+                    <CustomButton
+                      titleId="save"
+                      modifier="primary"
+                      type="submit"
+                      disabled={form.isSubmitting || !form.isValid}
+                    />
+                  )}
+                </Field>
+                <CustomButton
+                  titleId="cancel"
+                  modifier="secondary"
+                  type="button"
+                  onClick={() => setSelectedUser(null)}
+                />
+              </Grid>
+            </Grid>
           </Form>
         </Formik>
       </DialogContent>
-    </DialogForm>
+    </Dialog>
   );
 };
 

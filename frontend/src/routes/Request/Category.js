@@ -21,8 +21,9 @@ function Category() {
   const { categories } = useContext(RequestOptionsContext);
   const { setFieldValue } = useFormikContext();
 
-  function select(id) {
+  function select(id, name) {
     setFieldValue("category", id);
+    setFieldValue("name", name);
     history.push("/request/request");
   }
 
@@ -56,7 +57,7 @@ function Category() {
               <ListItem
                 key={categories._id}
                 button
-                onClick={() => select(categories._id)}
+                onClick={() => select(categories._id, organisation.name)}
               >
                 <ListItemText primary={categories.name} />
               </ListItem>

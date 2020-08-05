@@ -27,10 +27,14 @@ import { theme } from "../../styles/theme";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    paddingTop: "96px",
+    paddingTop: "10%",
   },
   container: {
-    padding: "96px 16px",
+    padding: "10% 16px",
+  },
+  image: {
+    display: "block",
+    margin: "auto",
   },
 }));
 
@@ -166,7 +170,7 @@ const Intro = () => {
               </Grid>
             </Grid>
             <Grid item md={6} xs={12}>
-              <img src={stepOne} alt="Step One" />
+              <img className={classes.image} src={stepOne} alt="Step One" />
             </Grid>
           </Grid>
         </Container>
@@ -174,7 +178,7 @@ const Intro = () => {
         <Container className={classes.container} maxWidth="md">
           <Grid container spacing={4}>
             <Grid item md={6} xs={12}>
-              <img src={stepTwo} alt="Step Two" />
+              <img className={classes.image} src={stepTwo} alt="Step Two" />
             </Grid>
             <Grid container item alignItems="center" md={6} xs={12}>
               <Grid container spacing={2}>

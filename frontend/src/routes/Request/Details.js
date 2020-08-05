@@ -41,8 +41,6 @@ function Details() {
     history.go(-1);
   }
 
-  const organisations = ["Ladles of Love", "Greenpop"];
-
   return (
     <Grid container spacing={0}>
       <Grid item md={12} xs={12}>
@@ -63,33 +61,6 @@ function Details() {
             </h3>
 
             <Grid container spacing={2} direction="column">
-              <Grid item>
-                <ErrorMessage name="name" />
-                {/* <Field
-                  name="name"
-                  as={TextField}
-                  label={<FormattedMessage id="addContact.placeholders.name" />}
-                  variant="outlined"
-                  fullWidth
-                  required
-                /> */}
-
-                <Field
-                  name="name"
-                  as={TextField}
-                  label={<FormattedMessage id="addContact.placeholders.name" />}
-                  variant="outlined"
-                  fullWidth
-                  required
-                  select
-                >
-                  {organisations.map((organisation, index) => (
-                    <MenuItem value={organisation} key={index}>
-                      {organisation}
-                    </MenuItem>
-                  ))}
-                </Field>
-              </Grid>
               <Grid item>
                 <ErrorMessage name="phone" />
                 <Field

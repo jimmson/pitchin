@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import CustomButton from "../../components/CustomButton/CustomButton";
+import Button from "@material-ui/core/Button";
 import langmap from "langmap";
 import { FormattedMessage } from "react-intl";
 
@@ -91,19 +91,19 @@ export const NewLocaleModal = ({ createLocale }) => {
             <div className="category-action">
               <Field>
                 {({ form }) => (
-                  <CustomButton
-                    titleId="save"
-                    modifier="primary"
+                  <Button
+                    variant="contained"
+                    color="primary"
                     type="submit"
                     disabled={form.isSubmitting || !form.isValid}
-                  />
+                  >
+                    <FormattedMessage id="save" />
+                  </Button>
                 )}
               </Field>
-              <CustomButton
-                titleId="cancel"
-                modifier="secondary"
-                type="button"
-              />
+              <Button variant="contained" color="secondary" type="button">
+                <FormattedMessage id="cancel" />
+              </Button>
             </div>
           </Form>
         </Formik>

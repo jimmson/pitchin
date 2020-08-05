@@ -8,9 +8,8 @@ import {
   FormControlLabel,
   Checkbox,
   TextField,
+  Button,
 } from "@material-ui/core";
-
-import CustomButton from "../../components/CustomButton/CustomButton";
 
 export default () => {
   const [info, setInfo] = useState(null);
@@ -150,12 +149,14 @@ export default () => {
               <Grid item xs={12}>
                 <Field>
                   {({ form }) => (
-                    <CustomButton
-                      titleId="save"
-                      modifier="primary"
+                    <Button
+                      variant="contained"
+                      color="primary"
                       type="submit"
                       disabled={form.isSubmitting || !form.isValid}
-                    />
+                    >
+                      <FormattedMessage id="save" />
+                    </Button>
                   )}
                 </Field>
               </Grid>

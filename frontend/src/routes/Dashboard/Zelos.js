@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Field, Form, Formik } from "formik";
 import TextField from "@material-ui/core/TextField";
-import CustomButton from "../../components/CustomButton/CustomButton";
+import Button from "@material-ui/core/Button";
 import { FormattedMessage } from "react-intl";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -92,12 +92,14 @@ export default () => {
                 <Grid item xs={12}>
                   <Field>
                     {({ form }) => (
-                      <CustomButton
-                        titleId="save"
-                        modifier="primary"
+                      <Button
+                        variant="contained"
+                        color="primary"
                         type="submit"
                         disabled={form.isSubmitting || !form.isValid}
-                      />
+                      >
+                        <FormattedMessage id="save" />
+                      </Button>
                     )}
                   </Field>
                 </Grid>
@@ -181,12 +183,14 @@ export default () => {
                 <Grid item xs={12}>
                   <Field>
                     {({ form }) => (
-                      <CustomButton
-                        titleId="save"
-                        modifier="primary"
+                      <Button
+                        variant="contained"
+                        color="primary"
                         type="submit"
                         disabled={form.isSubmitting || !form.isValid}
-                      />
+                      >
+                        <FormattedMessage id="save" />
+                      </Button>
                     )}
                   </Field>
                 </Grid>

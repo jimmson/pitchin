@@ -1,7 +1,6 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { Formik, Field, Form } from "formik";
 import isEmail from "isemail";
-import CustomButton from "../../components/CustomButton/CustomButton";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { FormattedMessage } from "react-intl";
 import axios from "../../utils/axios";
@@ -128,20 +127,24 @@ const UserEditModal = ({ user, setSelectedUser }) => {
               <Grid item xs={12}>
                 <Field>
                   {({ form }) => (
-                    <CustomButton
-                      titleId="save"
-                      modifier="primary"
+                    <Button
+                      variant="contained"
+                      color="primary"
                       type="submit"
                       disabled={form.isSubmitting || !form.isValid}
-                    />
+                    >
+                      <FormattedMessage id="save" />
+                    </Button>
                   )}
                 </Field>
-                <CustomButton
-                  titleId="cancel"
-                  modifier="secondary"
+                <Button
+                  variant="contained"
+                  color="secondary"
                   type="button"
                   onClick={() => setSelectedUser(null)}
-                />
+                >
+                  <FormattedMessage id="cancel" />
+                </Button>
               </Grid>
             </Grid>
           </Form>
@@ -284,12 +287,14 @@ const InviteUserForm = () => {
             </Field>
             <Field>
               {({ form }) => (
-                <CustomButton
-                  titleId="invite"
-                  modifier="secondary"
+                <Button
+                  variant="contained"
+                  color="secondary"
                   type="submit"
                   disabled={form.isSubmitting || !form.isValid}
-                />
+                >
+                  <FormattedMessage id="invite" />
+                </Button>
               )}
             </Field>
           </Form>

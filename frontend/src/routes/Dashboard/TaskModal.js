@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomButton from "../../components/CustomButton/CustomButton";
+import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { FormattedMessage } from "react-intl";
 
@@ -33,11 +33,13 @@ export default function TaskModal({
           </div>
         )}
         <div className="modal__btn">
-          <CustomButton
-            titleId={`modal.${modalType}`}
-            modifier="primary"
+          <Button
+            variant="contained"
+            color="primary"
             onClick={() => handleBtnClick(comment)}
-          />
+          >
+            <FormattedMessage id={`modal.${modalType}`} />
+          </Button>
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { injectIntl } from "react-intl";
 import Grid from "@material-ui/core/Grid";
-import CustomButton from "../../../components/CustomButton/CustomButton";
 import { Filter } from "./Filter";
 import { TicketList } from "./TicketList";
 import { TicketDetails } from "./TicketDetails";
@@ -12,6 +11,7 @@ import {
   startEditing,
 } from "../../../hooks/useTickets";
 import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { FormattedMessage } from "react-intl";
@@ -49,11 +49,13 @@ function Main() {
         </Grid>
         <Grid item md={4} xs={12} className={classes.newTicket}>
           {!isEditing && (
-            <CustomButton
-              titleId="newTask"
-              modifier="primary"
+            <Button
+              variant="contained"
+              color="primary"
               onClick={() => startEditing(ticketInitialState)}
-            />
+            >
+              <FormattedMessage id="newTask" />
+            </Button>
           )}
         </Grid>
       </Grid>

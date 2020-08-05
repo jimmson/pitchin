@@ -6,7 +6,7 @@ import MuiDialogContent from "@material-ui/core/DialogContent";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import CustomButton from "../../components/CustomButton/CustomButton";
+import Button from "@material-ui/core/Typography";
 import axios from "../../utils/axios";
 import { FormattedMessage } from "react-intl";
 import { FormControlLabel, TextField, MenuItem, Grid } from "@material-ui/core";
@@ -165,27 +165,33 @@ export const CategoryEditModal = ({
               <Grid item xs={12}>
                 <Field>
                   {({ form }) => (
-                    <CustomButton
-                      titleId="save"
-                      modifier="primary"
+                    <Button
+                      variant="contained"
+                      color="primary"
                       type="submit"
                       disabled={form.isSubmitting || !form.isValid}
-                    />
+                    >
+                      <FormattedMessage id="save" />
+                    </Button>
                   )}
                 </Field>
-                <CustomButton
-                  titleId="cancel"
-                  modifier="secondary"
+                <Button
+                  variant="contained"
+                  color="secondary"
                   type="button"
                   onClick={() => selectedCategoryEdited()}
-                />
+                >
+                  <FormattedMessage id="cancel" />
+                </Button>
                 {action === "edit" ? (
-                  <CustomButton
-                    titleId="delete"
-                    modifier="secondary"
+                  <Button
+                    variant="contained"
+                    color="secondary"
                     type="button"
                     onClick={() => handleDelete()}
-                  />
+                  >
+                    <FormattedMessage id="delete" />
+                  </Button>
                 ) : (
                   <div />
                 )}

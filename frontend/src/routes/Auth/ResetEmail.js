@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import isEmail from "isemail";
 import { Grid, TextField } from "@material-ui/core";
-import CustomButton from "../../components/CustomButton/CustomButton";
 
 export default function ResetEmail() {
   const [email, setEmail] = useState("");
@@ -36,11 +35,9 @@ export default function ResetEmail() {
         />
       </Grid>
       <Grid item xs={12}>
-        <CustomButton
-          titleId="sendPasswordToEmail"
-          modifier="primary"
-          onClick={reset}
-        />
+        <Button variant="contained" color="primary" onClick={reset}>
+          <FormattedMessage id="sendPasswordToEmail" />
+        </Button>
       </Grid>
     </Grid>
   );

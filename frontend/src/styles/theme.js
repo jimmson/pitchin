@@ -8,6 +8,9 @@ export const theme = createMuiTheme({
       h1: {
         fontWeight: 500,
       },
+      h2: {
+        fontWeight: 400,
+      },
     },
     MuiDivider: {
       root: {
@@ -23,6 +26,9 @@ export const theme = createMuiTheme({
   palette: {
     primary: {
       main: green,
+    },
+    text: {
+      primary: "#5e5e5e",
     },
   },
 });

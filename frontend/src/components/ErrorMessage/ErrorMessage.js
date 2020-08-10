@@ -1,14 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { ErrorMessage } from "formik";
-import ErrorMessageStyle from "./ErrorMessageStyle";
+import Alert from "@material-ui/lab/Alert";
 
 export default function CustomErrorMessage(props) {
   return (
-    <Fragment>
-      <ErrorMessageStyle />
-      <p className="error-message">
-        <ErrorMessage {...props} />
-      </p>
-    </Fragment>
+    <ErrorMessage {...props}>
+      {(msg) => <Alert severity="error">{msg}</Alert>}
+    </ErrorMessage>
   );
 }

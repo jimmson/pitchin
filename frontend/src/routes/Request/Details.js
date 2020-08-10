@@ -52,7 +52,6 @@ function Details() {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <ErrorMessage name="phone" />
         <Field
           name="phone"
           as={TextField}
@@ -62,22 +61,28 @@ function Details() {
           required
         />
       </Grid>
+      <Grid item xs={12}>
+        <ErrorMessage name="phone" />
+      </Grid>
       {selectedCategory && selectedCategory.needsAddress && (
-        <Grid item xs={12}>
-          <ErrorMessage name="address" />
-          <Field
-            name="address"
-            as={TextField}
-            label={<FormattedMessage id="addContact.placeholders.address" />}
-            fullWidth
-            variant="outlined"
-          />
-        </Grid>
+        <>
+          <Grid item xs={12}>
+            <Field
+              name="address"
+              as={TextField}
+              label={<FormattedMessage id="addContact.placeholders.address" />}
+              fullWidth
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <ErrorMessage name="address" />
+          </Grid>
+        </>
       )}
       <Grid item xs={12}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <ErrorMessage name="area" />
             <Field
               name="area"
               as={TextField}
@@ -105,6 +110,9 @@ function Details() {
               variant="outlined"
               fullWidth
             />
+          </Grid>
+          <Grid item xs={12}>
+            <ErrorMessage name="area" />
           </Grid>
         </Grid>
       </Grid>

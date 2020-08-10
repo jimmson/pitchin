@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, AppBar, Toolbar, Grid } from "@material-ui/core";
 import { ReactComponent as Logo } from "../../assets/logo-icon.svg";
 import { isLoggedIn, isLoggedInAdmin } from "../../utils/auth";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,16 +21,12 @@ export const AppToolbar = () => {
 
   let buttons = [
     {
-      label: "About",
-      route: "/",
-    },
-    {
       label: "Contact Us",
       route: "/",
     },
     {
       label: "Donate",
-      route: "/",
+      link: "/#donate",
     },
     {
       label: "Get Started",
@@ -55,6 +51,24 @@ export const AppToolbar = () => {
     });
   }
 
+  const menu = (
+    <Grid container spacing={2}>
+      {buttons.map((button, index) => (
+        <Grid item key={index}>
+          {button.route ? (
+            <NavLink exact to={button.route}>
+              <Button>{button.label}</Button>
+            </NavLink>
+          ) : (
+            <Link to={button.link}>
+              <Button>{button.label}</Button>
+            </Link>
+          )}
+        </Grid>
+      ))}
+    </Grid>
+  );
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="transparent" elevation={0}>
@@ -63,17 +77,7 @@ export const AppToolbar = () => {
             <Grid item>
               <Logo className={classes.icon} />
             </Grid>
-            <Grid item>
-              <Grid container spacing={2}>
-                {buttons.map((button, index) => (
-                  <Grid item key={index}>
-                    <NavLink exact to={button.route}>
-                      <Button>{button.label}</Button>
-                    </NavLink>
-                  </Grid>
-                ))}
-              </Grid>
-            </Grid>
+            <Grid item>{menu}</Grid>
           </Grid>
         </Toolbar>
       </AppBar>

@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 // import { FormattedMessage } from "react-intl";
-import { Typography, Grid } from "@material-ui/core";
 import { LangBar, AppToolbar } from "../../components/Bar";
 import useLocale, { setLocale } from "../../hooks/useLocale";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+import InputIcon from "@material-ui/icons/Input";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import {
+  Box,
   List,
   ListItem,
   ListItemText,
@@ -13,6 +14,13 @@ import {
   SvgIcon,
   Container,
   Divider,
+  Link,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+  Grid,
 } from "@material-ui/core";
 
 import stepOne from "../../assets/step-1-image.png";
@@ -21,6 +29,10 @@ import stepTwo from "../../assets/step-2-image.png";
 import { ReactComponent as AppStore } from "../../assets/appStore.svg";
 import { ReactComponent as PlayStore } from "../../assets/playStore.svg";
 import { ReactComponent as Logo } from "../../assets/logo-icon.svg";
+import { ReactComponent as Heart } from "../../assets/heart.svg";
+import { ReactComponent as PayPal } from "../../assets/paypal.svg";
+import { ReactComponent as Bitcoin } from "../../assets/bitcoin.svg";
+import { ReactComponent as QRCode } from "../../assets/qrCode.svg";
 
 import { theme } from "../../styles/theme";
 
@@ -36,56 +48,123 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     margin: "auto",
   },
+  heart: {
+    width: "80%",
+    maxWidth: "322px",
+    display: "block",
+    margin: "auto",
+  },
 }));
 
 const Intro = () => {
   const classes = useStyles();
+  const [introView, setIntroView] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [{ locale, locales, loading }] = useLocale();
+
+  const handleIntroView = (event) => {
+    setIntroView(!introView);
+    event.preventDefault();
+  };
+
+  const handleDialogOpen = () => {
+    setDialogOpen(!dialogOpen);
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <AppToolbar />
+      {/* Hero */}
       <Grid container direction="column" className={classes.root}>
         <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
             <Grid container item md={4} xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h1" color="primary">
-                    PitchIn
-                  </Typography>
+              {introView ? (
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="h1" color="primary">
+                      PitchIn
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" color="textPrimary">
+                      Find out how you can help out
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="textPrimary">
+                      NGO's need help and you what to help out. PitchIn connects
+                      the dots, giving you a ton of fun, rewarding volunteering
+                      options in your community.
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="textPrimary">
+                      Some you even get rewarded for.
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Link
+                      href=""
+                      variant="h6"
+                      onClick={handleIntroView}
+                      color="primary"
+                      underline="none"
+                    >
+                      ⟶ About Us
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h6">
-                    Find out how you can help out
-                  </Typography>
+              ) : (
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="h1" color="primary">
+                      About Us
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="textPrimary">
+                      PitchIn is a collective of developers, designers and
+                      creatives who were inspired by the Covid-19 pandemic to
+                      empower individuals to connect and contribute to their
+                      communities in a positive way.
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="textPrimary">
+                      There are organisation our there who are willing and able
+                      to make a difference, all they need is help from their
+                      community.
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" color="textPrimary">
+                      We are here to make it easy for the community to help
+                      out..
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Link
+                      href=""
+                      variant="h6"
+                      onClick={handleIntroView}
+                      color="primary"
+                      underline="none"
+                    >
+                      ⟶ Back
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="subtitle1">
-                    NGO's need help and you what to help out. PitchIn connects
-                    the dots, giving you a ton of fun, rewarding volunteering
-                    options in your community.
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="subtitle1">
-                    Some you even get rewarded for.
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h6" color="primary">
-                    ⟶ So, how does it work?
-                  </Typography>
-                </Grid>
-              </Grid>
+              )}
             </Grid>
           </Grid>
         </Container>
 
+        {/* Get started */}
         <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h3" align="center" color="primary">
+              <Typography variant="h2" align="center" color="primary">
                 Getting started
               </Typography>
             </Grid>
@@ -93,7 +172,7 @@ const Intro = () => {
               <Divider variant="middle" />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6" align="center">
+              <Typography variant="h6" align="center" color="textPrimary">
                 Using PitchIn is free and only takes a few simple steps to get
                 going
               </Typography>
@@ -101,12 +180,13 @@ const Intro = () => {
           </Grid>
         </Container>
 
+        {/* Step 1 */}
         <Container className={classes.container} maxWidth="md">
           <Grid container spacing={4}>
             <Grid container item alignItems="center" md={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h3" color="primary">
+                  <Typography variant="h2" color="primary">
                     Step 1
                   </Typography>
                 </Grid>
@@ -129,7 +209,11 @@ const Intro = () => {
                           </SvgIcon>
                         </ListItemAvatar>
                         <ListItemText>
-                          <Typography component="span" variant="h6">
+                          <Typography
+                            component="span"
+                            variant="h6"
+                            color="textPrimary"
+                          >
                             {text}
                           </Typography>
                         </ListItemText>
@@ -138,14 +222,14 @@ const Intro = () => {
                   </List>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" color="textPrimary">
                     * PitchIn uses Zelos to connect you with the most important
                     tasks in your area.
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Grid container item alignItems="center">
-                    <Grid container spacing={2}>
+                  <Grid container item>
+                    <Grid container spacing={2} alignItems="center">
                       <Grid item>
                         <a
                           href="https://apps.apple.com/us/app/zelos-team-management/id1441089536"
@@ -175,6 +259,7 @@ const Intro = () => {
           </Grid>
         </Container>
 
+        {/* Step 2 */}
         <Container className={classes.container} maxWidth="md">
           <Grid container spacing={4}>
             <Grid item md={6} xs={12}>
@@ -183,7 +268,7 @@ const Intro = () => {
             <Grid container item alignItems="center" md={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h3" color="primary">
+                  <Typography variant="h2" color="primary">
                     Step 2
                   </Typography>
                 </Grid>
@@ -206,7 +291,11 @@ const Intro = () => {
                           </SvgIcon>
                         </ListItemAvatar>
                         <ListItemText>
-                          <Typography component="span" variant="h6">
+                          <Typography
+                            component="span"
+                            variant="h6"
+                            color="textPrimary"
+                          >
                             {text}
                           </Typography>
                         </ListItemText>
@@ -219,10 +308,88 @@ const Intro = () => {
           </Grid>
         </Container>
 
+        {/* Donate */}
+        <Container id="donate" className={classes.container} maxWidth="sm">
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Heart className={classes.heart} />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h2" align="center" color="primary">
+                You're all heart!
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                variant="subtitle1"
+                align="center"
+                color="textPrimary"
+              >
+                PitchIn is a non-profit. We spend a lot of time, money and
+                effort on PitchIn. Your donation goes a long way to helping us
+                keep this service going and allowing us to pay our hardworking
+                team a small living.
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" align="center" color="textPrimary">
+                How would you like to donate?
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container item>
+                <Grid
+                  container
+                  spacing={2}
+                  alignItems="center"
+                  justify="center"
+                >
+                  <Grid item>
+                    <Dialog onClose={handleDialogOpen} open={dialogOpen}>
+                      <DialogTitle>
+                        <Typography variant="h2" align="center" color="primary">
+                          Scan to send
+                        </Typography>
+                      </DialogTitle>
+                      <DialogContent>
+                        <QRCode />
+                      </DialogContent>
+                      <DialogActions>
+                        <Alert
+                          style={{ width: "100%" }}
+                          icon={<InputIcon fontSize="inherit" />}
+                          severity="success"
+                          variant="outlined"
+                        >
+                          <AlertTitle>Address</AlertTitle>
+                          35Ax7kLyoUFMaAriNFGUZVAoXY5iZ6BDFi
+                        </Alert>
+                      </DialogActions>
+                    </Dialog>
+                    <Bitcoin
+                      style={{ cursor: "pointer" }}
+                      onClick={handleDialogOpen}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <a
+                      href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RFGGVYXWE7L36&source=url"
+                      target="_blank"
+                    >
+                      <PayPal />
+                    </a>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Container>
+
+        {/* Help */}
         <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h3" align="center" color="primary">
+              <Typography variant="h2" align="center" color="primary">
                 Need Help?
               </Typography>
             </Grid>
@@ -230,7 +397,7 @@ const Intro = () => {
               <Divider variant="middle" />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6" align="center">
+              <Typography variant="h6" align="center" color="textPrimary">
                 Whatsapp us and we'll guide you through the process
               </Typography>
             </Grid>

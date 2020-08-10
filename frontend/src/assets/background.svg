@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1490px" height="1144px" viewBox="0 0 1490 1144" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Path 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="100%" fx="50%" fy="100%" r="0%" gradientTransform="translate(0.500000,1.000000),scale(0.776892,1.000000),translate(-0.500000,-1.000000)" id="radialGradient-1">
+            <stop stop-color="#F9FFFD" offset="0%"></stop>
+            <stop stop-color="#96FFD5" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.6">
+        <g id="Donate" fill="url(#radialGradient-1)">
+            <path d="M-16,0.342551528 C417.51681,50.3411719 657.200721,134.051759 703.051733,251.474312 C771.82825,427.608142 933.139077,629.449366 1087.11839,675.009996 C1241.0977,720.570625 1500.23515,1080.87185 1489.68776,1164.72313 C1482.65616,1220.62399 1482.65616,832.382942 1489.68776,0 L-16,0.342551528 Z" id="Path-4"></path>
+        </g>
+    </g>
+</svg>

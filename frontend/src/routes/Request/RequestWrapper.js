@@ -5,6 +5,8 @@ import { isLoggedIn } from "../../utils/auth";
 import history from "../../utils/history";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { Grid, Container } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { theme } from "../../styles/theme";
 
 const defaultContext = { categories: [], areas: [] };
 
@@ -44,84 +46,76 @@ export default function RequestWrapper(props) {
   if (!loginChecked || !isLoaded) return <LoadingSpinner />;
 
   return (
-    <Container maxWidth="sm">
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid container item xs={12}>
-          <RequestOptionsContext.Provider value={requestOptions}>
-            <Formik
-              initialValues={{
-                phone: `+${requestOptions.phonePrefix}`,
-                date: new Date(),
-                startTime: new Date(),
-                endTime: new Date(),
-                hasDate: false,
-              }}
-              onSubmit={(values, form) => {
-                const decoratedValues = {
-                  ...values,
-                  phone: values.phone.replace(/ /g, ""),
-                };
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="sm">
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justify="center"
+          style={{ minHeight: "100vh" }}
+        >
+          <Grid container item xs={12}>
+            <RequestOptionsContext.Provider value={requestOptions}>
+              <Formik
+                initialValues={{
+                  phone: `+${requestOptions.phonePrefix}`,
+                  date: new Date(),
+                  startTime: new Date(),
+                  endTime: new Date(),
+                  hasDate: false,
+                }}
+                onSubmit={(values, form) => {
+                  const decoratedValues = {
+                    ...values,
+                    phone: values.phone.replace(/ /g, ""),
+                  };
 
-                async function next() {
-                  await axios.post("/api/public/tickets", {
-                    ...decoratedValues,
-                  });
-                  form.resetForm();
-                  form.setSubmitting(false);
-                  history.push("/request/confirmed");
-                }
-                next();
-              }}
-              validate={(values) => {
-                const errors = {};
+                  async function next() {
+                    await axios.post("/api/public/tickets", {
+                      ...decoratedValues,
+                    });
+                    form.resetForm();
+                    form.setSubmitting(false);
+                    history.push("/request/confirmed");
+                  }
+                  next();
+                }}
+                validate={(values) => {
+                  console.log(values);
 
-                if (!values.request) {
-                  errors.request = "required";
-                }
+                  const errors = {};
 
-                if (!values.name) {
-                  errors.name = "required";
-                }
+                  if (!/^\+?[\d\s]+$/i.test(values.phone)) {
+                    errors.phone = "Must be a valid phone number!";
+                  }
 
-                if (!values.phone) {
-                  errors.phone = "required";
-                }
+                  const selectedCategory = requestOptions.categories.find(
+                    (c) => c._id === values.category
+                  );
 
-                if (!/^\+?[\d\s]+$/i.test(values.phone)) {
-                  errors.phone = "the phone number contains illegal characters";
-                }
+                  if (
+                    selectedCategory &&
+                    selectedCategory.needsAddress &&
+                    !values.address
+                  ) {
+                    errors.address = "Address is required!";
+                  }
 
-                const selectedCategory = requestOptions.categories.find(
-                  (c) => c._id === values.category
-                );
+                  if (!values.area) {
+                    errors.area = "Area is required!";
+                  }
 
-                if (
-                  selectedCategory &&
-                  selectedCategory.needsAddress &&
-                  !values.address
-                ) {
-                  errors.address = "required";
-                }
-
-                if (!values.area) {
-                  errors.area = "required";
-                }
-
-                return errors;
-              }}
-            >
-              <Form>{props.children}</Form>
-            </Formik>
-          </RequestOptionsContext.Provider>
+                  return errors;
+                }}
+              >
+                <Form>{props.children}</Form>
+              </Formik>
+            </RequestOptionsContext.Provider>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </ThemeProvider>
   );
 }

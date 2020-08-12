@@ -18,6 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { createStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { ErrorsHandlingHelper } from "../../../utils/errosHandling";
+import moment from "moment";
 
 import {
   TICKET_STATE_APPROVE,
@@ -96,7 +97,9 @@ export const TicketVew = (props) => {
     return (
       <div className={classes.section}>
         <Typography variant="caption" display="block">
-          <FormattedMessage id={labelId} />
+          {/* TODO: Localise */}
+          {/* <FormattedMessage id={labelId} /> */}
+          {labelId}
         </Typography>
 
         <Typography variant="body1">{value}</Typography>
@@ -112,6 +115,9 @@ export const TicketVew = (props) => {
     }
   };
 
+  const startDate = ticket.startDate ? moment(ticket.startDate) : null;
+  const endDate = ticket.endDate ? moment(ticket.endDate) : null;
+
   return (
     <>
       <Box component="div" style={{ textAlign: "left" }}>
@@ -120,6 +126,11 @@ export const TicketVew = (props) => {
         {renderItem("requesterName", ticket.name)}
         {renderItem("category", getOption(categories, ticket.category)?.name)}
         {renderItem("phone", ticket.phone)}
+
+        {startDate &&
+          renderItem("Date", startDate.format("dddd, [The] Do [of] MMMM YYYY"))}
+        {startDate && renderItem("Start time", startDate.format("h:mm A"))}
+        {startDate && renderItem("End time", endDate.format("h:mm A"))}
 
         {ticket.category &&
           getOption(categories, ticket.category)?.needsAddress &&

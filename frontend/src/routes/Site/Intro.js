@@ -54,6 +54,16 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     margin: "auto",
   },
+  reverse: {
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column-reverse",
+    },
+  },
+  center: {
+    [theme.breakpoints.down("sm")]: {
+      textAlign: "center",
+    },
+  },
 }));
 
 const Intro = () => {
@@ -161,7 +171,7 @@ const Intro = () => {
         </Container>
 
         {/* Get started */}
-        <Container className={classes.container} maxWidth="lg">
+        <Container className={classes.container} maxWidth="lg" id="get-started">
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="h2" align="center" color="primary">
@@ -186,12 +196,20 @@ const Intro = () => {
             <Grid container item alignItems="center" md={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h2" color="primary">
+                  <Typography
+                    variant="h2"
+                    color="primary"
+                    className={classes.center}
+                  >
                     Step 1
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h4" color="primary">
+                  <Typography
+                    variant="h4"
+                    color="primary"
+                    className={classes.center}
+                  >
                     Download Zelos
                   </Typography>
                 </Grid>
@@ -202,7 +220,7 @@ const Intro = () => {
                       `Search "Zelos"`,
                       `Install the Zelos Team Managment app`,
                     ].map((text, index) => (
-                      <ListItem key={index}>
+                      <ListItem key={index} disableGutters>
                         <ListItemAvatar>
                           <SvgIcon>
                             <Logo />
@@ -221,59 +239,73 @@ const Intro = () => {
                     ))}
                   </List>
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="textPrimary">
-                    * PitchIn uses Zelos to connect you with the most important
-                    tasks in your area.
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container item>
-                    <Grid container spacing={2} alignItems="center">
-                      <Grid item>
-                        <a
-                          href="https://apps.apple.com/us/app/zelos-team-management/id1441089536"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <AppStore />
-                        </a>
-                      </Grid>
-                      <Grid item>
-                        <a
-                          href="https://play.google.com/store/apps/details?id=com.zelos.client&hl=en"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <PlayStore />
-                        </a>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
               </Grid>
             </Grid>
             <Grid item md={6} xs={12}>
               <img className={classes.image} src={stepOne} alt="Step One" />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="textPrimary" align="center">
+                * PitchIn uses Zelos to connect you with the most important
+                tasks in your area.
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container item>
+                <Grid
+                  container
+                  spacing={2}
+                  alignItems="center"
+                  justify="center"
+                  direction="row"
+                >
+                  <Grid item sx={6}>
+                    <a
+                      href="https://apps.apple.com/us/app/zelos-team-management/id1441089536"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <AppStore />
+                    </a>
+                  </Grid>
+                  <Grid item sx={6}>
+                    <a
+                      href="https://play.google.com/store/apps/details?id=com.zelos.client&hl=en"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <PlayStore />
+                    </a>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Container>
 
         {/* Step 2 */}
         <Container className={classes.container} maxWidth="md">
-          <Grid container spacing={4}>
+          <Grid container spacing={4} className={classes.reverse}>
             <Grid item md={6} xs={12}>
               <img className={classes.image} src={stepTwo} alt="Step Two" />
             </Grid>
             <Grid container item alignItems="center" md={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h2" color="primary">
+                  <Typography
+                    variant="h2"
+                    color="primary"
+                    className={classes.center}
+                  >
                     Step 2
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h4" color="primary">
+                  <Typography
+                    variant="h4"
+                    color="primary"
+                    className={classes.center}
+                  >
                     Find your location
                   </Typography>
                 </Grid>
@@ -284,7 +316,7 @@ const Intro = () => {
                       `Join the closest Group in your area`,
                       `Browse tasks and PitchIn`,
                     ].map((text, index) => (
-                      <ListItem key={index}>
+                      <ListItem key={index} disableGutters>
                         <ListItemAvatar>
                           <SvgIcon>
                             <Logo />
@@ -386,7 +418,7 @@ const Intro = () => {
         </Container>
 
         {/* Help */}
-        <Container className={classes.container} maxWidth="lg">
+        <Container className={classes.container} maxWidth="lg" id="need-help">
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="h2" align="center" color="primary">

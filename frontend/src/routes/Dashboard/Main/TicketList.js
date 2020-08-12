@@ -5,6 +5,7 @@ import { RequestOptionsContext } from "../DashboardWrapper";
 import { orderBy } from "lodash";
 import { setActiveTicket, useTickets } from "../../../hooks/useTickets";
 import Box from "@material-ui/core/Box";
+import { Grid } from "@material-ui/core";
 
 export const TicketList = () => {
   const [tickets] = useTickets();
@@ -39,6 +40,8 @@ export const TicketList = () => {
     category,
     owner,
     status,
+    startDate,
+    endDate,
     _id,
   }) => {
     setActiveTicket({
@@ -51,6 +54,8 @@ export const TicketList = () => {
       category,
       owner,
       status,
+      startDate,
+      endDate,
       _id,
     });
   };
@@ -60,22 +65,28 @@ export const TicketList = () => {
       {tickets.isLoading ? (
         <LoadingSpinner />
       ) : (
-        orderBy(tickets.items, ["name"], ["asc"])
-          .filter(ticketFilters)
-          .map((ticket, idx) => (
-            <Ticket
-              key={idx}
-              ticket={ticket}
-              active={
-                tickets.activeTicket && tickets.activeTicket._id === ticket._id
-              }
-              category={
-                categories && categories.find((c) => c._id === ticket.category)
-              }
-              area={areas && areas.find((a) => a._id === ticket.area)}
-              selectTicket={() => onTicketSelected(ticket)}
-            />
-          ))
+        <Grid container spacing={2}>
+          {orderBy(tickets.items, ["name"], ["asc"])
+            .filter(ticketFilters)
+            .map((ticket, idx) => (
+              <Grid item xs={12}>
+                <Ticket
+                  key={idx}
+                  ticket={ticket}
+                  active={
+                    tickets.activeTicket &&
+                    tickets.activeTicket._id === ticket._id
+                  }
+                  category={
+                    categories &&
+                    categories.find((c) => c._id === ticket.category)
+                  }
+                  area={areas && areas.find((a) => a._id === ticket.area)}
+                  selectTicket={() => onTicketSelected(ticket)}
+                />
+              </Grid>
+            ))}
+        </Grid>
       )}
     </Box>
   );

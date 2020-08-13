@@ -69,7 +69,7 @@ export const TicketList = () => {
           {orderBy(tickets.items, ["name"], ["asc"])
             .filter(ticketFilters)
             .map((ticket, idx) => (
-              <Grid item xs={12}>
+              <Grid item key={idx} xs={12}>
                 <Ticket
                   key={idx}
                   ticket={ticket}

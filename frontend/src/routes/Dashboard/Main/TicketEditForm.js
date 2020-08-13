@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Formik } from "formik";
 import { ErrorsHandlingHelper } from "../../../utils/errosHandling";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -40,15 +41,42 @@ export const TicketEditForm = (props) => {
   const classes = useStyles();
   const { ticket } = props;
 
+  const dateFormat = "YYYY-MM-DD";
+  const timeFormat = "kk:mm";
+
   const getSelectedCategory = (ticketCategory) => {
     return categories.find((category) => ticketCategory === category._id);
   };
 
+  console.log("ticket", ticket);
+
   return (
     <Box component="div">
       <Formik
-        initialValues={ticket}
+        initialValues={{
+          ...ticket,
+          date: ticket.startDate && moment(ticket.startDate).format(dateFormat),
+          start:
+            ticket.startDate && moment(ticket.startDate).format(timeFormat),
+          end: ticket.startDate && moment(ticket.endDate).format(timeFormat),
+        }}
         onSubmit={async (values, formik) => {
+          if (values.date) {
+            values.startDate = moment(
+              `${values.date} ${values.start}`,
+              `${dateFormat} ${timeFormat}`
+            ).toDate();
+            values.endDate = moment(
+              `${values.date} ${values.end}`,
+              `${dateFormat} ${timeFormat}`
+            ).toDate();
+          } else {
+            values.startDate = null;
+            values.endDate = null;
+          }
+
+          console.log(values);
+
           try {
             props.onSubmit && (await props.onSubmit({ ...ticket, ...values }));
           } catch (e) {
@@ -133,6 +161,51 @@ export const TicketEditForm = (props) => {
               value={fProps.values.phone}
               error={!!fProps.errors?.phone}
               helperText={fProps.errors.phone}
+            />
+
+            <TextField
+              id="date"
+              label="Date"
+              type="date"
+              variant="outlined"
+              fullWidth
+              onChange={fProps.handleChange}
+              value={fProps.values.date}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+
+            <TextField
+              id="start"
+              label="Start"
+              type="time"
+              variant="outlined"
+              fullWidth
+              onChange={fProps.handleChange}
+              value={fProps.values.start}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 300, // 5 min
+              }}
+            />
+
+            <TextField
+              id="end"
+              label="End"
+              type="time"
+              variant="outlined"
+              fullWidth
+              onChange={fProps.handleChange}
+              value={fProps.values.end}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 300, // 5 min
+              }}
             />
 
             {fProps.values.category &&

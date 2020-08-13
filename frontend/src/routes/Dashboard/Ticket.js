@@ -29,7 +29,7 @@ function Ticket({ ticket, active, category, area, selectTicket }) {
         action={ticket.status}
       />
       <CardContent>
-        <List disablePaddin>
+        <List disablePadding>
           {startDate && (
             <>
               <ListItem disableGutters dense>

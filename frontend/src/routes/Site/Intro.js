@@ -21,10 +21,13 @@ import {
   DialogActions,
   Typography,
   Grid,
+  Avatar,
 } from "@material-ui/core";
 
 import stepOne from "../../assets/step-1-image.png";
 import stepTwo from "../../assets/step-2-image.png";
+import greenpop from "../../assets/greenpop-logo-square.png";
+import ladels from "../../assets/ladles-logo-square.png";
 
 import { ReactComponent as AppStore } from "../../assets/appStore.svg";
 import { ReactComponent as PlayStore } from "../../assets/playStore.svg";
@@ -64,6 +67,10 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
+  partner: {
+    width: theme.spacing(12),
+    height: theme.spacing(12),
+  },
 }));
 
 const Intro = () => {
@@ -88,7 +95,7 @@ const Intro = () => {
       <Grid container direction="column" className={classes.root}>
         <Container className={classes.container} maxWidth="lg">
           <Grid container spacing={2}>
-            <Grid container item md={4} xs={12}>
+            <Grid container item sm={4} xs={12}>
               {introView ? (
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
@@ -169,6 +176,18 @@ const Intro = () => {
             </Grid>
           </Grid>
         </Container>
+
+        {/* Partners
+        <Container className={classes.container} maxWidth="md">
+          <Grid container spacing={2}   direction="row"  justify="space-around"  alignItems="center">
+            <Grid item>
+              <Avatar variant="square" alt="Greenpop" src={greenpop} className={classes.partner} />
+            </Grid>
+            <Grid item>
+              <Avatar variant="square" alt="Ladles of Love" src={ladels} className={classes.partner} /> 
+            </Grid>
+          </Grid>
+        </Container> */}
 
         {/* Get started */}
         <Container className={classes.container} maxWidth="lg" id="get-started">
@@ -376,7 +395,7 @@ const Intro = () => {
                   alignItems="center"
                   justify="center"
                 >
-                  <Grid item>
+                  <Grid item xs={6}>
                     <Dialog onClose={handleDialogOpen} open={dialogOpen}>
                       <DialogTitle>
                         <Typography variant="h2" align="center" color="primary">
@@ -399,16 +418,17 @@ const Intro = () => {
                       </DialogActions>
                     </Dialog>
                     <Bitcoin
+                      className={classes.image}
                       style={{ cursor: "pointer" }}
                       onClick={handleDialogOpen}
                     />
                   </Grid>
-                  <Grid item>
+                  <Grid item xs={6}>
                     <a
                       href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RFGGVYXWE7L36&source=url"
                       target="_blank"
                     >
-                      <PayPal />
+                      <PayPal className={classes.image} />
                     </a>
                   </Grid>
                 </Grid>
@@ -430,12 +450,12 @@ const Intro = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" align="center" color="textPrimary">
-                Whatsapp us and we'll guide you through the process
+                Email us and we'll guide you through the process
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h4" align="center" color="primary">
-                +27 82 337 3796
+                hello@pitchin.io
               </Typography>
             </Grid>
           </Grid>

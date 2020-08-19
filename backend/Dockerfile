@@ -13,6 +13,7 @@ COPY ./middleware ./middleware
 COPY ./routes ./routes
 COPY ./models ./models
 COPY ./app.js ./app.js
+COPY ./jobs ./jobs
 
 EXPOSE 8000
 

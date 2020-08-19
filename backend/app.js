@@ -36,6 +36,7 @@ async function init() {
     // DEBUG
     // const Zelos = require('./models/Zelos')
     // new Zelos().init();
+    runjobs();
   } catch (err) {
     console.error(err);
   }
@@ -94,5 +95,4 @@ app.listen(port, () => {
   console.log("[i] Express listening on port", port);
 });
 
-await init();
-runjobs();
+init();

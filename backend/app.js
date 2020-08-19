@@ -94,5 +94,5 @@ app.listen(port, () => {
   console.log("[i] Express listening on port", port);
 });
 
-init();
+await init();
 runjobs();

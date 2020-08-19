@@ -78,6 +78,14 @@ class User {
     await user.save();
   }
 
+  async syncZelosUser(email, firstName, lastName) {
+    const user = new UserModel();
+    user.email = email;
+    user.firstName = firstName;
+    user.lastName = lastName;
+    await user.save();
+  }
+
   // create an account
   async register(token, firstName, lastName, password) {
     const user = await UserModel.findOne({

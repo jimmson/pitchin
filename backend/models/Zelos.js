@@ -78,6 +78,27 @@ class Zelos {
     this.tasks = res.data.data;
     console.log(`[i] Found ${this.tasks.length} tasks`);
   }
+  async getUsers() {
+    try {
+      const request = {
+        headers: this.axiosConfig.headers,
+      };
+      let users = [];
+      let page = 1;
+      let last = 1;
+      while (page <= last) {
+        console.log(`[i] Getting page ${page} of users`);
+        const res = await axios.get(`${this.url}/api/user`, request);
+        users.push(...res.data.data);
+        last = res.data.meta.last_page || last;
+        page++;
+      }
+      return users;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
   async getGroups() {
     try {
       const request = {

@@ -1,4 +1,4 @@
-require("dotenv").config({path:'../.env'}); 
+require("dotenv").config({ path: "../.env" });
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -7,17 +7,21 @@ const routes = require("./routes");
 const rateLimit = require("express-rate-limit");
 const getDuration = require("./middleware/Timer");
 const Config = require("./models/Config");
+const runjobs = require("./jobs/cron.js");
 
 // Connect to DB
-mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.WORKSPACE_ID}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  auth: {
-    authSource: "admin",
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-  },
-});
+mongoose.connect(
+  `mongodb://${process.env.DB_HOST}/${process.env.WORKSPACE_ID}`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    auth: {
+      authSource: "admin",
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+    },
+  }
+);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -27,7 +31,7 @@ db.once("open", () => {
 // Initialize configuration
 async function init() {
   try {
-    const config = await new Config()
+    const config = await new Config();
     await config.init();
     // DEBUG
     // const Zelos = require('./models/Zelos')
@@ -89,5 +93,7 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log("[i] Express listening on port", port);
 });
+
+runjobs();
 
 init();

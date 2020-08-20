@@ -10,6 +10,7 @@ git pull
 (
     cd backend
     npm install
+    npm run build
 )
 
 # Build frontend

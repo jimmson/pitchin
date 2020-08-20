@@ -9,6 +9,8 @@ test.js
 !locales.json
 !package.json
 !package-lock.json
+!nodemon.json
 **/*.env
 .env
 !**/*.example.env
+build

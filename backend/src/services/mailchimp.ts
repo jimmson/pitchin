@@ -12,7 +12,7 @@ export default class MailChimpService {
   static STATUS_SUBSCRIBED = 'subscribed';
   static EMAIL_TYPE_HTML = 'html';
   static TAG_STATUS_ACTIVE = 'active';
-  static TAG_WELCOME = 'Welcome Tag';
+  static TAG_WELCOME = 'Welcome Mail';
 
   constructor() {
     this.client = new Mailchimp(config.mailchimp.apiKey);

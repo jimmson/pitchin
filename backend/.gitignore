@@ -4,12 +4,6 @@ staging.env
 production.env
 test.js
 .vscode
-**/*.json
-!**/*.example.json
-!locales.json
-!package.json
-!package-lock.json
-!nodemon.json
 **/*.env
 .env
 !**/*.example.env

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const createError = require('http-errors');
-const Zelos = require('./Zelos');
+const Zelos = require('../services/zelos');
 
 const areaSchema = new mongoose.Schema({
   name: String,

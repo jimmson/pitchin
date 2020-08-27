@@ -1,27 +1,33 @@
+import { Container } from 'typedi';
+import MailchimpService from '../services/mailchimp';
+import UserService from '../services/users';
+import Logger from '../loaders/logger';
+
+import { EventDispatcher } from 'event-dispatch';
+import { UserEventSubscriber } from '../subscribers/user';
+
 const cron = require('node-cron');
 const appRoot = require('app-root-path');
-const User = require(appRoot + '/src' + '/models/User');
-const Zelos = require(appRoot + '/src' + '/models/Zelos');
+import Zelos from '../services/zelos';
 var Mailchimp = require('mailchimp-api-v3');
 var mailchimp = new Mailchimp(process.env.MAILCHIMP_API_KEY);
 
 const syncUsers = async () => {
-  // const user = new User();
-  // const zelos = new Zelos();
-  // await zelos.init();
-  // const users = await zelos.getUsers();
-  // users.forEach(async (u) => {
-  //   u = u.data;
-  //   const result = await user.getUserByField({ email: u.email });
-  //   if (!result) {
-  //     await user.syncZelosUser(u.email, u.first_name, u.last_name);
-  //     await mailchimp.post(`/lists/${process.env.MAILCHIMP_LIST_ID}/members`, {
-  //       email_address: u.email,
-  //       status: "subscribed",
-  //       tags: ["Welcome Mail"],
-  //     });
-  //   }
-  // });
+  const userService = Container.get(UserService);
+  const zelos = new Zelos();
+  await zelos.init();
+  const users = await zelos.getUsers();
+  users.forEach(async (u) => {
+    u = u.data;
+    const result = await userService.getUserByField({ email: u.email });
+    if (result) {
+      Logger.info(`user ${u.email} already exists`);
+      return;
+    }
+
+    Logger.info(`creating user ${u.email}`);
+    await userService.create(u.email, u.first_name, u.last_name, '');
+  });
 };
 
 module.exports = function startJobs() {

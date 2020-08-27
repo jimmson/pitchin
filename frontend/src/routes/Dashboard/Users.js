@@ -190,10 +190,10 @@ const UsersTable = ({ rows }) => {
                 <TableCell>{[row.firstName, row.lastName].join(" ")}</TableCell>
                 <TableCell align="center">{row.email}</TableCell>
                 <TableCell align="center">
-                  {row.status.registered ? <CheckIcon /> : <ClearIcon />}
+                  {row.status?.registered ? <CheckIcon /> : <ClearIcon />}
                 </TableCell>
                 <TableCell align="center">
-                  {row.status.admin ? <CheckIcon /> : <ClearIcon />}
+                  {row.status?.admin ? <CheckIcon /> : <ClearIcon />}
                 </TableCell>
                 <TableCell align="right">
                   <ButtonGroup>

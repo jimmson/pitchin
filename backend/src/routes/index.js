@@ -1,7 +1,10 @@
-const express = require('express');
-const routes = express.Router();
+import { Router } from 'express';
 const api = require('./api');
 
-routes.use('/api', api);
+export default () => {
+  const app = Router();
 
-module.exports = routes;
+  app.use('/api', api);
+
+  return app;
+};

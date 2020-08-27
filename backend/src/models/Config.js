@@ -123,8 +123,8 @@ class Config {
       config.workspace.name = process.env.INIT_WORKSPACE_NAME;
       // Create admin account
       console.log(`[d] Creating admin account for ${process.env.INIT_ADMIN_EMAIL}`);
-      const User = require('./User');
-      await new User().createAdmin(process.env.INIT_ADMIN_EMAIL, process.env.INIT_ADMIN_PASSWORD);
+      const User = require('../services/users');
+      await new User().create(process.env.INIT_ADMIN_EMAIL, '', '', process.env.INIT_ADMIN_PASSWORD);
       // Set up Zelos connection
       config.zelos.subdomain = process.env.INIT_ZELOS_SUBDOMAIN;
       config.zelos.email = process.env.INIT_ZELOS_EMAIL;

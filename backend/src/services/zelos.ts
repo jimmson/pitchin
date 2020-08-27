@@ -1,14 +1,24 @@
+import { Service } from 'typedi';
+import moment from 'moment';
+
 const axios = require('axios');
-const Config = require('./Config');
-const moment = require('moment');
+const Config = require('../models/Config');
 
 const cfg = new Config();
 
 const dateFormat = 'YYYY-MM-DDTHH:mm:ssZZ';
 
-class Zelos {
+@Service()
+export default class Zelos {
+  private url: string;
+  private credentials: any;
+  private tokens: any;
+  private axiosConfig: any;
+  private tasks: any;
+  private groups: any;
+
   constructor() {
-    this.url = `https://${process.env.ZELOS_WORKSPACE}.zelos.space`;
+    this.url = `https://${process.env.INIT_ZELOS_SUBDOMAIN}.zelos.space`;
     this.credentials = {
       email: process.env.ZELOS_USER_EMAIL,
       password: process.env.ZELOS_USER_PASSWORD,
@@ -49,6 +59,7 @@ class Zelos {
   }
 
   async login() {
+    console.log(this.credentials);
     const res = await axios.post('https://app.zelos.space/api/auth', this.credentials);
     const tokens = res.data.data;
     return tokens;
@@ -85,7 +96,7 @@ class Zelos {
       let last = 1;
       while (page <= last) {
         console.log(`[i] Getting page ${page} of users`);
-        const res = await axios.get(`${this.url}/api/user`, request);
+        const res = await axios.get(`${this.url}/api/user?page=${page}`, request);
         users.push(...res.data.data);
         last = res.data.meta.last_page || last;
         page++;
@@ -158,7 +169,7 @@ class Zelos {
     const instructions = [];
     Object.keys(details.privateFields).forEach((item) => {
       if (item === 'phone' || item === 'address' || item === 'name') {
-        instructions.push(`${item.capitalize()}: ${details.privateFields[item]}`);
+        instructions.push(`${capitalize(item)}: ${details.privateFields[item]}`);
       } else {
         instructions.push('\n' + details.privateFields[item]);
       }
@@ -213,7 +224,7 @@ class Zelos {
 }
 
 function isTokenValid(exp) {
-  now = Math.floor(new Date().getTime() / 1000);
+  let now = Math.floor(new Date().getTime() / 1000);
   if (now > exp) {
     return false;
   } else {
@@ -226,9 +237,9 @@ function saveTokens(config, tokens) {
   config.save();
 }
 
-String.prototype.capitalize = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 function getKeyByValue(object, value) {
   return Object.keys(object).find((key) => object[key] === value);

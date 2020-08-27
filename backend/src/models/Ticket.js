@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const createError = require('http-errors');
 const Area = require(`./Area`);
-const Zelos = require(`./Zelos`);
+const Zelos = require(`../services/zelos`);
 const Config = require(`./Config`);
 
 const config = new Config();

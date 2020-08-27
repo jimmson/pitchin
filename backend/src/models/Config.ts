@@ -1,3 +1,4 @@
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'mongoose'.
 const mongoose = require('mongoose');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr(process.env.PRIVATE_KEY);
@@ -51,10 +52,12 @@ const configSchema = new mongoose.Schema(
 
 const ConfigModel = mongoose.model('Config', configSchema);
 
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Config'.
 class Config {
   constructor() {}
 
   async init() {
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1-2 arguments, but got 0.
     const config = await this.get();
     if (!config) {
       console.log(`[i] No config found, initializing`);
@@ -86,7 +89,7 @@ class Config {
     process.env.WORKSPACE_NAME = config.workspace.name;
   }
 
-  async get(subject, toObject = false) {
+  async get(subject: any, toObject = false) {
     let config = await ConfigModel.findOne();
     if (subject) {
       return config[subject];
@@ -99,7 +102,7 @@ class Config {
     }
   }
 
-  async update(category, data) {
+  async update(category: any, data: any) {
     if (data.password) {
       data.password = cryptr.encrypt(data.password);
     }

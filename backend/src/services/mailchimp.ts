@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import { IMailchimpMember, IMailchimpTag } from '../interfaces/IMailchimpMember';
 
 @Service()
+// @ts-expect-error ts-migrate(1219) FIXME: Experimental support for decorators is a feature t... Remove this comment to see the full error message
 export default class MailChimpService {
   private client: Mailchimp;
   private listID: string;
@@ -15,7 +16,9 @@ export default class MailChimpService {
   static TAG_WELCOME = 'Welcome Mail';
 
   constructor() {
+    // @ts-expect-error ts-migrate(2345) FIXME: Type 'undefined' is not assignable to type 'string... Remove this comment to see the full error message
     this.client = new Mailchimp(config.mailchimp.apiKey);
+    // @ts-expect-error ts-migrate(2322) FIXME: Type 'undefined' is not assignable to type 'string... Remove this comment to see the full error message
     this.listID = config.mailchimp.listID;
   }
 
@@ -29,6 +32,7 @@ export default class MailChimpService {
     ];
     const res = await this.client.get(`/search-members?query=${email}&fields=${fields}`, ``);
     if (res.exact_matches.total_items != 1) {
+      // @ts-expect-error ts-migrate(2322) FIXME: Type 'null' is not assignable to type 'IMailchimpM... Remove this comment to see the full error message
       return null;
     }
     const member = res.exact_matches.members[0];

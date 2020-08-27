@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 @Service()
+// @ts-expect-error ts-migrate(1219) FIXME: Experimental support for decorators is a feature t... Remove this comment to see the full error message
 export default class UserService {
   private dispatcher: EventDispatcher;
 
@@ -147,6 +148,7 @@ export default class UserService {
     try {
       const user = await this.init(id);
       for (const [key, value] of Object.entries(fields)) {
+        // @ts-expect-error ts-migrate(7053) FIXME: No index signature with a parameter of type 'strin... Remove this comment to see the full error message
         user[key] = value;
       }
       await user.save();
@@ -168,12 +170,20 @@ export default class UserService {
         console.log(`[w] Got Password reset request for non-activated account: ${email}`);
       }
 
+      // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
       user.credentials.resetToken = this.newToken();
+      // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
       const invite = new Mailgun(user.email);
       await invite.send(
         `Password reset`,
-        `Hello,\n\nA password reset has been requested for your account at ${process.env.WORKSPACE_NAME}.\nYou can set a new password here: https://${process.env.APP_HOST}/auth/reset-password/${user.credentials.resetToken}\n\nIf you didn't ask for this reset you can safely ignore this letter`,
+        `Hello,\n\nA password reset has been requested for your account at ${
+          process.env.WORKSPACE_NAME
+        }.\nYou can set a new password here: https://${process.env.APP_HOST}/auth/reset-password/${
+          // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
+          user.credentials.resetToken
+        }\n\nIf you didn't ask for this reset you can safely ignore this letter`,
       );
+      // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
       user.save();
     } catch (err) {}
   }
@@ -243,7 +253,7 @@ export default class UserService {
   }
 
   // get user details as an object
-  async get(id) {
+  async get(id: any) {
     const user = await UserModel.findById(id);
     if (user) {
       const userObj = user.toObject();
@@ -259,7 +269,7 @@ export default class UserService {
   }
 
   // get user model with data
-  async init(id) {
+  async init(id: any) {
     const user = await UserModel.findById(id);
     if (user) {
       return user;
@@ -272,7 +282,7 @@ export default class UserService {
     }
   }
 
-  async getUserByField(fields) {
+  async getUserByField(fields: any) {
     const user = await UserModel.findOne(fields);
     if (user) {
       return user;
@@ -306,6 +316,7 @@ export default class UserService {
     const user = await this.getUserByField({ email: process.env.ADMIN_EMAIL });
     if (!user) {
       const user = new UserModel();
+      // @ts-expect-error ts-migrate(2322) FIXME: Type 'undefined' is not assignable to type 'string... Remove this comment to see the full error message
       user.email = process.env.ADMIN_EMAIL;
       user.firstName = 'Default';
       user.lastName = 'Admin';

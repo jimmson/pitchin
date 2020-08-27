@@ -1,4 +1,6 @@
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'createErro... Remove this comment to see the full error message
 const createError = require('http-errors');
+// @ts-expect-error ts-migrate(2769) FIXME: Type 'undefined' is not assignable to type 'string... Remove this comment to see the full error message
 const phoneRegex = RegExp(process.env.PHONE_REGEX);
 
 // function body(req) {

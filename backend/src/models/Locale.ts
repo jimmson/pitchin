@@ -1,4 +1,6 @@
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'mongoose'.
 const mongoose = require('mongoose');
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'createErro... Remove this comment to see the full error message
 const createError = require('http-errors');
 
 const localeSchema = new mongoose.Schema(
@@ -100,13 +102,13 @@ const localeSchema = new mongoose.Schema(
 
 const LocaleModel = mongoose.model('Locale', localeSchema);
 
-class Locale {
-  async list(active) {
+export class Locale {
+  async list(active: any) {
     const filter = active ? { active: true } : null;
     const locales = await LocaleModel.find(filter);
     return locales;
   }
-  async add(name, code) {
+  async add(name: any, code: any) {
     const result = await LocaleModel.findOne({ code: code });
     if (result) {
       const err = createError(409, {
@@ -121,7 +123,7 @@ class Locale {
     await locale.save();
     return { status: 'ok', id: locale._id };
   }
-  async get(id) {
+  async get(id: any) {
     const locale = await LocaleModel.findById(id);
     if (locale) {
       return locale;
@@ -132,7 +134,7 @@ class Locale {
       throw err;
     }
   }
-  async update(id, fields) {
+  async update(id: any, fields: any) {
     const result = await LocaleModel.updateOne({ _id: id }, { ...fields });
     return { status: 'ok' };
   }
@@ -147,5 +149,3 @@ class Locale {
     }
   }
 }
-
-module.exports = Locale;

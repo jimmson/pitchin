@@ -3,12 +3,11 @@ import UserService from '../../../services/users';
 
 const auth = require('express').Router();
 // const { checkSchema, validationResult } = require('express-validator');
-// const validation = require('./validation.js');
-const appRoot = require('app-root-path');
-const handleError = require(appRoot + '/src' + '/middleware/HandleError');
+// const validation = require('./validation');
+import handleError from '../../../middleware/HandleError';
 
 // register an account using invite token
-auth.put('/register/:token', async (req, res) => {
+auth.put('/register/:token', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     const result = await usersService.register(
@@ -24,7 +23,7 @@ auth.put('/register/:token', async (req, res) => {
 });
 
 // log in
-auth.post('/login', async (req, res) => {
+auth.post('/login', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     const result = await usersService.login(req.body.email, req.body.password);
@@ -35,7 +34,7 @@ auth.post('/login', async (req, res) => {
 });
 
 // request a password reset
-auth.post('/reset', async (req, res) => {
+auth.post('/reset', async (req: any, res: any) => {
   try {
     res.status(200).send({
       status: 'ok',
@@ -48,10 +47,12 @@ auth.post('/reset', async (req, res) => {
 });
 
 // reset user password
-auth.put('/reset/:token', async (req, res) => {
+auth.put('/reset/:token', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 4 arguments, but got 1.
     usersService.register(req.params.token);
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
     res.send(result);
   } catch (err) {
     handleError(err, res);
@@ -59,7 +60,7 @@ auth.put('/reset/:token', async (req, res) => {
 });
 
 // check if reset token is valid
-auth.get('/reset/:token', async (req, res) => {
+auth.get('/reset/:token', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     const result = await usersService.checkToken(req.params.token);

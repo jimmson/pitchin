@@ -1,16 +1,18 @@
-const public = require('express').Router();
+const publicRouter = require('express').Router();
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'checkSchem... Remove this comment to see the full error message
 const { checkSchema, validationResult, matchedData } = require('express-validator');
-const validation = require('./validation.js');
-const appRoot = require('app-root-path');
-const Ticket = require(appRoot + '/src' + '/models/Ticket');
-const Category = require(appRoot + '/src' + '/models/Category');
-const Area = require(appRoot + '/src' + '/models/Area');
-const Locale = require(appRoot + '/src' + '/models/Locale');
-const handleError = require(appRoot + '/src' + '/middleware/HandleError');
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'validation... Remove this comment to see the full error message
+const validation = require('./validation');
+import { Ticket } from '../../../models/Ticket';
+import { Category } from '../../../models/Category';
+import { Area } from '../../../models/Area';
+import { Locale } from '../../..//models/Locale';
+import handleError from '../../../middleware/HandleError';
+// @ts-expect-error ts-migrate(2403) FIXME: Subsequent variable declarations must have the sam... Remove this comment to see the full error message
 const moment = require('moment'); // require
 
 // Submit a ticket
-public.post('/tickets', checkSchema(validation.addTicket), async (req, res) => {
+publicRouter.post('/tickets', checkSchema(validation.addTicket), async (req: any, res: any) => {
   // check for validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -19,6 +21,7 @@ public.post('/tickets', checkSchema(validation.addTicket), async (req, res) => {
     });
   }
   // create a ticket
+  // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
   const ticket = new Ticket();
   const data = matchedData(req);
   if (data.hasDate) {
@@ -28,6 +31,7 @@ public.post('/tickets', checkSchema(validation.addTicket), async (req, res) => {
     data.endDate = moment(data.date).startOf('day').add(et.hours(), 'h').add(et.minutes(), 'm').toDate();
   }
   try {
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
     const id = await ticket.add({
       ...data,
     });
@@ -40,15 +44,21 @@ public.post('/tickets', checkSchema(validation.addTicket), async (req, res) => {
   }
 });
 
-public.get('/options', async (req, res) => {
+publicRouter.get('/options', async (req: any, res: any) => {
   try {
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const category = new Category();
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const area = new Area();
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'allCategories'.
     allCategories = await category.list('public');
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'allAreas'.
     allAreas = await area.list('public');
     const result = {
       status: 'ok',
+      // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'allCategories'.
       categories: allCategories,
+      // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'allAreas'.
       areas: allAreas,
       phone: {
         prefix: process.env.PHONE_PREFIX,
@@ -62,7 +72,8 @@ public.get('/options', async (req, res) => {
   }
 });
 
-public.get('/locales', async (req, res) => {
+// @ts-expect-error ts-migrate(1212) FIXME: Identifier expected. 'public' is a reserved word i... Remove this comment to see the full error message
+publicRouter.get('/locales', async (req: any, res: any) => {
   try {
     const result = await new Locale().list('active');
     res.send(result);
@@ -71,4 +82,5 @@ public.get('/locales', async (req, res) => {
   }
 });
 
-module.exports = public;
+// @ts-expect-error ts-migrate(1212) FIXME: Identifier expected. 'public' is a reserved word i... Remove this comment to see the full error message
+module.exports = publicRouter;

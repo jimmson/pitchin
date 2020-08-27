@@ -5,7 +5,7 @@ import Logger from './loaders/logger';
 import express from 'express';
 
 const Config = require('./models/Config');
-const runjobs = require('./jobs/cron.js');
+const runjobs = require('./jobs/cron');
 
 async function startServer() {
   const app = express();

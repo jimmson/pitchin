@@ -9,6 +9,7 @@ const cfg = new Config();
 const dateFormat = 'YYYY-MM-DDTHH:mm:ssZZ';
 
 @Service()
+// @ts-expect-error ts-migrate(1219) FIXME: Experimental support for decorators is a feature t... Remove this comment to see the full error message
 export default class Zelos {
   private url: string;
   private credentials: any;
@@ -121,7 +122,7 @@ export default class Zelos {
     }
   }
 
-  async findGroup(name) {
+  async findGroup(name: any) {
     let url = `${this.url}/api/group?name=${name}`;
     url = encodeURI(url);
     const request = {
@@ -135,7 +136,7 @@ export default class Zelos {
       return group[0].data.id;
     }
   }
-  async newGroup(name, desc, closed = false, secret = false, noScore = true) {
+  async newGroup(name: any, desc: any, closed = false, secret = false, noScore = true) {
     const config = {
       headers: this.axiosConfig.headers,
     };
@@ -157,7 +158,7 @@ export default class Zelos {
     }
   }
 
-  async newTask(details) {
+  async newTask(details: any) {
     let name = '';
     const description = details.publicFields.request;
     if (description.length > 255) {
@@ -166,7 +167,7 @@ export default class Zelos {
       name = description;
     }
     // parse instructions
-    const instructions = [];
+    const instructions: any = [];
     Object.keys(details.privateFields).forEach((item) => {
       if (item === 'phone' || item === 'address' || item === 'name') {
         instructions.push(`${capitalize(item)}: ${details.privateFields[item]}`);
@@ -223,7 +224,7 @@ export default class Zelos {
   }
 }
 
-function isTokenValid(exp) {
+function isTokenValid(exp: any) {
   let now = Math.floor(new Date().getTime() / 1000);
   if (now > exp) {
     return false;
@@ -232,16 +233,16 @@ function isTokenValid(exp) {
   }
 }
 
-function saveTokens(config, tokens) {
+function saveTokens(config: any, tokens: any) {
   config.zelos.tokens = tokens;
   config.save();
 }
 
-function capitalize(s) {
+function capitalize(s: any) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-function getKeyByValue(object, value) {
+function getKeyByValue(object: any, value: any) {
   return Object.keys(object).find((key) => object[key] === value);
 }
 

@@ -9,6 +9,9 @@ if (!dotenv.config({ path: '../.env' })) {
 }
 
 export default {
+  jwt: {
+    privateKey: process.env.PRIVATE_KEY,
+  },
   api: {
     port: process.env.PORT || 8000,
     prefix: '/',

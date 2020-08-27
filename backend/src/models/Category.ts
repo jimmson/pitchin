@@ -1,4 +1,6 @@
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'mongoose'.
 const mongoose = require('mongoose');
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'createErro... Remove this comment to see the full error message
 const createError = require('http-errors');
 
 const categorySchema = new mongoose.Schema({
@@ -21,13 +23,15 @@ const categorySchema = new mongoose.Schema({
 
 const CategoryModel = mongoose.model('category', categorySchema);
 
-class Category {
-  constructor(id) {
+export class Category {
+  data: any;
+  id: any;
+  constructor(id: any) {
     this.data = {};
     this.id = id;
   }
   // Add a new category
-  async add(fields) {
+  async add(fields: any) {
     for (const [key, value] of Object.entries(fields)) {
       this.data[key] = value;
     }
@@ -39,10 +43,10 @@ class Category {
     };
   }
   // Get all categories
-  async list(consumer) {
+  async list(consumer: any) {
     const result = await CategoryModel.find();
     if (consumer === 'public') {
-      const list = result.map((el) => {
+      const list = result.map((el: any) => {
         if (!el.status.archived) {
           const category = {
             name: el.name,
@@ -76,7 +80,7 @@ class Category {
   }
 
   // Update category
-  async update(fields) {
+  async update(fields: any) {
     for (const [key, value] of Object.entries(fields)) {
       this.data[key] = value;
     }
@@ -118,4 +122,3 @@ class Category {
     }
   }
 }
-module.exports = Category;

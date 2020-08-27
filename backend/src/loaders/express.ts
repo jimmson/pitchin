@@ -4,8 +4,7 @@ import cors from 'cors';
 import config from '../config';
 import routes from '../routes';
 import rateLimit from 'express-rate-limit';
-
-const getDuration = require('../middleware/Timer');
+import getDuration from '../middleware/Timer';
 
 export default ({ app }: { app: express.Application }) => {
   // Set up Express middlewares
@@ -48,6 +47,7 @@ export default ({ app }: { app: express.Application }) => {
   /// catch 404 and forward to error handler
   app.use((req, res, next) => {
     const err = new Error('Not Found');
+    // @ts-expect-error ts-migrate(7053) FIXME: Property 'status' does not exist on type 'Error'.
     err['status'] = 404;
     next(err);
   });
@@ -69,7 +69,7 @@ export default ({ app }: { app: express.Application }) => {
   }
 
   /// error handlers
-  app.use((err, req, res, next) => {
+  app.use((err: any, req: any, res: any, next: any) => {
     if (err) {
       res.status(400).send('Bad request');
     } else {

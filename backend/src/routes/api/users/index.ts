@@ -1,12 +1,11 @@
 import { Container } from 'typedi';
 import UserService from '../../../services/users';
+import handleError from '../../../middleware/HandleError';
 
 const users = require('express').Router();
-const appRoot = require('app-root-path');
-const handleError = require(appRoot + '/src' + '/middleware/HandleError');
 
 // invite an user
-users.post('/invite', async (req, res) => {
+users.post('/invite', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     const admin = req.body.admin ? true : false;
@@ -18,7 +17,7 @@ users.post('/invite', async (req, res) => {
 });
 
 // list all users
-users.get('/', async (req, res) => {
+users.get('/', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     const result = await usersService.list(req.query.limit, req.query.skip);
@@ -29,9 +28,10 @@ users.get('/', async (req, res) => {
 });
 
 // show user details
-users.get('/:id', async (req, res) => {
+users.get('/:id', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
+    // @ts-expect-error ts-migrate(7009) FIXME: 'new' expression, whose target lacks a construct s... Remove this comment to see the full error message
     const data = await new usersService.get(req.params.id);
     res.send(data);
   } catch (err) {
@@ -40,10 +40,12 @@ users.get('/:id', async (req, res) => {
 });
 
 // update user details
-users.put('/:id', async (req, res) => {
+users.put('/:id', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
     result = await usersService.update(req.params.id, req.body);
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
     res.send(result);
   } catch (err) {
     handleError(err, res);

@@ -1,5 +1,8 @@
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'mongoose'.
 const mongoose = require('mongoose');
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'createErro... Remove this comment to see the full error message
 const createError = require('http-errors');
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Zelos'.
 const Zelos = require('../services/zelos');
 
 const areaSchema = new mongoose.Schema({
@@ -23,13 +26,16 @@ const areaSchema = new mongoose.Schema({
 
 const AreaModel = mongoose.model('area', areaSchema);
 
-class Area {
-  constructor(id) {
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Area'.
+export class Area {
+  data: any;
+  id: any;
+  constructor(id: any) {
     this.data = {};
     this.id = id;
   }
   // Add a new area
-  async add(fields, createGroup = true) {
+  async add(fields: any, createGroup = true) {
     for (const [key, value] of Object.entries(fields)) {
       this.data[key] = value;
     }
@@ -51,14 +57,19 @@ class Area {
             hasGroup: true,
             groupId: groupId,
           };
+          // @ts-expect-error ts-migrate(2339) FIXME: Property 'status' does not exist on type '{ id: an... Remove this comment to see the full error message
           response.status = 'ok';
+          // @ts-expect-error ts-migrate(2339) FIXME: Property 'groupId' does not exist on type '{}'.
           response.zelos.groupId = groupId;
+          // @ts-expect-error ts-migrate(2339) FIXME: Property 'message' does not exist on type '{ id: a... Remove this comment to see the full error message
           response.message = 'Added area and created a new group on Zelos';
         } else {
           area.zelos = {
             hasGroup: false,
           };
+          // @ts-expect-error ts-migrate(2339) FIXME: Property 'status' does not exist on type '{ id: an... Remove this comment to see the full error message
           response.status = 'warning';
+          // @ts-expect-error ts-migrate(2339) FIXME: Property 'message' does not exist on type '{ id: a... Remove this comment to see the full error message
           response.message =
             'Added area, but failed to create group on Zelos (limit reached or no permission to add groups)';
         }
@@ -67,8 +78,11 @@ class Area {
           hasGroup: true,
           groupId: group,
         };
+        // @ts-expect-error ts-migrate(2339) FIXME: Property 'status' does not exist on type '{ id: an... Remove this comment to see the full error message
         response.status = 'ok';
+        // @ts-expect-error ts-migrate(2339) FIXME: Property 'groupId' does not exist on type '{}'.
         response.zelos.groupId = group;
+        // @ts-expect-error ts-migrate(2339) FIXME: Property 'message' does not exist on type '{ id: a... Remove this comment to see the full error message
         response.message = 'Added area and linked an existing group on Zelos';
       }
     }
@@ -76,10 +90,10 @@ class Area {
     return response;
   }
   // Get all areas
-  async list(consumer) {
+  async list(consumer: any) {
     const result = await AreaModel.find();
     if (consumer === 'public') {
-      const list = result.map((el) => {
+      const list = result.map((el: any) => {
         if (!el.status.archived) {
           const area = {
             name: el.name,
@@ -103,7 +117,7 @@ class Area {
   }
 
   // Update area
-  async update(fields) {
+  async update(fields: any) {
     for (const [key, value] of Object.entries(fields)) {
       this.data[key] = value;
     }
@@ -145,4 +159,3 @@ class Area {
     }
   }
 }
-module.exports = Area;

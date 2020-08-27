@@ -1,13 +1,12 @@
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'categories... Remove this comment to see the full error message
 const categories = require('express').Router();
-const appRoot = require('app-root-path');
-const validate = require(appRoot + '/src' + '/middleware/Validate');
-const handleError = require(appRoot + '/src' + '/middleware/HandleError');
+import handleError from '../../../middleware/HandleError';
+import { Category } from '../../../models/Category';
 
-const Category = require(appRoot + '/src' + '/models/Category');
-
-categories.post('/', async (req, res) => {
+categories.post('/', async (req: any, res: any) => {
   try {
     // todo: validation
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const category = new Category();
     const id = await category.add(req.body);
     res.status(201).send(id);
@@ -15,9 +14,11 @@ categories.post('/', async (req, res) => {
     handleError(err, res);
   }
 });
-categories.get('/', async (req, res) => {
+categories.get('/', async (req: any, res: any) => {
   try {
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const category = new Category();
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const list = await category.list();
     res.send(list);
   } catch (err) {
@@ -25,27 +26,31 @@ categories.get('/', async (req, res) => {
   }
 });
 
-categories.get('/:id', async (req, res) => {
+categories.get('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const category = new Category(req.params.id);
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
     result = await category.get();
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
     res.send(result);
   } catch (err) {
     handleError(err, res);
   }
 });
-categories.put('/:id', async (req, res) => {
+categories.put('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const category = new Category(req.params.id);
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
     result = await category.update(req.body);
+    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
     res.send(result);
   } catch (err) {
     handleError(err, res);
   }
 });
-categories.delete('/:id', async (req, res) => {
+categories.delete('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const category = new Category(req.params.id);

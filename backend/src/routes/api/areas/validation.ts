@@ -1,4 +1,4 @@
-const validation = {
+export default {
   newArea: {
     name: {
       isString: true,
@@ -17,5 +17,3 @@ const validation = {
     },
   },
 };
-
-module.exports = validation;

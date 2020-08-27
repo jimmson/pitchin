@@ -1,7 +1,12 @@
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'mongoose'.
 const mongoose = require('mongoose');
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'createErro... Remove this comment to see the full error message
 const createError = require('http-errors');
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Area'.
 const Area = require(`./Area`);
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Zelos'.
 const Zelos = require(`../services/zelos`);
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Config'.
 const Config = require(`./Config`);
 
 const config = new Config();
@@ -59,17 +64,23 @@ const ticketSchema = new mongoose.Schema(
 
 const TicketModel = mongoose.model('Ticket', ticketSchema);
 
-class Ticket {
-  constructor(id) {
+export class Ticket {
+  data: any;
+  id: any;
+  constructor(id: any) {
     this.data = {};
     this.id = id;
   }
 
   // List tickets with an optional filter
   async list(filter = {}) {
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'limit' does not exist on type '{}'.
     const limit = filter.limit ? filter.limit : 100;
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'skip' does not exist on type '{}'.
     const skip = filter.skip ? filter.skip : 0;
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'limit' does not exist on type '{}'.
     delete filter.limit;
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'skip' does not exist on type '{}'.
     delete filter.skip;
     const tickets = await TicketModel.find(filter, null, {
       skip: skip,
@@ -78,9 +89,13 @@ class Ticket {
     const result = {
       count: {},
     };
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'returned' does not exist on type '{}'.
     result.count.returned = tickets.length;
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'total' does not exist on type '{}'.
     result.count.total = await TicketModel.estimatedDocumentCount();
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'tickets' does not exist on type '{ count... Remove this comment to see the full error message
     result.tickets = tickets;
+    // @ts-expect-error ts-migrate(2339) FIXME: Property 'settings' does not exist on type '{ coun... Remove this comment to see the full error message
     result.settings = {
       limit: limit,
       skip: skip,
@@ -103,7 +118,7 @@ class Ticket {
   }
 
   // Add a new request ticket
-  async add(fields, owner) {
+  async add(fields: any, owner: any) {
     for (const [key, value] of Object.entries(fields)) {
       this.data[key] = value;
     }
@@ -117,7 +132,7 @@ class Ticket {
   }
 
   // Update a ticket
-  async update(fields) {
+  async update(fields: any) {
     for (const [key, value] of Object.entries(fields)) {
       if (key === 'owner' && value === '') continue;
       this.data[key] = value;
@@ -131,7 +146,7 @@ class Ticket {
   }
 
   // Assign ownership to ticket
-  async assign(userId) {
+  async assign(userId: any) {
     await TicketModel.updateOne({ _id: this.id }, { owner: userId });
     return {
       status: 'ok',
@@ -148,7 +163,7 @@ class Ticket {
   }
 
   // Resolve a ticket
-  async resolve(comment, user) {
+  async resolve(comment: any, user: any) {
     const ticket = await this.get();
     if (ticket.status === 'new') {
       if (comment) {
@@ -179,7 +194,7 @@ class Ticket {
   }
 
   // Reject a ticket
-  async reject(comment, user, notify) {
+  async reject(comment: any, user: any, notify: any) {
     const ticket = await this.get();
     if (ticket.status === 'new') {
       // Add a comment if requested
@@ -200,6 +215,7 @@ class Ticket {
           console.log(`[d] Sending reject message`);
           const SMS = require(`./${process.env.SMS_PROVIDER}`);
           const text = new SMS();
+          // @ts-expect-error ts-migrate(7022) FIXME: 'config' implicitly has type 'any' because it does... Remove this comment to see the full error message
           const config = await config.get('sms');
           const result = await text.send(ticket.phone, config.rejectText);
           if (result) {
@@ -228,7 +244,7 @@ class Ticket {
   }
 
   // Approve a ticket
-  async approve(query) {
+  async approve(query: any) {
     const ticket = await this.get();
     if (ticket.status === 'approved') {
       const err = createError(409, {
@@ -289,6 +305,7 @@ class Ticket {
         console.log(`[d] Sending a notification text`);
         const SMS = require(`./Infobip}`);
         const text = new SMS();
+        // @ts-expect-error ts-migrate(7022) FIXME: 'config' implicitly has type 'any' because it does... Remove this comment to see the full error message
         const config = await config.get('sms');
         text.send(ticket.phone, config.acceptText);
       } catch (err) {
@@ -337,15 +354,17 @@ class Ticket {
   }
 
   // Add a comment
-  async addComment(comment, user = null) {
+  async addComment(comment: any, user = null) {
     const ticket = await TicketModel.findById(this.id);
     const newComment = {
       comment: comment,
       creator: {},
     };
     if (!user) {
+      // @ts-expect-error ts-migrate(2339) FIXME: Property 'system' does not exist on type '{}'.
       newComment.creator.system = true;
     } else {
+      // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type '{}'.
       newComment.creator.id = user;
     }
     ticket.comments.push(newComment);
@@ -357,11 +376,11 @@ class Ticket {
   }
 
   // Remove a comment
-  async removeComment(commentId) {
+  async removeComment(commentId: any) {
     const ticket = await TicketModel.findById(this.id);
     console.log(`Comments before:\n${ticket.comments}`);
     let count = 0;
-    ticket.comments = ticket.comments.filter((obj) => {
+    ticket.comments = ticket.comments.filter((obj: any) => {
       if (obj._id != commentId) {
         return true;
       } else {
@@ -382,5 +401,3 @@ class Ticket {
     }
   }
 }
-
-module.exports = Ticket;

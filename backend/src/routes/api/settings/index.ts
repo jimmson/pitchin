@@ -1,11 +1,13 @@
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'settings'.
 const settings = require('express').Router();
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'checkSchem... Remove this comment to see the full error message
 const { checkSchema, validationResult, matchedData } = require('express-validator');
-const validation = require('./validation.js');
-const appRoot = require('app-root-path');
-const Config = require(appRoot + '/src' + '/models/Config');
-const handleError = require(appRoot + '/src' + '/middleware/HandleError');
+// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'validation... Remove this comment to see the full error message
+const validation = require('./validation');
+import Config from '../../../models/Config';
+import handleError from '../../../middleware/HandleError';
 
-settings.get('/', async (req, res) => {
+settings.get('/', async (req: any, res: any) => {
   try {
     const config = await new Config().get(null, true);
     delete config.zelos.tokens;
@@ -16,7 +18,7 @@ settings.get('/', async (req, res) => {
   }
 });
 
-settings.get('/:category', async (req, res) => {
+settings.get('/:category', async (req: any, res: any) => {
   if (validation.hasOwnProperty(req.params.category)) {
     try {
       let config = await new Config().get(req.params.category, true);
@@ -34,7 +36,7 @@ settings.get('/:category', async (req, res) => {
 
 // I don't know how to pass request params to checkschema so I could do checkSchema(validation[category]) and avoid having multiple endpoints
 
-settings.put('/workspace', async (req, res) => {
+settings.put('/workspace', async (req: any, res: any) => {
   // const errors = validationResult(req);
   // if (!errors.isEmpty()) {
   //     return res.status(422).json({
@@ -49,7 +51,7 @@ settings.put('/workspace', async (req, res) => {
   }
 });
 
-settings.put('/zelos', async (req, res) => {
+settings.put('/zelos', async (req: any, res: any) => {
   // const errors = validationResult(req);
   // if (!errors.isEmpty()) {
   //     return res.status(422).json({
@@ -64,7 +66,7 @@ settings.put('/zelos', async (req, res) => {
   }
 });
 
-settings.put('/sms', async (req, res) => {
+settings.put('/sms', async (req: any, res: any) => {
   // const errors = validationResult(req);
   // if (!errors.isEmpty()) {
   //     return res.status(422).json({

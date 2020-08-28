@@ -43,9 +43,7 @@ users.get('/:id', async (req: any, res: any) => {
 users.put('/:id', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await usersService.update(req.params.id, req.body);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await usersService.update(req.params.id, req.body);
     res.send(result);
   } catch (err) {
     handleError(err, res);

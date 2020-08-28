@@ -30,9 +30,7 @@ categories.get('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const category = new Category(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await category.get();
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await category.get();
     res.send(result);
   } catch (err) {
     handleError(err, res);
@@ -42,9 +40,7 @@ categories.put('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const category = new Category(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await category.update(req.body);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await category.update(req.body);
     res.send(result);
   } catch (err) {
     handleError(err, res);

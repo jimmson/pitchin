@@ -47,12 +47,12 @@ auth.post('/reset', async (req: any, res: any) => {
 });
 
 // reset user password
+// TODO: FIX THIS
 auth.put('/reset/:token', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     // @ts-expect-error ts-migrate(2554) FIXME: Expected 4 arguments, but got 1.
-    usersService.register(req.params.token);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = usersService.register(req.params.token);
     res.send(result);
   } catch (err) {
     handleError(err, res);

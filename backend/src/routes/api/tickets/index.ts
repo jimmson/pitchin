@@ -57,9 +57,7 @@ tickets.put('/:id/assign', async (req: any, res: any) => {
   try {
     // unvalidated
     const ticket = new Ticket(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await ticket.assign(req.query.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await ticket.assign(req.query.id);
     res.send(result);
   } catch (err) {
     handleError(err, res);
@@ -70,9 +68,7 @@ tickets.put('/:id/assign', async (req: any, res: any) => {
 tickets.delete('/:id/assign', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await ticket.unassign();
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await ticket.unassign();
     res.send(result);
   } catch (err) {
     handleError(err, res);
@@ -83,9 +79,7 @@ tickets.delete('/:id/assign', async (req: any, res: any) => {
 tickets.get('/:id', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await ticket.get();
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await ticket.get();
     res.send(result);
   } catch (err) {
     handleError(err, res);
@@ -96,9 +90,7 @@ tickets.get('/:id', async (req: any, res: any) => {
 tickets.put('/:id', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await ticket.update(req.body);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await ticket.update(req.body);
     res.send(result);
   } catch (err) {
     handleError(err, res);
@@ -167,9 +159,7 @@ tickets.post('/:id/comments', async (req: any, res: any) => {
     // unvalidated
     const ticket = new Ticket(req.params.id);
     const user = null; // todo: add user ID
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await ticket.addComment(req.body.comment, user);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await ticket.addComment(req.body.comment, user);
     res.send(result);
   } catch (err) {
     handleError(err, res);
@@ -181,9 +171,7 @@ tickets.delete('/:id/comments/:commentId', async (req: any, res: any) => {
   try {
     // unvalidated
     const ticket = new Ticket(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await ticket.removeComment(req.params.commentId);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await ticket.removeComment(req.params.commentId);
     res.send(result);
   } catch (err) {
     handleError(err, res);

@@ -35,9 +35,7 @@ areas.get('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const area = new Area(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await area.get();
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await area.get();
     res.send(result);
   } catch (err) {
     handleError(err, res);
@@ -47,9 +45,7 @@ areas.put('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const area = new Area(req.params.id);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
-    result = await area.update(req.body);
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'result'.
+    const result = await area.update(req.body);
     res.send(result);
   } catch (err) {
     handleError(err, res);

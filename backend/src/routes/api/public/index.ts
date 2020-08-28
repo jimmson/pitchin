@@ -50,15 +50,11 @@ publicRouter.get('/options', async (req: any, res: any) => {
     const category = new Category();
     // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const area = new Area();
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'allCategories'.
-    allCategories = await category.list('public');
-    // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'allAreas'.
-    allAreas = await area.list('public');
+    const allCategories = await category.list('public');
+    const allAreas = await area.list('public');
     const result = {
       status: 'ok',
-      // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'allCategories'.
       categories: allCategories,
-      // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'allAreas'.
       areas: allAreas,
       phone: {
         prefix: process.env.PHONE_PREFIX,
@@ -72,7 +68,6 @@ publicRouter.get('/options', async (req: any, res: any) => {
   }
 });
 
-// @ts-expect-error ts-migrate(1212) FIXME: Identifier expected. 'public' is a reserved word i... Remove this comment to see the full error message
 publicRouter.get('/locales', async (req: any, res: any) => {
   try {
     const result = await new Locale().list('active');
@@ -82,5 +77,4 @@ publicRouter.get('/locales', async (req: any, res: any) => {
   }
 });
 
-// @ts-expect-error ts-migrate(1212) FIXME: Identifier expected. 'public' is a reserved word i... Remove this comment to see the full error message
 module.exports = publicRouter;

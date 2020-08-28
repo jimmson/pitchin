@@ -5,7 +5,6 @@ import Logger from './loaders/logger';
 import express from 'express';
 
 const Config = require('./models/Config');
-const runjobs = require('./jobs/cron');
 
 async function startServer() {
   const app = express();
@@ -16,6 +15,7 @@ async function startServer() {
     Logger.info(`server listening on port: ${config.api.port}`);
   });
 }
+
 startServer();
 
 // Initialize configuration
@@ -26,7 +26,6 @@ async function init() {
     // DEBUG
     // const Zelos = require('./models/Zelos')
     // new Zelos().init();
-    runjobs();
   } catch (err) {
     console.error(err);
   }

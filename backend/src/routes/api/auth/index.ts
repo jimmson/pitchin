@@ -1,13 +1,14 @@
 import { Container } from 'typedi';
+import express from 'express';
 import UserService from '../../../services/users';
-
-const auth = require('express').Router();
-// const { checkSchema, validationResult } = require('express-validator');
-// const validation = require('./validation');
 import handleError from '../../../middleware/HandleError';
 
+const router = express.Router();
+// const { checkSchema, validationResult } = require('express-validator');
+// const validation = require('./validation');
+
 // register an account using invite token
-auth.put('/register/:token', async (req: any, res: any) => {
+router.put('/register/:token', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     const result = await usersService.register(
@@ -23,7 +24,7 @@ auth.put('/register/:token', async (req: any, res: any) => {
 });
 
 // log in
-auth.post('/login', async (req: any, res: any) => {
+router.post('/login', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     const result = await usersService.login(req.body.email, req.body.password);
@@ -34,7 +35,7 @@ auth.post('/login', async (req: any, res: any) => {
 });
 
 // request a password reset
-auth.post('/reset', async (req: any, res: any) => {
+router.post('/reset', async (req: any, res: any) => {
   try {
     res.status(200).send({
       status: 'ok',
@@ -48,7 +49,7 @@ auth.post('/reset', async (req: any, res: any) => {
 
 // reset user password
 // TODO: FIX THIS
-auth.put('/reset/:token', async (req: any, res: any) => {
+router.put('/reset/:token', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     // @ts-expect-error ts-migrate(2554) FIXME: Expected 4 arguments, but got 1.
@@ -60,7 +61,7 @@ auth.put('/reset/:token', async (req: any, res: any) => {
 });
 
 // check if reset token is valid
-auth.get('/reset/:token', async (req: any, res: any) => {
+router.get('/reset/:token', async (req: any, res: any) => {
   try {
     const usersService = Container.get(UserService);
     const result = await usersService.checkToken(req.params.token);
@@ -70,4 +71,4 @@ auth.get('/reset/:token', async (req: any, res: any) => {
   }
 });
 
-module.exports = auth;
+export default router;

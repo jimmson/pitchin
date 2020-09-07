@@ -1,21 +1,19 @@
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'axios'.
-const axios = require('axios');
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Config'.
-const Config = require(`./Config`);
+import axios from 'axios';
+import config from '../config';
 
 class Infobip {
   apiKey: any;
   axiosConfig: any;
   baseUrl: any;
+  sender: any;
+
   constructor() {
-    this.baseUrl = process.env.INFOBIP_BASE_URL;
-    this.apiKey = process.env.INFOBIP_API_KEY;
+    this.baseUrl = config.infobip.baseUrl;
+    this.apiKey = config.infobip.apiKey;
   }
+
   async init() {
-    const config = new Config();
-    const settings = await config.get('sms');
-    // @ts-expect-error ts-migrate(2551) FIXME: Property 'sender' does not exist on type 'Infobip'... Remove this comment to see the full error message
-    this.sender = settings.fromName;
+    this.sender = config.infobip.sender;
     this.axiosConfig = {
       headers: {
         Authorization: `App ${this.apiKey}`,
@@ -30,11 +28,10 @@ class Infobip {
     req.messages = [];
     // @ts-expect-error ts-migrate(2339) FIXME: Property 'messages' does not exist on type '{}'.
     req.messages.push({
-      // @ts-expect-error ts-migrate(2551) FIXME: Property 'sender' does not exist on type 'Infobip'... Remove this comment to see the full error message
       from: this.sender,
       destinations: [
         {
-          to: process.env.PHONE_PREFIX + number,
+          to: number,
         },
       ],
       text: text,

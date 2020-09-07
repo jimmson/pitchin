@@ -1,12 +1,13 @@
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'locales'.
-const locales = require('express').Router();
-// const { checkSchema, validationResult } = require('express-validator');
-// const validation = require('./validation');
+import express from 'express';
 import handleError from '../../../middleware/HandleError';
 import { Locale } from '../../../models/Locale';
 
+const router = express.Router();
+// const { checkSchema, validationResult } = require('express-validator');
+// const validation = require('./validation');
+
 // Create a locale
-locales.post('/', async (req: any, res: any) => {
+router.post('/', async (req: any, res: any) => {
   try {
     const result = await new Locale().add(req.body.name, req.body.code);
     res.send(result);
@@ -16,7 +17,7 @@ locales.post('/', async (req: any, res: any) => {
 });
 
 // List all locales
-locales.get('/', async (req: any, res: any) => {
+router.get('/', async (req: any, res: any) => {
   try {
     const active = req.query.active ? true : false;
     const result = await new Locale().list(active);
@@ -27,7 +28,7 @@ locales.get('/', async (req: any, res: any) => {
 });
 
 // Get a locale
-locales.get('/:id', async (req: any, res: any) => {
+router.get('/:id', async (req: any, res: any) => {
   try {
     const result = await new Locale().get(req.params.id);
     res.send(result);
@@ -37,7 +38,7 @@ locales.get('/:id', async (req: any, res: any) => {
 });
 
 // Update a locale
-locales.put('/:id', async (req: any, res: any) => {
+router.put('/:id', async (req: any, res: any) => {
   try {
     const result = await new Locale().update(req.params.id, req.body);
     res.send(result);
@@ -46,4 +47,4 @@ locales.put('/:id', async (req: any, res: any) => {
   }
 });
 
-module.exports = locales;
+export default router;

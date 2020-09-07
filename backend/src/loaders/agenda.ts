@@ -1,7 +1,9 @@
 import Agenda from 'agenda';
+import { Db } from 'mongodb';
+
 import config from '../config';
 
-export default ({ mongoConnection }) => {
+export default ({ mongoConnection }: { mongoConnection: Db }) => {
   return new Agenda(
     {
       mongo: mongoConnection,

@@ -1,22 +1,16 @@
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'mongoose'.
-const mongoose = require('mongoose');
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'createErro... Remove this comment to see the full error message
-const createError = require('http-errors');
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Area'.
-const Area = require(`./Area`);
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Zelos'.
-const Zelos = require(`../services/zelos`);
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Config'.
-const Config = require(`./Config`);
+import { Container } from 'typedi';
+import mongoose from 'mongoose';
+import createError from 'http-errors';
+import mongodb = require('mongodb');
 
-const config = new Config();
+const Area = require(`./Area`);
 
 const activitySchema = new mongoose.Schema({
   time: { type: Date, default: Date.now() },
   action: String,
   source: {
     system: Boolean,
-    user: mongoose.ObjectId,
+    user: mongodb.ObjectId,
   },
 });
 
@@ -25,7 +19,7 @@ const commentSchema = new mongoose.Schema({
   comment: String,
   creator: {
     system: Boolean,
-    id: mongoose.ObjectId,
+    id: mongodb.ObjectId,
   },
 });
 
@@ -36,9 +30,9 @@ const ticketSchema = new mongoose.Schema(
     address: String,
     request: String,
     maxParticipants: Number,
-    area: mongoose.ObjectId,
-    category: mongoose.ObjectId,
-    owner: mongoose.ObjectId,
+    area: mongodb.ObjectId,
+    category: mongodb.ObjectId,
+    owner: mongodb.ObjectId,
     createdAt: {
       type: Date,
       default: Date.now(),
@@ -208,26 +202,6 @@ export class Ticket {
           user: ticket.owner,
         },
       });
-      // Send a text
-      const sendText = notify !== 'false';
-      try {
-        if (sendText && process.env.SEND_REJECT_TEXT) {
-          console.log(`[d] Sending reject message`);
-          const SMS = require(`./${process.env.SMS_PROVIDER}`);
-          const text = new SMS();
-          // @ts-expect-error ts-migrate(7022) FIXME: 'config' implicitly has type 'any' because it does... Remove this comment to see the full error message
-          const config = await config.get('sms');
-          const result = await text.send(ticket.phone, config.rejectText);
-          if (result) {
-            ticket.notified = true;
-          }
-        } else {
-          ticket.notified = false;
-          console.log(`[d] Skipping reject message. Global: ${process.env.SEND_REJECT_TEXT}. Query: ${notify}`);
-        }
-      } catch (err) {
-        console.error(`[!] Failed to send a text:\n${err.stack}`);
-      }
       // Update ticket
       await ticket.save();
       return { status: 'ok', message: 'Ticket rejected' };
@@ -265,7 +239,6 @@ export class Ticket {
     }
     // create an object for task creation input
     const area = await new Area(ticket.area).get();
-    const settings = await config.get('zelos');
     const taskDetails = {
       privateFields: {
         name: ticket.name,
@@ -286,8 +259,7 @@ export class Ticket {
     };
     // Push a task to Zelos
     try {
-      const zelos = new Zelos();
-      await zelos.init();
+      const zelos = Container.get('zelos');
       ticket.task = await zelos.newTask(taskDetails);
     } catch (err) {
       console.error(`[!] Failed to create a task:\n${err}`);
@@ -298,21 +270,6 @@ export class Ticket {
         },
       });
       throw error;
-    }
-    // Send a text
-    if (process.env.SEND_ACCEPT_TEXT === 'true' && !query.skiptext) {
-      try {
-        console.log(`[d] Sending a notification text`);
-        const SMS = require(`./Infobip}`);
-        const text = new SMS();
-        // @ts-expect-error ts-migrate(7022) FIXME: 'config' implicitly has type 'any' because it does... Remove this comment to see the full error message
-        const config = await config.get('sms');
-        text.send(ticket.phone, config.acceptText);
-      } catch (err) {
-        console.error(`[!] Failed to send a text:\n${err}`);
-      }
-    } else {
-      console.log(`[d] Skipping notification text`);
     }
     // update ticket
     ticket.status = 'approved';

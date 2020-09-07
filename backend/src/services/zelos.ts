@@ -1,134 +1,88 @@
-import { Service } from 'typedi';
-import moment from 'moment';
+import Stream from 'stream';
+import { Service, Inject } from 'typedi';
+import axios, { AxiosRequestConfig } from 'axios';
+import moment, { Moment } from 'moment';
 
-const axios = require('axios');
-const Config = require('../models/Config');
-
-const cfg = new Config();
-
-const dateFormat = 'YYYY-MM-DDTHH:mm:ssZZ';
+import config from '../config';
+import log from '../loaders/logger';
 
 @Service()
-// @ts-expect-error ts-migrate(1219) FIXME: Experimental support for decorators is a feature t... Remove this comment to see the full error message
 export default class Zelos {
+  private static DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ssZZ';
+  private static DOMAIN = 'zelos.space';
+  private static AUTH_URL = 'https://app.zelos.space/api/auth';
+
   private url: string;
-  private credentials: any;
-  private tokens: any;
-  private axiosConfig: any;
-  private tasks: any;
-  private groups: any;
+  private email: string;
+  private password: string;
+
+  private aToken: string = '';
+  private aTokenExpiresAt: Moment = moment(0);
+  private rToken: string = '';
+  private rTokenExpiresAt: Moment = moment(0);
 
   constructor() {
-    this.url = `https://${process.env.INIT_ZELOS_SUBDOMAIN}.zelos.space`;
-    this.credentials = {
-      email: process.env.ZELOS_USER_EMAIL,
-      password: process.env.ZELOS_USER_PASSWORD,
-    };
-    this.tokens = {};
-    this.axiosConfig = {
-      headers: {},
-    };
+    this.url = `https://${config.zelos.subdomain}.${Zelos.DOMAIN}`;
+    this.email = config.zelos.email;
+    this.password = config.zelos.password;
   }
-  async init() {
-    const config = new Config();
-    const configModel = await config.get();
-    const settings = await config.get('zelos', true);
-    if (settings.tokens) {
-      this.tokens = settings.tokens;
-      if (isTokenValid(this.tokens.access.expired_at)) {
-        console.log(`[d] Zelos: Access token is valid`);
-      } else if (isTokenValid(this.tokens.refresh.expired_at)) {
-        console.log(`[d] Zelos: Requesting new access token`);
-        this.tokens = await this.getAccessToken();
-        saveTokens(configModel, this.tokens);
-      } else {
-        console.log(`[d] Zelos: Re-authenticating`);
-        this.tokens = await this.login();
-        saveTokens(configModel, this.tokens);
-      }
-    } else {
-      console.log(`[d] Zelos: no tokens found, initializing`);
-      this.tokens = await this.login();
-      saveTokens(configModel, this.tokens);
+
+  async auth() {
+    if (this.rTokenExpiresAt.isBefore(moment().subtract(10, 'h'))) {
+      return this.login();
     }
+    if (this.aTokenExpiresAt.isBefore(moment().subtract(10, 'm'))) {
+      return this.refresh();
+    }
+  }
 
-    this.axiosConfig.headers = {
-      Authorization: `Bearer ${this.tokens.access.token}`,
+  private authHeaders(): AxiosRequestConfig {
+    return {
+      headers: {
+        Authorization: `Bearer ${this.aToken}`,
+      },
     };
-    const status = await axios.get(`${this.url}/api/status`);
-    console.log(`[i] Authenticated to "${status.data.event_name}"`);
   }
 
-  async login() {
-    console.log(this.credentials);
-    const res = await axios.post('https://app.zelos.space/api/auth', this.credentials);
-    const tokens = res.data.data;
-    return tokens;
+  private async login(): Promise<void> {
+    try {
+      const res = await axios.post(Zelos.AUTH_URL, {
+        email: this.email,
+        password: this.password,
+      });
+      this.setTokens(res.data.data);
+    } catch (err) {
+      log.error(err);
+    }
   }
-  async getAccessToken() {
+
+  private async refresh(): Promise<void> {
     try {
       const res = await axios.put(
-        'https://app.zelos.space/api/auth',
-        { refresh_token: this.tokens.refresh.token },
-        this.axiosConfig,
+        Zelos.AUTH_URL,
+        {
+          refresh_token: this.rToken,
+        },
+        this.authHeaders(),
       );
-      const tokens = res.data.data;
-      return tokens;
+      this.setTokens(res.data.data);
     } catch (err) {
-      const tokens = this.login();
-      return tokens;
+      log.error(err);
     }
   }
-  async getTasks() {
-    const request = {
-      headers: this.axiosConfig.headers,
-    };
-    const res = await axios.get(`${this.url}/api/task`, request);
-    this.tasks = res.data.data;
-    console.log(`[i] Found ${this.tasks.length} tasks`);
-  }
-  async getUsers() {
-    try {
-      const request = {
-        headers: this.axiosConfig.headers,
-      };
-      let users = [];
-      let page = 1;
-      let last = 1;
-      while (page <= last) {
-        console.log(`[i] Getting page ${page} of users`);
-        const res = await axios.get(`${this.url}/api/user?page=${page}`, request);
-        users.push(...res.data.data);
-        last = res.data.meta.last_page || last;
-        page++;
-      }
-      return users;
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  }
-  async getGroups() {
-    try {
-      const request = {
-        headers: this.axiosConfig.headers,
-      };
-      const res = await axios.get(`${this.url}/api/group`, request);
-      this.groups = res.data.data;
-      console.log(`[i] Loaded ${this.groups.length} groups`);
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
+
+  private setTokens(data: any): void {
+    this.rToken = data.refresh.token;
+    this.aToken = data.access.token;
+
+    this.rTokenExpiresAt = moment.unix(data.refresh.expired_at);
+    this.aTokenExpiresAt = moment.unix(data.access.expired_at);
   }
 
   async findGroup(name: any) {
     let url = `${this.url}/api/group?name=${name}`;
     url = encodeURI(url);
-    const request = {
-      headers: this.axiosConfig.headers,
-    };
-    const res = await axios.get(url, request);
+    const res = await axios.get(url, this.authHeaders());
     if (res.data.data == '') {
       return null;
     } else {
@@ -136,10 +90,8 @@ export default class Zelos {
       return group[0].data.id;
     }
   }
+
   async newGroup(name: any, desc: any, closed = false, secret = false, noScore = true) {
-    const config = {
-      headers: this.axiosConfig.headers,
-    };
     const data = {
       name: name,
       description: desc,
@@ -148,7 +100,7 @@ export default class Zelos {
       hide_from_scoreboards: noScore,
     };
     try {
-      const res = await axios.post(`${this.url}/api/group`, data, config);
+      const res = await axios.post(`${this.url}/api/group`, data, this.authHeaders());
       return res.data.data.id;
     } catch (err) {
       console.log(err.response);
@@ -177,10 +129,10 @@ export default class Zelos {
     });
     // Format dates
     const executionEndDate = details.publicFields.executionEndDate
-      ? moment(details.publicFields.executionEndDate).format(dateFormat)
+      ? moment(details.publicFields.executionEndDate).format(Zelos.DATE_FORMAT)
       : null;
     const executionStartDate = details.publicFields.executionStartDate
-      ? moment(details.publicFields.executionStartDate).format(dateFormat)
+      ? moment(details.publicFields.executionStartDate).format(Zelos.DATE_FORMAT)
       : null;
     // parse settings
     const defSetting = await cfg.get('zelos');
@@ -209,11 +161,8 @@ export default class Zelos {
       location_id: null,
       user_ids: [],
     };
-    const axiosCfg = {
-      headers: this.axiosConfig.headers,
-    };
     try {
-      const res = await axios.post(`${this.url}/api/task/regular`, body, axiosCfg);
+      const res = await axios.post(`${this.url}/api/task/regular`, body, this.authHeaders());
       const taskUrl = this.url + '/tasks/' + res.data.data.id;
       console.log(`[i] Created ${taskUrl}`);
       return taskUrl;
@@ -222,28 +171,30 @@ export default class Zelos {
       throw err;
     }
   }
-}
 
-function isTokenValid(exp: any) {
-  let now = Math.floor(new Date().getTime() / 1000);
-  if (now > exp) {
-    return false;
-  } else {
-    return true;
+  private async *getUsersGenerator() {
+    let _page = 1;
+    let _last = 1;
+    while (_page <= _last) {
+      try {
+        console.log(`[i] Getting page ${_page} of users`, _last);
+        const res = await axios.get(`${this.url}/api/user?page=${_page}`, this.authHeaders());
+        ({ last_page: _last, current_page: _page } = res.data.meta);
+        for (let u of res.data.data) {
+          yield u.data;
+        }
+        _page++;
+      } catch (err) {
+        throw err;
+      }
+    }
   }
-}
 
-function saveTokens(config: any, tokens: any) {
-  config.zelos.tokens = tokens;
-  config.save();
+  streamUsers(): Stream.Readable {
+    return Stream.Readable.from(this.getUsersGenerator());
+  }
 }
 
 function capitalize(s: any) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
-
-function getKeyByValue(object: any, value: any) {
-  return Object.keys(object).find((key) => object[key] === value);
-}
-
-module.exports = Zelos;

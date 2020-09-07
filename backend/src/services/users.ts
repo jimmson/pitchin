@@ -2,6 +2,7 @@ import { Service } from 'typedi';
 import UserModel from '../models/user';
 import { EventDispatcher } from 'event-dispatch';
 import { UserEventSubscriber } from '../subscribers/user';
+import config from '../config';
 
 const mongoose = require('mongoose');
 const createError = require('http-errors');
@@ -11,7 +12,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 @Service()
-// @ts-expect-error ts-migrate(1219) FIXME: Experimental support for decorators is a feature t... Remove this comment to see the full error message
 export default class UserService {
   private dispatcher: EventDispatcher;
 
@@ -36,12 +36,12 @@ export default class UserService {
     // create a password reset token
     user.credentials.resetToken = this.newToken();
     // email an invite
-    if (!process.env.DEV) {
+    if (!config.dev) {
       const invite = new Mailgun(user.email);
-      const link = `https://${process.env.APP_HOST}/auth/register/${user.credentials.resetToken}`;
+      const link = `https://${config.app.host}/auth/register/${user.credentials.resetToken}`;
       invite.send(
-        `Invitation to ${process.env.WORKSPACE_NAME}`,
-        `Hello,\n\nYou have been invited to join the team at ${process.env.WORKSPACE_NAME}.\n\nGet started by creating your account at ${link}`,
+        `Invitation to ${config.app.name}`,
+        `Hello,\n\nYou have been invited to join the team at ${config.app.name}.\n\nGet started by creating your account at ${link}`,
       );
     } else {
       console.log(`[d] Invite token for ${user.email}: "${user.credentials.resetToken}"`);
@@ -128,9 +128,9 @@ export default class UserService {
         _id: user._id,
         admin: user.status.admin,
       },
-      process.env.PRIVATE_KEY,
+      config.jwt.privateKey,
       {
-        expiresIn: process.env.JWT_TTL,
+        expiresIn: config.jwt.ttl,
       },
     );
     const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
@@ -177,8 +177,8 @@ export default class UserService {
       await invite.send(
         `Password reset`,
         `Hello,\n\nA password reset has been requested for your account at ${
-          process.env.WORKSPACE_NAME
-        }.\nYou can set a new password here: https://${process.env.APP_HOST}/auth/reset-password/${
+          config.app.name
+        }.\nYou can set a new password here: https://${config.app.host}/auth/reset-password/${
           // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
           user.credentials.resetToken
         }\n\nIf you didn't ask for this reset you can safely ignore this letter`,
@@ -313,16 +313,15 @@ export default class UserService {
 
   // create default user
   async initDefault() {
-    const user = await this.getUserByField({ email: process.env.ADMIN_EMAIL });
+    const user = await this.getUserByField({ email: config.admin.email });
     if (!user) {
       const user = new UserModel();
-      // @ts-expect-error ts-migrate(2322) FIXME: Type 'undefined' is not assignable to type 'string... Remove this comment to see the full error message
-      user.email = process.env.ADMIN_EMAIL;
+      user.email = config.admin.email;
       user.firstName = 'Default';
       user.lastName = 'Admin';
       user.status.admin = true;
       user.status.registered = true;
-      user.credentials.password = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
+      user.credentials.password = await bcrypt.hash(config.admin.password, 10);
       console.log(`[i] Created default user`);
       await user.save();
     }

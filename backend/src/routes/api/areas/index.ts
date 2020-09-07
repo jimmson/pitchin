@@ -1,11 +1,12 @@
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'areas'.
-const areas = require('express').Router();
+import express from 'express';
 import { checkSchema, validationResult } from 'express-validator';
 import validation from './validation';
 import handleError from '../../../middleware/HandleError';
 import { Area } from '../../../models/Area';
 
-areas.post('/', checkSchema(validation.newArea), async (req: any, res: any) => {
+const router = express.Router();
+
+router.post('/', checkSchema(validation.newArea), async (req: any, res: any) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
@@ -19,7 +20,8 @@ areas.post('/', checkSchema(validation.newArea), async (req: any, res: any) => {
     handleError(err, res);
   }
 });
-areas.get('/', async (req: any, res: any) => {
+
+router.get('/', async (req: any, res: any) => {
   try {
     // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const area = new Area();
@@ -31,7 +33,7 @@ areas.get('/', async (req: any, res: any) => {
   }
 });
 
-areas.get('/:id', async (req: any, res: any) => {
+router.get('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const area = new Area(req.params.id);
@@ -41,7 +43,8 @@ areas.get('/:id', async (req: any, res: any) => {
     handleError(err, res);
   }
 });
-areas.put('/:id', async (req: any, res: any) => {
+
+router.put('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const area = new Area(req.params.id);
@@ -51,7 +54,8 @@ areas.put('/:id', async (req: any, res: any) => {
     handleError(err, res);
   }
 });
-areas.delete('/:id', async (req: any, res: any) => {
+
+router.delete('/:id', async (req: any, res: any) => {
   try {
     // todo: validation
     const area = new Area(req.params.id);
@@ -62,4 +66,4 @@ areas.delete('/:id', async (req: any, res: any) => {
   }
 });
 
-module.exports = areas;
+export default router;

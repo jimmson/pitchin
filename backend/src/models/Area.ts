@@ -1,9 +1,6 @@
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'mongoose'.
-const mongoose = require('mongoose');
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'createErro... Remove this comment to see the full error message
-const createError = require('http-errors');
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Zelos'.
-const Zelos = require('../services/zelos');
+import Zelos from '../services/zelos';
+import mongoose from 'mongoose';
+import createError from 'http-errors';
 
 const areaSchema = new mongoose.Schema({
   name: String,
@@ -48,7 +45,6 @@ export class Area {
     // create or link a group on Zelos
     if (createGroup) {
       const zelos = new Zelos();
-      await zelos.init();
       const group = await zelos.findGroup(fields.name);
       if (!group) {
         const groupId = await zelos.newGroup(fields.name, fields.desc);

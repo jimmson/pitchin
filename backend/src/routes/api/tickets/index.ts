@@ -1,14 +1,14 @@
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'tickets'.
-const tickets = require('express').Router();
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'checkSchem... Remove this comment to see the full error message
 const { checkSchema, validationResult, matchedData } = require('express-validator');
 // @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'validation... Remove this comment to see the full error message
 const validation = require('./validation');
+import express from 'express';
 import { Ticket } from '../../../models/Ticket';
 import handleError from '../../../middleware/HandleError';
 
+const router = express.Router();
+
 // List all tickets
-tickets.get('/', async (req: any, res: any) => {
+router.get('/', async (req: any, res: any) => {
   try {
     // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const ticket = new Ticket();
@@ -29,7 +29,7 @@ tickets.get('/', async (req: any, res: any) => {
 });
 
 // Create a ticket
-tickets.post('/', checkSchema(validation.addTicket), async (req: any, res: any) => {
+router.post('/', checkSchema(validation.addTicket), async (req: any, res: any) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
@@ -53,7 +53,7 @@ tickets.post('/', checkSchema(validation.addTicket), async (req: any, res: any) 
 });
 
 // Assign user to ticket
-tickets.put('/:id/assign', async (req: any, res: any) => {
+router.put('/:id/assign', async (req: any, res: any) => {
   try {
     // unvalidated
     const ticket = new Ticket(req.params.id);
@@ -65,7 +65,7 @@ tickets.put('/:id/assign', async (req: any, res: any) => {
 });
 
 // Clear ticket owner
-tickets.delete('/:id/assign', async (req: any, res: any) => {
+router.delete('/:id/assign', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
     const result = await ticket.unassign();
@@ -76,7 +76,7 @@ tickets.delete('/:id/assign', async (req: any, res: any) => {
 });
 
 // Get a single ticket
-tickets.get('/:id', async (req: any, res: any) => {
+router.get('/:id', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
     const result = await ticket.get();
@@ -87,7 +87,7 @@ tickets.get('/:id', async (req: any, res: any) => {
 });
 
 // Update ticket details
-tickets.put('/:id', async (req: any, res: any) => {
+router.put('/:id', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
     const result = await ticket.update(req.body);
@@ -98,7 +98,7 @@ tickets.put('/:id', async (req: any, res: any) => {
 });
 
 // Approve ticket
-tickets.put('/:id/approve', checkSchema(validation.approveTicket), async (req: any, res: any) => {
+router.put('/:id/approve', checkSchema(validation.approveTicket), async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
     // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 2.
@@ -110,7 +110,7 @@ tickets.put('/:id/approve', checkSchema(validation.approveTicket), async (req: a
 });
 
 // Resolve ticket
-tickets.put('/:id/resolve', async (req: any, res: any) => {
+router.put('/:id/resolve', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
     const result = await ticket.resolve(req.body.comment, req.user._id);
@@ -121,7 +121,7 @@ tickets.put('/:id/resolve', async (req: any, res: any) => {
 });
 
 // Reject ticket
-tickets.put('/:id/reject', async (req: any, res: any) => {
+router.put('/:id/reject', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
     const result = await ticket.reject(req.body.comment, req.user._id, req.query.notify);
@@ -132,7 +132,7 @@ tickets.put('/:id/reject', async (req: any, res: any) => {
 });
 
 // Archive ticket
-tickets.put('/:id/archive', async (req: any, res: any) => {
+router.put('/:id/archive', async (req: any, res: any) => {
   try {
     const ticket = new Ticket(req.params.id);
     // TODO
@@ -142,7 +142,7 @@ tickets.put('/:id/archive', async (req: any, res: any) => {
 });
 
 // Delete a ticket
-tickets.delete('/:id', async (req: any, res: any) => {
+router.delete('/:id', async (req: any, res: any) => {
   try {
     // unvalidated
     const ticket = new Ticket(req.params.id);
@@ -154,7 +154,7 @@ tickets.delete('/:id', async (req: any, res: any) => {
 });
 
 // Add a comment to a ticket
-tickets.post('/:id/comments', async (req: any, res: any) => {
+router.post('/:id/comments', async (req: any, res: any) => {
   try {
     // unvalidated
     const ticket = new Ticket(req.params.id);
@@ -167,7 +167,7 @@ tickets.post('/:id/comments', async (req: any, res: any) => {
 });
 
 // Delete a comment
-tickets.delete('/:id/comments/:commentId', async (req: any, res: any) => {
+router.delete('/:id/comments/:commentId', async (req: any, res: any) => {
   try {
     // unvalidated
     const ticket = new Ticket(req.params.id);
@@ -178,4 +178,4 @@ tickets.delete('/:id/comments/:commentId', async (req: any, res: any) => {
   }
 });
 
-module.exports = tickets;
+export default router;

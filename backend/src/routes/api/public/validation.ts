@@ -1,5 +1,4 @@
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'validation... Remove this comment to see the full error message
-const validation = {
+export default {
   addTicket: {
     name: {
       isString: true,
@@ -39,5 +38,3 @@ const validation = {
     },
   },
 };
-
-module.exports = validation;

@@ -1,18 +1,17 @@
-const publicRouter = require('express').Router();
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'checkSchem... Remove this comment to see the full error message
-const { checkSchema, validationResult, matchedData } = require('express-validator');
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'validation... Remove this comment to see the full error message
-const validation = require('./validation');
+import express from 'express';
+import { checkSchema, validationResult, matchedData } from 'express-validator';
+import validation from './validation';
 import { Ticket } from '../../../models/Ticket';
 import { Category } from '../../../models/Category';
 import { Area } from '../../../models/Area';
 import { Locale } from '../../..//models/Locale';
 import handleError from '../../../middleware/HandleError';
-// @ts-expect-error ts-migrate(2403) FIXME: Subsequent variable declarations must have the sam... Remove this comment to see the full error message
-const moment = require('moment'); // require
+import moment from 'moment';
+
+const router = express.Router();
 
 // Submit a ticket
-publicRouter.post('/tickets', checkSchema(validation.addTicket), async (req: any, res: any) => {
+router.post('/tickets', checkSchema(validation.addTicket), async (req: any, res: any) => {
   // check for validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -44,7 +43,7 @@ publicRouter.post('/tickets', checkSchema(validation.addTicket), async (req: any
   }
 });
 
-publicRouter.get('/options', async (req: any, res: any) => {
+router.get('/options', async (req: any, res: any) => {
   try {
     // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     const category = new Category();
@@ -57,9 +56,9 @@ publicRouter.get('/options', async (req: any, res: any) => {
       categories: allCategories,
       areas: allAreas,
       phone: {
-        prefix: process.env.PHONE_PREFIX,
-        minLength: process.env.PHONE_MINLENGTH,
-        maxLength: process.env.PHONE_MAXLENGTH,
+        prefix: '27',
+        minLength: 6,
+        maxLength: 16,
       },
     };
     res.send(result);
@@ -68,7 +67,7 @@ publicRouter.get('/options', async (req: any, res: any) => {
   }
 });
 
-publicRouter.get('/locales', async (req: any, res: any) => {
+router.get('/locales', async (req: any, res: any) => {
   try {
     const result = await new Locale().list('active');
     res.send(result);
@@ -77,4 +76,4 @@ publicRouter.get('/locales', async (req: any, res: any) => {
   }
 });
 
-module.exports = publicRouter;
+export default router;

@@ -4,8 +4,6 @@ import config from './config';
 import Logger from './loaders/logger';
 import express from 'express';
 
-const Config = require('./models/Config');
-
 async function startServer() {
   const app = express();
 
@@ -17,18 +15,3 @@ async function startServer() {
 }
 
 startServer();
-
-// Initialize configuration
-async function init() {
-  try {
-    const config = await new Config();
-    await config.init();
-    // DEBUG
-    // const Zelos = require('./models/Zelos')
-    // new Zelos().init();
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-init();

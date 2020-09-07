@@ -53,23 +53,22 @@ export default ({ app }: { app: express.Application }) => {
   });
 
   // Enable response time logging
-  if (process.env.LOG_RESPONSE_TIME) {
-    app.use((req, res, next) => {
-      const start = process.hrtime();
-      res.on('finish', () => {
-        const duration = getDuration(start);
-        console.log(`[d] ${req.method} ${req.originalUrl} [FINISHED] ${duration.toLocaleString()} ms`);
-      });
-      res.on('close', () => {
-        const duration = getDuration(start);
-        console.log(`[d] ${req.method} ${req.originalUrl} [CLOSED] ${duration.toLocaleString()} ms`);
-      });
-      next();
+  app.use((req, res, next) => {
+    const start = process.hrtime();
+    res.on('finish', () => {
+      const duration = getDuration(start);
+      console.log(`[d] ${req.method} ${req.originalUrl} [FINISHED] ${duration.toLocaleString()} ms`);
     });
-  }
+    res.on('close', () => {
+      const duration = getDuration(start);
+      console.log(`[d] ${req.method} ${req.originalUrl} [CLOSED] ${duration.toLocaleString()} ms`);
+    });
+    next();
+  });
 
   /// error handlers
   app.use((err: any, req: any, res: any, next: any) => {
+    console.log(err);
     if (err) {
       res.status(400).send('Bad request');
     } else {

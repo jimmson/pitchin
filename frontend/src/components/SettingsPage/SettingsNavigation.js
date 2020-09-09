@@ -44,25 +44,6 @@ export default () => {
             <FormattedMessage id="locales" />
           </NavLink>
         </div>
-        <div className="dashboard-nav__item">
-          <NavLink
-            exact
-            to="/dashboard/settings/zelos"
-            activeClassName="dashboard-nav__item--active"
-          >
-            Zelos
-          </NavLink>
-        </div>
-        <div className="dashboard-nav__item">
-          <NavLink
-            exact
-            to="/dashboard/settings/sms"
-            activeClassName="dashboard-nav__item--active"
-          >
-            SMS
-          </NavLink>
-        </div>
-        <div />
       </div>
     </Fragment>
   );

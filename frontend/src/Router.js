@@ -26,8 +26,6 @@ import Confirmed from "./routes/Request/Confirmed";
 import AreaTable from "./components/SettingsPage/AreaTable";
 import CategoryTable from "./components/SettingsPage/CategoryTable";
 import Users from "./routes/Dashboard/Users";
-import Zelos from "./routes/Dashboard/Zelos";
-import SMS from "./routes/Dashboard/Sms";
 import LocaleTable from "./components/SettingsPage/LocaleTable";
 
 export default () => {
@@ -83,8 +81,6 @@ export default () => {
                       />
                       <Route path={`${path}/areas`} component={AreaTable} />
                       <Route path={`${path}/locales`} component={LocaleTable} />
-                      <Route path={`${path}/zelos`} component={Zelos} />
-                      <Route path={`${path}/sms`} component={SMS} />
                     </Switch>
                   </SettingsWrapper>
                 )}

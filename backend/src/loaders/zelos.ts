@@ -1,8 +1,11 @@
 import Zelos from '../services/zelos';
-import log from './logger';
 
 export default async (): Promise<Zelos> => {
   const instance = new Zelos();
-  await instance.auth();
+  try {
+    await instance.auth();
+  } catch (err) {
+    throw err;
+  }
   return instance;
 };

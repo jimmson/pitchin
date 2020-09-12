@@ -59,4 +59,7 @@ export default {
     domain: process.env.MAILGUN_DOMAIN,
     from: process.env.MAILGUN_FROM_EMAIL,
   },
+  openWeatherMap: {
+    apiKey: process.env.OPEN_WEATHER_MAP_API_KEY || '',
+  },
 };

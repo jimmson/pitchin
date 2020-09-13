@@ -3,13 +3,11 @@ import UserModel from '../models/user';
 import { EventDispatcher } from 'event-dispatch';
 import { UserEventSubscriber } from '../subscribers/user';
 import config from '../config';
-
-const mongoose = require('mongoose');
-const createError = require('http-errors');
-const Mailgun = require('../models/Mailgun');
-const crypto = require('crypto');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import createError from 'http-errors';
+import { Mailgun } from '../models/Mailgun';
+import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 
 @Service()
 export default class UserService {
@@ -52,13 +50,13 @@ export default class UserService {
     };
   }
 
-  async create(email: string, firstName: string, lastName: string, password: string) {
+  async create(email: string, firstName: string, lastName: string, password: string, admin: boolean) {
     const user = new UserModel({
       email: email,
       firstName: firstName,
       lastName: lastName,
       status: {
-        admin: true,
+        admin: admin,
       },
       credentials: {
         password: password !== '' ? await bcrypt.hash(password, 10) : null,
@@ -66,7 +64,9 @@ export default class UserService {
     });
     await user.save();
 
-    this.dispatcher.dispatch(UserEventSubscriber.EVENT_USER_CREATE, user);
+    if (!admin) {
+      this.dispatcher.dispatch(UserEventSubscriber.EVENT_USER_CREATE, user);
+    }
   }
 
   // create an account
@@ -148,7 +148,6 @@ export default class UserService {
     try {
       const user = await this.init(id);
       for (const [key, value] of Object.entries(fields)) {
-        // @ts-expect-error ts-migrate(7053) FIXME: No index signature with a parameter of type 'strin... Remove this comment to see the full error message
         user[key] = value;
       }
       await user.save();
@@ -170,20 +169,12 @@ export default class UserService {
         console.log(`[w] Got Password reset request for non-activated account: ${email}`);
       }
 
-      // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
       user.credentials.resetToken = this.newToken();
-      // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
       const invite = new Mailgun(user.email);
       await invite.send(
         `Password reset`,
-        `Hello,\n\nA password reset has been requested for your account at ${
-          config.app.name
-        }.\nYou can set a new password here: https://${config.app.host}/auth/reset-password/${
-          // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
-          user.credentials.resetToken
-        }\n\nIf you didn't ask for this reset you can safely ignore this letter`,
+        `Hello,\n\nA password reset has been requested for your account at ${config.app.name}.\nYou can set a new password here: https://${config.app.host}/auth/reset-password/${user.credentials.resetToken}\n\nIf you didn't ask for this reset you can safely ignore this letter`,
       );
-      // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
       user.save();
     } catch (err) {}
   }
@@ -234,7 +225,6 @@ export default class UserService {
       skip: skip,
       limit: limit,
     });
-
     return {
       count: {
         returned: users.length,

@@ -47,8 +47,6 @@ export default ({ app }: { app: express.Application }) => {
   /// catch 404 and forward to error handler
   app.use((req, res, next) => {
     const err = new Error('Not Found');
-    // @ts-expect-error ts-migrate(7053) FIXME: Property 'status' does not exist on type 'Error'.
-    err['status'] = 404;
     next(err);
   });
 

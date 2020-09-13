@@ -1,9 +1,10 @@
 import { Container } from 'typedi';
+import Logger from './logger';
 import mongooseLoader from './mongoose';
 import expressLoader from './express';
 import agendaLoader from './agenda';
 import zelosLoader from './zelos';
-import Logger from './logger';
+import seedLoader from './seed';
 import jobsLoader from './jobs';
 import openWeatherMapLoader from './openweatherapi';
 
@@ -11,6 +12,9 @@ import './events';
 
 export default async ({ expressApp }: any) => {
   Container.set('logger', Logger);
+
+  const mongoConnection = await mongooseLoader();
+  Logger.info('db loaded and connected');
 
   const zelos = await zelosLoader();
   Logger.info('zelos loaded');
@@ -20,8 +24,8 @@ export default async ({ expressApp }: any) => {
   Logger.info('open weather map loaded');
   Container.set('openweathermap', openweathermap);
 
-  const mongoConnection = await mongooseLoader();
-  Logger.info('db loaded and connected');
+  const seeded = await seedLoader();
+  Logger.info(`database was ${seeded ? 'seeded' : 'not seeded'}`);
 
   const agenda = agendaLoader({ mongoConnection });
   Logger.info('agenda loaded');

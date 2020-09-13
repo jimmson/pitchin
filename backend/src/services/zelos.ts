@@ -135,13 +135,8 @@ export default class Zelos {
       ? moment(details.publicFields.executionStartDate).format(Zelos.DATE_FORMAT)
       : null;
     // parse settings
-    const defSetting = await cfg.get('zelos');
-    const confirmAssignment = details.settings.confirmAssignment
-      ? details.settings.confirmAssignment
-      : defSetting.confirmAssignment;
-    const confirmCompletion = details.settings.confirmCompletion
-      ? details.settings.confirmCompletion
-      : defSetting.confirmCompletion;
+    const confirmAssignment = details.settings.confirmAssignment || true;
+    const confirmCompletion = details.settings.confirmCompletion || true;
     // prepare request body
     const body = {
       type: 'regular',
@@ -191,6 +186,7 @@ export default class Zelos {
   }
 
   streamUsers(): Stream.Readable {
+    // @ts-ignore
     return Stream.Readable.from(this.getUsersGenerator());
   }
 }

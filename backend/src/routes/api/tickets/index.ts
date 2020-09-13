@@ -1,6 +1,5 @@
 const { checkSchema, validationResult, matchedData } = require('express-validator');
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'validation... Remove this comment to see the full error message
-const validation = require('./validation');
+import validation from './validation';
 import express from 'express';
 import { Ticket } from '../../../models/Ticket';
 import handleError from '../../../middleware/HandleError';

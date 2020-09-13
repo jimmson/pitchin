@@ -36,6 +36,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/http-errors": "^1.8.0",
     "@types/agenda": "^2.0.9",
     "@types/cors": "^2.8.7",

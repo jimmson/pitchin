@@ -1,7 +1,5 @@
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'mongoose'.
-const mongoose = require('mongoose');
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'createErro... Remove this comment to see the full error message
-const createError = require('http-errors');
+import mongoose from 'mongoose';
+import createError from 'http-errors';
 
 const localeSchema = new mongoose.Schema(
   {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../config';
 
-class Mailgun {
+export class Mailgun {
   headers: any;
   params: any;
 
@@ -28,5 +28,3 @@ class Mailgun {
     });
   }
 }
-
-module.exports = Mailgun;

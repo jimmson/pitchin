@@ -1,6 +1,8 @@
+import { Container } from 'typedi';
 import Zelos from '../services/zelos';
 import mongoose from 'mongoose';
 import createError from 'http-errors';
+import { IArea } from '../interfaces/IArea';
 
 const areaSchema = new mongoose.Schema({
   name: String,
@@ -21,13 +23,12 @@ const areaSchema = new mongoose.Schema({
   },
 });
 
-const AreaModel = mongoose.model('area', areaSchema);
+const AreaModel = mongoose.model<IArea & mongoose.Document>('area', areaSchema);
 
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'Area'.
 export class Area {
   data: any;
   id: any;
-  constructor(id: any) {
+  constructor(id?: any) {
     this.data = {};
     this.id = id;
   }
@@ -44,7 +45,7 @@ export class Area {
     };
     // create or link a group on Zelos
     if (createGroup) {
-      const zelos = new Zelos();
+      const zelos: Zelos = Container.get('zelos');
       const group = await zelos.findGroup(fields.name);
       if (!group) {
         const groupId = await zelos.newGroup(fields.name, fields.desc);

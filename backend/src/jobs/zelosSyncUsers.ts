@@ -21,7 +21,7 @@ export default async function (job: agenda.Job, done: (e?: Error) => void): Prom
       }
 
       log.info(`creating user ${user.email}`);
-      await userService.create(user.email, user.first_name, user.last_name, '');
+      await userService.create(user.email, user.first_name, user.last_name, '', false);
     }
   } catch (err) {
     log.error(err);

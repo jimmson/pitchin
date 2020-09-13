@@ -19,8 +19,8 @@ export default {
     password: process.env.ADMIN_PASSWORD,
   },
   jwt: {
-    privateKey: process.env.PRIVATE_KEY,
-    ttl: process.env.JWT_TTL,
+    privateKey: process.env.PRIVATE_KEY || '',
+    ttl: process.env.JWT_TTL || '',
   },
   cryptr: {
     privateKey: process.env.PRIVATE_KEY,

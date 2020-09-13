@@ -2,8 +2,9 @@ import { Container } from 'typedi';
 import mongoose from 'mongoose';
 import createError from 'http-errors';
 import mongodb = require('mongodb');
-
-const Area = require(`./Area`);
+import { Area } from './Area';
+import { ITicket, IActivity, IComment } from '../interfaces/ITicket';
+import Zelos from '../services/zelos';
 
 const activitySchema = new mongoose.Schema({
   time: { type: Date, default: Date.now() },
@@ -56,7 +57,7 @@ const ticketSchema = new mongoose.Schema(
   },
 );
 
-const TicketModel = mongoose.model('Ticket', ticketSchema);
+const TicketModel = mongoose.model<ITicket & mongoose.Document>('Ticket', ticketSchema);
 
 export class Ticket {
   data: any;
@@ -149,7 +150,7 @@ export class Ticket {
   }
   // Clear ownership
   async unassign() {
-    await TicketModel.updateOne({ _id: this.id }, { owner: null });
+    await TicketModel.updateOne({ _id: this.id }, { owner: undefined });
     return {
       status: 'ok',
       message: 'Unassigned',
@@ -164,7 +165,7 @@ export class Ticket {
         this.addComment(comment, user);
       }
       ticket.status = 'resolved';
-      ticket.activity.push({
+      ticket.activity.push(<IActivity>{
         action: 'Ticket marked as resolved 👏',
         source: {
           user: user,
@@ -196,7 +197,7 @@ export class Ticket {
         this.addComment(comment, user);
       }
       ticket.status = 'rejected';
-      ticket.activity.push({
+      ticket.activity.push(<IActivity>{
         action: 'Ticket rejected',
         source: {
           user: ticket.owner,
@@ -244,7 +245,6 @@ export class Ticket {
         name: ticket.name,
         phone: ticket.phone,
         address: ticket.address,
-        instructions: settings.safetyWarning,
       },
       publicFields: {
         request: ticket.request,
@@ -259,7 +259,7 @@ export class Ticket {
     };
     // Push a task to Zelos
     try {
-      const zelos = Container.get('zelos');
+      const zelos: Zelos = Container.get('zelos');
       ticket.task = await zelos.newTask(taskDetails);
     } catch (err) {
       console.error(`[!] Failed to create a task:\n${err}`);
@@ -312,19 +312,23 @@ export class Ticket {
 
   // Add a comment
   async addComment(comment: any, user = null) {
-    const ticket = await TicketModel.findById(this.id);
-    const newComment = {
+    let ticket: ITicket & mongoose.Document;
+    try {
+      ticket = await TicketModel.findById(this.id);
+    } catch (err) {
+      throw err;
+    }
+    const newComment: IComment = {
+      time: new Date(),
       comment: comment,
-      creator: {},
+      creator: { system: false },
     };
     if (!user) {
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'system' does not exist on type '{}'.
       newComment.creator.system = true;
     } else {
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type '{}'.
-      newComment.creator.id = user;
+      newComment.creator.id = undefined;
     }
-    ticket.comments.push(newComment);
+    ticket.comments.push(<IComment>newComment);
     const result = await ticket.save();
     return {
       status: 'ok',
@@ -334,7 +338,12 @@ export class Ticket {
 
   // Remove a comment
   async removeComment(commentId: any) {
-    const ticket = await TicketModel.findById(this.id);
+    let ticket: ITicket & mongoose.Document;
+    try {
+      ticket = await TicketModel.findById(this.id);
+    } catch (err) {
+      throw err;
+    }
     console.log(`Comments before:\n${ticket.comments}`);
     let count = 0;
     ticket.comments = ticket.comments.filter((obj: any) => {

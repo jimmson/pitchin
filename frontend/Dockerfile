@@ -1,13 +1,3 @@
-FROM nginx:latest
+FROM caddy:2.0.0
 
-COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
-
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-COPY ./build /app
-
-EXPOSE 80
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
-
-CMD ["nginx", "-g", "daemon off;"]
+COPY ./build /usr/share/caddy

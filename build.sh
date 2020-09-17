@@ -29,7 +29,7 @@ git pull
     npm install
     npm run build
 
-    docker build -t jimbones/pitchin-${SERVICE}:latest -t jimbones/pitchin-${SERVICE}:3 .
+    docker build -t jimbones/pitchin-${SERVICE}:latest -t jimbones/pitchin-${SERVICE}:${TAG} .
     docker push     jimbones/pitchin-${SERVICE}
 )
 

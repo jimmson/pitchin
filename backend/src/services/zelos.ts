@@ -28,13 +28,6 @@ export default class Zelos {
   }
 
   async auth() {
-    log.info(`this.rTokenExpiresAt :${this.rTokenExpiresAt}`);
-    log.info(`this.aTokenExpiresAt :${this.aTokenExpiresAt}`);
-    log.info(`this.url :${this.url}`);
-    log.info(`this.email :${this.email}`);
-    log.info(`this.password :${this.password}`);
-    log.info(`this.aToken :${this.aToken}`);
-
     if (this.rTokenExpiresAt.isBefore(moment().subtract(10, 'h'))) {
       return this.login();
     }
@@ -52,8 +45,6 @@ export default class Zelos {
   }
 
   private async login(): Promise<void> {
-    log.info(`logging in`);
-
     try {
       const res = await axios.post(Zelos.AUTH_URL, {
         email: this.email,
@@ -66,8 +57,6 @@ export default class Zelos {
   }
 
   private async refresh(): Promise<void> {
-    log.info(`refresh`);
-
     try {
       const res = await axios.put(
         Zelos.AUTH_URL,

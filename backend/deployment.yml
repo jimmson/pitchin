@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: jimbones/pitchin-backend:{{tag}}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: 'pitchin.knggj.mongodb.net'
+            - name: DB_USER
+              value: 'dbadmin'
+            - name: DB_SCHEME
+              value: 'mongodb+srv'
+            - name: JWT_TTL
+              value: '1d'
+            - name: AGENDA_DB_COLLECTION
+              value: 'agenda'
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password
+                  key: DB_PASSWORD
+            - name: MAILCHIMP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mailchimp-api-key
+                  key: MAILCHIMP_API_KEY
+            - name: PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: private-key
+                  key: PRIVATE_KEY
+            - name: ZELOS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zelos-password
+                  key: ZELOS_PASSWORD
+            - name: OPEN_WEATHER_MAP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: open-weather-map-api-key
+                  key: OPEN_WEATHER_MAP_API_KEY
+            - name: APP_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-host
+                  key: APP_HOST
+            - name: WORKSPACE_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: workspace-id
+                  key: WORKSPACE_ID
+            - name: MAILCHIMP_LIST_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: mailchimp-list-id
+                  key: MAILCHIMP_LIST_ID
+            - name: ZELOS_SUBDOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: zelos-subdomain
+                  key: ZELOS_SUBDOMAIN
+            - name: ZELOS_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: zelos-email
+                  key: ZELOS_EMAIL

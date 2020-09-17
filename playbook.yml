@@ -1,0 +1,20 @@
+- hosts: localhost
+  tasks:
+    - name: Deploy the service
+      k8s:
+        state: present
+        definition: "{{ lookup('template', service+'/service.yml') | from_yaml }}"
+        validate_certs: no
+        namespace: default
+    - name: Deploy the application
+      k8s:
+        state: present
+        validate_certs: no
+        namespace: default
+        definition: "{{ lookup('template', service+'/deployment.yml') | from_yaml }}"
+    # - name: Deploy the Ingress controller
+    #   k8s:
+    #     state: present
+    #     validate_certs: no
+    #     namespace: default
+    #     definition: "{{ lookup('template', '/kube.yml') | from_yaml }}"

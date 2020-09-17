@@ -26,7 +26,7 @@ git pull
 # Build backend
 (
     cd ${SERVICE}
-    npm install
+    npm install --production
     npm run build
 
     docker build -t jimbones/pitchin-${SERVICE}:latest -t jimbones/pitchin-${SERVICE}:${TAG} .

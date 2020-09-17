@@ -13,4 +13,6 @@ COPY ./build ./src
 
 EXPOSE 8000
 
+ENV NODE_ENV=production
+
 CMD ["node","src/app.js"]

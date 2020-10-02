@@ -42,7 +42,7 @@ export default {
   db: {
     host: process.env.DB_HOST,
     scheme: process.env.DB_SCHEME || 'mongodb',
-    db: process.env.WORKSPACE_ID,
+    db: process.env.DB_NAME,
     authSource: process.env.DB_AUTH_SOURCE || 'admin',
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

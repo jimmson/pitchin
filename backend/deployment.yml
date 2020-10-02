@@ -58,6 +58,11 @@ spec:
                 configMapKeyRef:
                   name: app-host
                   key: APP_HOST
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: db-name
+                  key: DB_NAME
             - name: WORKSPACE_ID
               valueFrom:
                 configMapKeyRef:

@@ -62,7 +62,7 @@ const TicketModel = mongoose.model<ITicket & mongoose.Document>('Ticket', ticket
 export class Ticket {
   data: any;
   id: any;
-  constructor(id: any) {
+  constructor(id?: any) {
     this.data = {};
     this.id = id;
   }

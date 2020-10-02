@@ -1,3 +1,4 @@
+import { Container } from 'typedi';
 import express from 'express';
 import { checkSchema, validationResult, matchedData } from 'express-validator';
 import validation from './validation';
@@ -7,6 +8,10 @@ import { Area } from '../../../models/Area';
 import { Locale } from '../../..//models/Locale';
 import handleError from '../../../middleware/HandleError';
 import moment from 'moment';
+import OpenWeatherMap from '../../../services/openweather';
+import { ITicket } from '../../../interfaces/ITicket';
+import { IDaily } from '../../../interfaces/IOpenWeatherMap';
+import config from '../../../config';
 
 const router = express.Router();
 
@@ -70,6 +75,86 @@ router.get('/options', async (req: any, res: any) => {
 router.get('/locales', async (req: any, res: any) => {
   try {
     const result = await new Locale().list('active');
+    res.send(result);
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
+router.get('/tickets', async (req: any, res: any) => {
+  // const dateFormat = 'ddd, [The] Do [of] MMM YYYY';
+  const dateFormat = 'ddd Do MMM YYYY';
+  const timeFormat = 'k:mm';
+
+  try {
+    const ticket = new Ticket();
+    const data = await ticket.list({
+      $or: [
+        {
+          startDate: {
+            $gte: moment().endOf('day').toDate(),
+          },
+        },
+        // Show all day when we can disable
+        // { startDate: { $exists: false } },
+      ],
+    });
+    const tickets = data.tickets;
+
+    const weatherService: OpenWeatherMap = Container.get('openweathermap');
+
+    let dayMap = tickets.reduce((resultDayMap, currentTicket: ITicket) => {
+      let s = moment(currentTicket.startDate || null);
+      let e = moment(currentTicket.endDate);
+      let c = 0;
+      let k = s.isValid() ? s.format('YYMMDD') : 'all';
+
+      let ticket = {
+        name: currentTicket.name,
+        description: currentTicket.request,
+        participants: `${c}/${currentTicket.maxParticipants}`,
+        address: currentTicket.address,
+        time: s.isValid() ? `${s.format(timeFormat)} to ${e.format(timeFormat)}` : undefined,
+      };
+
+      if (resultDayMap[k]) {
+        resultDayMap[k].tickets.push(ticket);
+        return resultDayMap;
+      }
+
+      let day = {
+        date: s.isValid() ? s.format(dateFormat) : undefined,
+        tickets: [ticket],
+      };
+
+      let dayForcast: IDaily = weatherService.weatherData().daily.find((d) => {
+        return moment.unix(d.dt).isSame(s, 'day');
+      });
+      if (dayForcast) {
+        day.weather = {
+          icon: dayForcast.weather[0].id,
+          description: dayForcast.weather[0].main,
+          min: Math.round(dayForcast.temp.min),
+          max: Math.round(dayForcast.temp.max),
+        };
+      }
+
+      resultDayMap[k] = day;
+
+      return resultDayMap;
+    }, {});
+
+    let result = [];
+    Object.keys(dayMap)
+      .reverse()
+      .forEach(function (key) {
+        result.push(dayMap[key]);
+      });
+
+    if (!config.dev && !config.staging) {
+      result = [];
+    }
+
     res.send(result);
   } catch (err) {
     handleError(err, res);

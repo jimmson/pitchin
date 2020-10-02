@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import { FormattedMessage } from "react-intl";
 import { LangBar, AppToolbar } from "../../components/Bar";
 import useLocale, { setLocale } from "../../hooks/useLocale";
+import { TaskList } from "../../components/TaskList/TaskList";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import InputIcon from "@material-ui/icons/Input";
 import { Alert, AlertTitle } from "@material-ui/lab";
@@ -175,6 +176,11 @@ const Intro = () => {
               )}
             </Grid>
           </Grid>
+        </Container>
+
+        {/* Tasks */}
+        <Container className={classes.container} maxWidth="lg" id="get-started">
+          <TaskList></TaskList>
         </Container>
 
         {/* Partners

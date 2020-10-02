@@ -10,6 +10,7 @@ if (!dotenv.config({ path: '../.env' })) {
 
 export default {
   dev: process.env.NODE_ENV === 'development',
+  staging: process.env.NODE_ENV === 'staging',
   app: {
     name: '',
     host: process.env.APP_HOST,

@@ -28,12 +28,15 @@ export default class Zelos {
   }
 
   async auth() {
-    if (this.rTokenExpiresAt.isBefore(moment().subtract(10, 'h'))) {
-      return this.login();
-    }
-    if (this.aTokenExpiresAt.isBefore(moment().subtract(10, 'm'))) {
-      return this.refresh();
-    }
+    // TODO: Debug
+    // if (this.rTokenExpiresAt.isBefore(moment().subtract(10, 'h'))) {
+    //   return this.login();
+    // }
+    // if (this.aTokenExpiresAt.isBefore(moment().subtract(10, 'm'))) {
+    //   return this.refresh();
+    // }
+
+    return this.login();
   }
 
   private authHeaders(): AxiosRequestConfig {

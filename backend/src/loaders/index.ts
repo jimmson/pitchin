@@ -9,10 +9,12 @@ import jobsLoader from './jobs';
 import openWeatherMapLoader from './openweatherapi';
 
 import './events';
+// import { log } from 'winston';
 
 export default async ({ expressApp }: any) => {
   Container.set('logger', Logger);
 
+  // try {
   const mongoConnection = await mongooseLoader();
   Logger.info('db loaded and connected');
 
@@ -35,4 +37,8 @@ export default async ({ expressApp }: any) => {
 
   await expressLoader({ app: expressApp });
   Logger.info('express loaded');
+  // } catch (err) {
+  //   // TODO():Fatal?
+  //   Logger.error(err);
+  // }
 };

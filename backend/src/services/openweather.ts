@@ -18,7 +18,9 @@ export default class OpenWeatherMap {
   }
 
   async update() {
-    const res = await axios.get(`${OpenWeatherMap.baseURL}?lat=${this.lat}&lon=${this.lon}&appid=${this.apiKey}`);
+    const res = await axios.get(
+      `${OpenWeatherMap.baseURL}?lat=${this.lat}&lon=${this.lon}&appid=${this.apiKey}&units=metric`,
+    );
     this.data = res.data;
   }
 

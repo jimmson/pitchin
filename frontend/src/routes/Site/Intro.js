@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import { FormattedMessage } from "react-intl";
 import { LangBar, AppToolbar } from "../../components/Bar";
 import useLocale, { setLocale } from "../../hooks/useLocale";
-import { TaskList } from "../../components/TaskList/TaskList";
+import TicketList from "../../components/TicketList";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import InputIcon from "@material-ui/icons/Input";
 import { Alert, AlertTitle } from "@material-ui/lab";
@@ -24,6 +24,8 @@ import {
   Grid,
   Avatar,
 } from "@material-ui/core";
+
+import styles from "weather-icons/css/weather-icons.min.css";
 
 import stepOne from "../../assets/step-1-image.png";
 import stepTwo from "../../assets/step-2-image.png";
@@ -180,7 +182,7 @@ const Intro = () => {
 
         {/* Tasks */}
         <Container className={classes.container} maxWidth="lg" id="get-started">
-          <TaskList></TaskList>
+          <TicketList></TicketList>
         </Container>
 
         {/* Partners

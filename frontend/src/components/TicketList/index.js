@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import { Grid, Card, Icon, CardContent, Typography } from "@material-ui/core";
-import TodayIcon from "@material-ui/icons/Today";
-import RoomIcon from "@material-ui/icons/Room";
+import { Grid, Icon } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import axios from "../../utils/axios";
 import { IconMap } from "../weather/iconmap";
-import styles from "weather-icons/css/weather-icons.min.css";
+import Ticket from "../Ticket";
+import TicketDialog from "../TicketDialog";
 
-export const TaskList = (props) => {
+export default (props) => {
   const [days, setDays] = useState();
+  const [activeTicket, setActiveTicket] = React.useState(null);
+  const [activeWeather, setActiveWeather] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const getDays = async () => {
     const { data = {} } = await axios.get("api/public/tickets");
@@ -61,48 +72,25 @@ export const TaskList = (props) => {
                 )}
               </Grid>
               {day.tickets.map((ticket, key) => (
-                <Grid item key={key} xs={4}>
-                  <Card>
-                    {/* <CardHeader title={ticket.name} /> */}
-                    <CardContent>
-                      <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                          <Grid
-                            container
-                            spacing={1}
-                            direction="row"
-                            justify="flex-start"
-                            alignItems="center"
-                          >
-                            {ticket.time && (
-                              <React.Fragment>
-                                <Grid item>
-                                  <TodayIcon />
-                                </Grid>
-                                <Grid item>{ticket.time}</Grid>
-                              </React.Fragment>
-                            )}
-                            <Grid item>
-                              <RoomIcon />
-                            </Grid>
-                            <Grid item>{ticket.address}</Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Typography variant="h5" component="div">
-                            {ticket.name}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Typography variant="body1" component="div">
-                            {ticket.description}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
+                <Grid item xs={12} md={4}>
+                  <Ticket
+                    key={key}
+                    ticket={ticket}
+                    weather={day.weather}
+                    handleClick={() => {
+                      handleOpen();
+                      setActiveTicket(ticket);
+                      setActiveWeather(day.weather);
+                    }}
+                  ></Ticket>
                 </Grid>
               ))}
+              <TicketDialog
+                open={open}
+                ticket={activeTicket}
+                weather={activeWeather}
+                handleClose={handleClose}
+              ></TicketDialog>
             </React.Fragment>
           ))}
         </Grid>

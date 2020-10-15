@@ -3,28 +3,22 @@ import Logger from './logger';
 import mongooseLoader from './mongoose';
 import expressLoader from './express';
 import agendaLoader from './agenda';
-import zelosLoader from './zelos';
+import servicesLoader from './services';
 import seedLoader from './seed';
 import jobsLoader from './jobs';
-import openWeatherMapLoader from './openweatherapi';
-
+import config from '../config';
 import './events';
-// import { log } from 'winston';
 
 export default async ({ expressApp }: any) => {
   Container.set('logger', Logger);
+  Logger.info(`env: ${config.env}`);
 
   // try {
   const mongoConnection = await mongooseLoader();
   Logger.info('db loaded and connected');
 
-  const zelos = await zelosLoader();
-  Logger.info('zelos loaded');
-  Container.set('zelos', zelos);
-
-  const openweathermap = await openWeatherMapLoader();
-  Logger.info('open weather map loaded');
-  Container.set('openweathermap', openweathermap);
+  await servicesLoader();
+  Logger.info('services loaded');
 
   const seeded = await seedLoader();
   Logger.info(`database was ${seeded ? 'seeded' : 'not seeded'}`);

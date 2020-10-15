@@ -34,11 +34,12 @@ const ticketSchema = new mongoose.Schema(
     area: mongodb.ObjectId,
     category: mongodb.ObjectId,
     owner: mongodb.ObjectId,
+    organisation: mongodb.ObjectId,
+    imageURL: String,
     createdAt: {
       type: Date,
       default: Date.now(),
     },
-    comments: [commentSchema],
     status: {
       type: String,
       default: 'new',
@@ -47,10 +48,11 @@ const ticketSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    activity: [activitySchema],
-    task: String,
     startDate: Date,
     endDate: Date,
+    externalID: Number,
+    activity: [activitySchema],
+    comments: [commentSchema],
   },
   {
     minimize: false,
@@ -109,6 +111,15 @@ export class Ticket {
         message: 'Not found',
       });
       throw err;
+    }
+  }
+
+  async getByField(fields: any) {
+    const ticket = await TicketModel.findOne(fields);
+    if (ticket) {
+      return ticket;
+    } else {
+      return false;
     }
   }
 
@@ -260,7 +271,7 @@ export class Ticket {
     // Push a task to Zelos
     try {
       const zelos: Zelos = Container.get('zelos');
-      ticket.task = await zelos.newTask(taskDetails);
+      ticket.externalID = await zelos.newTask(taskDetails);
     } catch (err) {
       console.error(`[!] Failed to create a task:\n${err}`);
       const error = createError(500, {
@@ -276,7 +287,6 @@ export class Ticket {
     ticket.save();
     const response = {
       status: 'ok',
-      task: ticket.task,
     };
     return response;
   }

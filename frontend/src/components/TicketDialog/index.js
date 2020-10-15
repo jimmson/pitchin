@@ -32,7 +32,6 @@ export default function ({ open, ticket, weather, handleClose }) {
   return (
     <div>
       <Dialog
-        fullScreen
         maxWidth="md"
         open={open}
         onClose={handleClose}
@@ -65,7 +64,7 @@ export default function ({ open, ticket, weather, handleClose }) {
             )}
           </Toolbar>
         </AppBar>
-        <Ticket ticket={ticket}></Ticket>
+        <Ticket ticket={ticket} fullscreen></Ticket>
       </Dialog>
     </div>
   );

@@ -1,4 +1,3 @@
-import Zelos from '../services/zelos';
 import OpenWeatherMap from '../services/openweather';
 
 const latCapeTown = '-33.9258';

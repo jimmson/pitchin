@@ -12,6 +12,7 @@ import OpenWeatherMap from '../../../services/openweather';
 import { ITicket } from '../../../interfaces/ITicket';
 import { IDaily } from '../../../interfaces/IOpenWeatherMap';
 import config from '../../../config';
+import Organisation from '../../../services/organisation';
 
 const router = express.Router();
 
@@ -91,15 +92,27 @@ router.get('/tickets', async (req: any, res: any) => {
     const data = await ticket.list({
       $or: [
         {
-          startDate: {
-            $gte: moment().endOf('day').toDate(),
-          },
+          $and: [
+            {
+              startDate: {
+                $gte: moment().endOf('day').toDate(),
+              },
+            },
+            {
+              startDate: {
+                $lte: moment().endOf('day').add(1, 'months').toDate(),
+              },
+            },
+          ],
         },
         // Show all day when we can disable
         // { startDate: { $exists: false } },
       ],
     });
     const tickets = data.tickets;
+
+    const organisationService: Organisation = Container.get('organisation');
+    const organisations = await organisationService.list();
 
     const weatherService: OpenWeatherMap = Container.get('openweathermap');
 
@@ -111,10 +124,14 @@ router.get('/tickets', async (req: any, res: any) => {
 
       let ticket = {
         name: currentTicket.name,
+        imageURL: currentTicket.imageURL,
+        organisation: organisations.find((o) => o._id?.toString() == currentTicket.organisation)?.name,
         description: currentTicket.request,
         participants: `${c}/${currentTicket.maxParticipants}`,
         address: currentTicket.address,
-        time: s.isValid() ? `${s.format(timeFormat)} to ${e.format(timeFormat)}` : undefined,
+        time: s.isValid()
+          ? `${s.format(dateFormat)} from ${s.format(timeFormat)} to ${e.format(timeFormat)}`
+          : undefined,
       };
 
       if (resultDayMap[k]) {
@@ -146,14 +163,10 @@ router.get('/tickets', async (req: any, res: any) => {
 
     let result = [];
     Object.keys(dayMap)
-      .reverse()
+      .sort()
       .forEach(function (key) {
         result.push(dayMap[key]);
       });
-
-    if (!config.dev && !config.staging) {
-      result = [];
-    }
 
     res.send(result);
   } catch (err) {

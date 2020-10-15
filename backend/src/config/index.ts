@@ -9,6 +9,7 @@ if (!dotenv.config({ path: '../.env' })) {
 }
 
 export default {
+  env: process.env.NODE_ENV,
   dev: process.env.NODE_ENV === 'development',
   staging: process.env.NODE_ENV === 'staging',
   app: {
@@ -63,5 +64,11 @@ export default {
   },
   openWeatherMap: {
     apiKey: process.env.OPEN_WEATHER_MAP_API_KEY || '',
+  },
+  spaces: {
+    endpoint: 'ams3.digitaloceanspaces.com',
+    bucket: 'pitchin',
+    key: process.env.SPACES_API_KEY,
+    secret: process.env.SPACES_API_SECRET,
   },
 };

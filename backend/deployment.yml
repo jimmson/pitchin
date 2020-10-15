@@ -53,6 +53,11 @@ spec:
                 secretKeyRef:
                   name: open-weather-map-api-key
                   key: OPEN_WEATHER_MAP_API_KEY
+            - name: SPACES_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: spaces-api-secret
+                  key: SPACES_API_SECRET
             - name: APP_HOST
               valueFrom:
                 configMapKeyRef:
@@ -83,3 +88,8 @@ spec:
                 configMapKeyRef:
                   name: zelos-email
                   key: ZELOS_EMAIL
+            - name: SPACES_API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: spaces-api-key
+                  key: SPACES_API_KEY

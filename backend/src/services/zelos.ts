@@ -161,22 +161,20 @@ export default class Zelos {
     };
     try {
       const res = await axios.post(`${this.url}/api/task/regular`, body, this.authHeaders());
-      const taskUrl = this.url + '/tasks/' + res.data.data.id;
-      console.log(`[i] Created ${taskUrl}`);
-      return taskUrl;
+      return res.data.data.id;
     } catch (err) {
       console.error(`[!] Failed to create task: ${err.response}`);
       throw err;
     }
   }
 
-  private async *getUsersGenerator() {
+  private async *getGenerator(resource: string) {
     let _page = 1;
     let _last = 1;
     while (_page <= _last) {
       try {
-        console.log(`[i] Getting page ${_page} of users`, _last);
-        const res = await axios.get(`${this.url}/api/user?page=${_page}`, this.authHeaders());
+        log.info(`getting ${resource} page ${_page} of ${_last}`);
+        const res = await axios.get(`${this.url}/api/${resource}?page=${_page}`, this.authHeaders());
         ({ last_page: _last, current_page: _page } = res.data.meta);
         for (let u of res.data.data) {
           yield u.data;
@@ -190,7 +188,12 @@ export default class Zelos {
 
   streamUsers(): Stream.Readable {
     // @ts-ignore
-    return Stream.Readable.from(this.getUsersGenerator());
+    return Stream.Readable.from(this.getGenerator('user'));
+  }
+
+  streamTasks(): Stream.Readable {
+    // @ts-ignore
+    return Stream.Readable.from(this.getGenerator('task'));
   }
 }
 

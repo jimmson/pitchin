@@ -4,10 +4,12 @@ export interface ITicket {
   phone: Number;
   address: string;
   request: string;
+  imageURL: string;
   maxParticipants: Number;
   area: string; // mongodb.ObjectId
   category: string; // mongodb.ObjectId
   owner: string; // mongodb.ObjectId
+  organisation: string; // mongodb.ObjectId
   createdAt: Date;
   comments: IComment[];
   status: string;
@@ -16,6 +18,7 @@ export interface ITicket {
   task: string;
   startDate: Date;
   endDate: Date;
+  externalID: Number;
 }
 
 export interface IActivity {

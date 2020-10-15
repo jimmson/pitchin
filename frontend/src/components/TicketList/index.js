@@ -38,7 +38,7 @@ export default (props) => {
           {days.map((day, key) => (
             <React.Fragment key={key}>
               <Grid item xs={12}>
-                <Typography variant="h4" align="center" color="primary">
+                <Typography variant="h3" align="center" color="textPrimary">
                   {day.date || "Any Day"}
                 </Typography>
               </Grid>

@@ -13,6 +13,8 @@ COPY ./build ./src
 
 EXPOSE 8000
 
-ENV NODE_ENV=staging
+ARG RELEASE=production
+
+ENV NODE_ENV=$RELEASE
 
 CMD ["node","src/app.js"]

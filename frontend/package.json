@@ -20,7 +20,7 @@
     "formik-material-ui": "^3.0.0-alpha.0",
     "formik-material-ui-pickers": "0.0.11",
     "history": "^4.10.1",
-    "immer": "^6.0.3",
+    "immer": "^9.0.6",
     "isemail": "^3.2.0",
     "langmap": "0.0.16",
     "lodash": "^4.17.15",

@@ -17,7 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "agenda": "^3.1.0",
-    "aws-sdk": "^2.770.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",

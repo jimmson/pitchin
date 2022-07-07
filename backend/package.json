@@ -30,7 +30,7 @@
     "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
     "mailchimp-api-v3": "^1.14.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "mongoose": "^5.9.7",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.8.0",
